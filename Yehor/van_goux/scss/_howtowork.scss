@@ -1,0 +1,49 @@
+@import "_variables";
+.howtowork {
+    background-color: #1968fc;
+    position: relative;
+}
+.title-blue {
+    color: #fff;
+    margin-bottom: 60px;
+}
+.title-blue:after {
+    content: "";
+    background-color: #fff;
+}
+
+.text-column {
+    max-width: 640px;
+    display: flex;
+    flex-direction: column;
+    padding: 80px 0px;
+    p {
+        margin-bottom: 40px;
+        color: #fff;
+        font-size: 20px;
+        line-height: 2;
+    }
+}
+.blue-button {
+    color: $lite-blue;
+    background-color: #fff;
+    padding: 15px 40px;
+    align-self: flex-start;
+}
+.blue-row {
+    position: relative;
+}
+.blue-block-img {
+   position: absolute;
+    top: 20px;
+    right: 0;
+}
+
+@media only screen and (max-width: 1025px) {
+    .text-column {
+        padding: 40px;
+    }
+    .blue-block-img {
+        display: none;
+    }
+  }
