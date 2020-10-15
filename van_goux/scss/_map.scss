@@ -1,0 +1,66 @@
+@import "_variables";
+.map-title {
+    padding-top: 100px;
+}
+.map {
+    position: relative;
+}
+.img-map {
+    overflow: hidden;
+    max-width: 680px;
+    height: 660px;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.map-form {
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    .label {
+            padding: 12px 12px 12px 0;
+            display: inline-block;
+    }
+    .input[type=text], select, textarea {
+        display: block;
+        width: 100%;
+        padding: 30px;
+    }
+    .field {
+        border: blue;
+    }
+}
+.textarea {
+    height: 50px;
+}
+.map-label {
+    color: #141720;
+    font-size: 16px;
+    line-height: 1.6;
+}
+.map-input {
+    border-bottom: 2px solid $lite-blue;
+    width: 500px;
+    margin-bottom: 20px;
+}
+.map-input:last-child {
+    margin-bottom: 40px;
+}
+.map-button {
+    padding: 15px 110px;
+    align-self: flex-end;
+}
+
+
+@media only screen and (max-width: 1025px) {
+    .map-form {
+        max-width: 100%;
+        margin: 0px 0px 50px 0px;
+    }
+    .img-map {
+        position: relative;
+    }
+    .map-input {
+        width: 100%;
+    }
+  }

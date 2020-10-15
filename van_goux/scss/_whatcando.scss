@@ -1,0 +1,31 @@
+@import "_variables";
+.whatcando-blockes {
+    margin-bottom: 100px;
+    display: flex;
+    flex-wrap: wrap;
+    .whatcando-block {
+        background-color: #fff;
+        margin: 0px 40px 40px 0px;
+        display: flex;
+        align-items: center;
+        width: 46%;
+        img {
+            padding: 20px;
+            margin: 0px 20px 0px 0px;
+            background-color: $lite-blue;
+        }
+        p {
+            font-size: 18px;
+            line-height: 2.22;
+            font-weight: 600;
+        }
+    }
+}
+
+@media only screen and (max-width: 1025px) {
+    .whatcando-blockes {
+        .whatcando-block {
+            width: 100%
+        }
+    }
+  }
