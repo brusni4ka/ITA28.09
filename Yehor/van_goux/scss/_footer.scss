@@ -1,0 +1,29 @@
+@import "_variables";
+
+.footer {
+    height: 150px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.dude {
+    align-self: flex-end;
+}
+.adv {
+    display: flex;
+    align-items: center;
+    background-color: rgba(142, 142, 194, 0.26);
+    img {
+        width: 50px;
+    }
+    .text {
+        padding: 0px 20px;
+        line-height: 1.4;
+        font-weight: 600;
+        color: $lite-blue;
+    }
+}
+.socmedia {
+    width: 30px;
+    margin-right: 20px;
+}
