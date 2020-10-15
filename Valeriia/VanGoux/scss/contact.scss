@@ -1,0 +1,84 @@
+.contact {
+  position: relative;
+
+  & .container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    margin-top: 6rem;
+    @media (min-width: 1440px) {
+      margin-top: 12rem;
+      width: 50%;
+    }
+  }
+
+  &__form {
+    padding: 0 2rem 0 7rem;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 7.3rem;
+    @media (min-width: 1025px) {
+      max-width: 350px;
+    }
+    @media (min-width: 1440px) {
+      padding-left: 5rem;
+      max-width: 450px;
+    }
+
+    input {
+      border: 0;
+      border-bottom: 2px solid $secondary;
+      margin-bottom: 1.7rem;
+      padding-bottom: 2rem;
+      background-color: transparent;
+      outline: none;
+      @media (min-width: 1440px) {
+        margin-bottom: 3rem;
+      }
+    }
+
+    input[type="text"]::placeholder,
+    input[type="email"]::placeholder,
+    textarea::placeholder {
+      line-height: 26px;
+      font-size: 1.6rem;
+      letter-spacing: 0.53px;
+      color: $inputColor;
+      font-family: $font-helvetica;
+    }
+
+    textarea {
+      border: none;
+      border-bottom: 2px solid $secondary;
+      padding-bottom: 8.7rem;
+      margin-bottom: 4rem;
+      background-color: transparent;
+      outline: none;
+    }
+  }
+
+  &__btn {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__img {
+    width: 100%;
+    height: 100%;
+  }
+
+  &__map {
+    background-color: $footerColor;
+    @media (min-width: 1025px) {
+      width: 50%;
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 100%;
+    }
+  }
+}

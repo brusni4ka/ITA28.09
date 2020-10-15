@@ -1,0 +1,53 @@
+.scheduleCall {
+  background-color: $secondary;
+  position: relative;
+  & .container {
+    display: flex;
+    position: relative;
+  }
+
+  h2 {
+    font-family: $font-tertiary;
+    color: $white;
+  }
+
+  &__wrapper {
+    padding: 5rem 0;
+    @media (min-width: 1025px) {
+      padding: 8rem 0;
+      width: 58%;
+    }
+
+    & .heading--underline:after {
+      content: "";
+      display: block;
+      position: absolute;
+      width: 80px;
+      height: 2px;
+      background-color: $white;
+      box-shadow: 0 2px 0 0 $shadow-secondary;
+      border: none;
+    }
+  }
+
+  &__text {
+    color: $white;
+    font-weight: 400;
+    margin-bottom: 4rem;
+  }
+
+  &__illustration {
+    display: none;
+    @media (min-width: 1025px) {
+      position: absolute;
+      display: block;
+      top: 0;
+      right: 0;
+      width: 42%;
+    }
+  }
+
+  &__img {
+    width: 100%;
+  }
+}

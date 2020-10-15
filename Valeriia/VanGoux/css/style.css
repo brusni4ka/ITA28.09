@@ -1,0 +1,564 @@
+@font-face {
+  font-family: "Muli Regular";
+  src: url("../assets/fonts/Muli-Regular.eot");
+  src: url("../assets/fonts/Muli-Regular.eot?#iefix") format("embedded-opentype"), url("../assets/fonts/Muli-Regular.woff") format("woff"), url("../assets/fonts/Muli-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal; }
+
+@font-face {
+  font-family: "Muli Semibold";
+  src: url("../assets/fonts/Muli-SemiBold.eot");
+  src: url("../assets/fonts/Muli-SemiBold.eot?#iefix") format("embedded-opentype"), url("../assets/fonts/Muli-SemiBold.woff") format("woff"), url("../assets/fonts/Muli-SemiBold.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal; }
+
+@font-face {
+  font-family: "Muli Bold";
+  src: url("../assets/fonts/Muli-Bold.eot");
+  src: url("../assets/fonts/Muli-Bold.eot?#iefix") format("embedded-opentype"), url("../assets/fonts/Muli-Bold.woff") format("woff"), url("../assets/fonts/Muli-Bold.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal; }
+
+*,
+*::after,
+*::before {
+  padding: 0;
+  margin: 0;
+  box-sizing: inherit; }
+
+html {
+  font-size: 62.5%; }
+
+body {
+  background-image: url("../assets/img/background-decor-mobile.png");
+  background-size: cover;
+  font-family: "Muli Regular", sans-serif;
+  color: #11223f;
+  font-size: 1.4rem; }
+  @media (min-width: 1025px) {
+    body {
+      background-image: url("../assets/img/background-decor.png"); } }
+
+a {
+  text-decoration: none; }
+
+li {
+  list-style: none; }
+
+.header {
+  margin: 4rem 0rem 8rem;
+  padding: 0 3rem;
+  display: flex;
+  justify-content: space-between; }
+  @media (min-width: 1025px) {
+    .header {
+      padding: 0;
+      margin-bottom: 15rem; } }
+  .header__content {
+    display: none; }
+    @media (min-width: 1025px) {
+      .header__content {
+        display: flex;
+        width: 65%;
+        justify-content: space-between; } }
+  .header__nav {
+    width: 65%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; }
+  .header__link {
+    line-height: 20px;
+    color: #000000;
+    font-family: "Muli Semibold", sans-serif; }
+
+.footer {
+  background-color: #fbfbfb;
+  position: relative; }
+  .footer .container {
+    position: relative; }
+  .footer__wrapper {
+    padding: 4rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center; }
+    @media (min-width: 1025px) {
+      .footer__wrapper {
+        width: 80%; } }
+    .footer__wrapper .logo {
+      width: 50%; }
+      @media (min-width: 1025px) {
+        .footer__wrapper .logo {
+          width: auto; } }
+  .footer__logo {
+    margin-right: 0;
+    width: 50px;
+    height: 50px; }
+  .footer__logoText {
+    color: #1968fc;
+    font-family: "Muli Bold", sans-serif;
+    background-color: #f3f7ff; }
+    .footer__logoText p {
+      padding: 1.6rem; }
+  .footer__link {
+    line-height: 20px;
+    color: #000000;
+    font-family: "Muli Semibold", sans-serif; }
+  .footer__nav {
+    display: flex;
+    width: 85%;
+    justify-content: space-around;
+    padding-top: 4rem; }
+    @media (min-width: 1025px) {
+      .footer__nav {
+        width: 40%;
+        padding-top: 0; } }
+  @media (min-width: 1025px) {
+    .footer__socials {
+      order: 3; } }
+  .footer__icon {
+    margin-right: 3.5rem; }
+  .footer__illustration {
+    width: 55px;
+    height: 60px;
+    position: absolute;
+    right: 0;
+    bottom: 0; }
+    @media (min-width: 1025px) {
+      .footer__illustration {
+        width: 90px;
+        height: 100px; } }
+    .footer__illustration img {
+      width: 100%;
+      height: 100%;
+      transform: scaleX(1.4); }
+
+.btn {
+  padding: 1.5rem 3.5rem;
+  border-radius: 0;
+  border: none;
+  line-height: 20px;
+  text-transform: uppercase;
+  font-family: "Muli Bold", sans-serif;
+  cursor: pointer; }
+  .btn-primary {
+    background-color: #1968fc;
+    color: #ffffff;
+    box-shadow: 0 10px 40px rgba(25, 104, 252, 0.2); }
+  .btn-secondary {
+    background-color: #ffffff;
+    color: #1968fc;
+    box-shadow: 4px 4px 20px rgba(255, 255, 255, 0.4); }
+  .btn-tertiary {
+    min-width: 250px;
+    font-family: "Helvetica", sans-serif;
+    background-color: #1968fc;
+    color: #ffffff;
+    box-shadow: 4px 4px 20px rgba(255, 255, 255, 0.4); }
+
+.logo {
+  display: flex;
+  align-items: center; }
+  .logo__img {
+    width: 50px;
+    height: 50px;
+    margin-right: 2rem; }
+  .logo a {
+    color: #1968fc;
+    line-height: 30px;
+    font-size: 2rem;
+    font-family: "Muli Semibold", sans-serif; }
+
+.container {
+  margin-left: 5rem;
+  margin-right: 5rem; }
+  @media (min-width: 1440px) {
+    .container {
+      max-width: 1120px;
+      margin-right: auto;
+      margin-left: auto; } }
+
+.heading--underline {
+  position: relative;
+  margin-bottom: 3.8rem; }
+  .heading--underline:after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 80px;
+    height: 2px;
+    background-color: #1968fc;
+    box-shadow: 0 2px 0 0 #d1e1fe;
+    border: none; }
+    @media (min-width: 1440px) {
+      .heading--underline:after {
+        left: -4rem; } }
+
+.heading-1 {
+  font-size: 4rem;
+  font-family: "Muli Semibold", sans-serif;
+  line-height: 6rem;
+  letter-spacing: 1px;
+  margin-bottom: 2rem; }
+
+.heading-2 {
+  font-size: 3rem;
+  line-height: 60px;
+  text-transform: uppercase;
+  font-weight: 400; }
+
+.heading-3, .heading-4 {
+  font-size: 2rem;
+  line-height: 4rem; }
+
+.heading-3 {
+  font-weight: 400; }
+
+.heading-4 {
+  font-family: "Muli Semibold", sans-serif;
+  padding: 2rem;
+  background-color: #f3f7ff;
+  width: 100%; }
+
+.message {
+  background-color: #1968fc;
+  margin-bottom: 5rem; }
+  @media (min-width: 1025px) {
+    .message {
+      display: none; } }
+  .message p {
+    font-size: 2rem;
+    line-height: 40px;
+    text-transform: uppercase;
+    text-align: center;
+    color: #ffffff;
+    padding: 5rem 0;
+    font-family: "Muli Bold", sans-serif; }
+
+.verticalDivider {
+  height: 6rem;
+  border-right: 2px dotted #1968fc;
+  display: inline-block;
+  margin-left: 6rem; }
+  @media (min-width: 1025px) {
+    .verticalDivider {
+      display: none; } }
+
+.banner {
+  position: relative;
+  min-height: 823px; }
+  @media (min-width: 1025px) {
+    .banner {
+      min-height: 500px; } }
+  .banner__text {
+    padding: 0 3rem;
+    margin-bottom: 8rem; }
+    @media (min-width: 1025px) {
+      .banner__text {
+        width: 53%;
+        padding: 0;
+        margin-bottom: 0; } }
+    .banner__text h3 {
+      margin-bottom: 4rem; }
+  .banner__hiddenWord {
+    display: none; }
+    @media (min-width: 1025px) {
+      .banner__hiddenWord {
+        display: inline-block; } }
+  .banner__illustration {
+    position: absolute;
+    bottom: 0;
+    transform: scale(1.1); }
+    @media (min-width: 1025px) {
+      .banner__illustration {
+        width: 47%;
+        bottom: 1%;
+        right: 5%;
+        transform: scale(1.2); } }
+  .banner__img {
+    width: 100%;
+    height: 400px; }
+
+@media (min-width: 1025px) {
+  .testimonialCard {
+    width: calc(100% / 2 - 20px); } }
+
+.testimonialCard__wrapper {
+  padding: 4rem;
+  background-color: #ffffff;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(25, 104, 252, 0.1); }
+
+.testimonialCard__quote {
+  position: absolute;
+  top: 0;
+  right: -2rem; }
+
+.testimonialCard__info {
+  display: flex;
+  margin-bottom: 4rem;
+  align-items: center; }
+
+.testimonialCard__name {
+  font-size: 1.8rem;
+  line-height: 30px;
+  font-family: "Muli Semibold", sans-serif; }
+
+.testimonialCard__position {
+  line-height: 30px;
+  color: #1967fa;
+  font-family: "Muli Semibold", sans-serif; }
+
+.testimonialCard__img {
+  margin-right: 2rem; }
+
+.testimonialCard__text {
+  line-height: 30px;
+  font-size: 1.6rem; }
+
+.featureCard {
+  box-shadow: 0 20px 60px rgba(49, 69, 244, 0.1); }
+  @media (min-width: 1025px) {
+    .featureCard {
+      width: calc(100% / 3 - 20px); } }
+  @media (min-width: 1440px) {
+    .featureCard {
+      width: calc(100% / 3 - 50px); } }
+  .featureCard__picture {
+    max-width: 80px;
+    line-height: 30px;
+    background-color: #1968fc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem; }
+    @media (min-width: 1025px) {
+      .featureCard__picture {
+        min-width: 100px;
+        padding: 0; } }
+    @media (min-width: 1440px) {
+      .featureCard__picture {
+        min-width: 120px; } }
+  .featureCard__heading {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center; }
+  .featureCard__name {
+    display: flex;
+    align-items: stretch; }
+  .featureCard__description {
+    background-color: #ffffff;
+    line-height: 30px;
+    font-size: 1.6rem;
+    padding: 3rem 4rem; }
+
+.testimonials {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 7rem; }
+  @media (min-width: 1025px) {
+    .testimonials {
+      flex-direction: row;
+      justify-content: space-between;
+      margin-bottom: 15rem; } }
+  .testimonials .testimonialCard {
+    margin-bottom: 5rem; }
+    @media (min-width: 1025px) {
+      .testimonials .testimonialCard {
+        margin-bottom: 0; } }
+
+.features {
+  margin-bottom: 12rem; }
+  @media (min-width: 1025px) {
+    .features {
+      margin-bottom: 20rem; } }
+  @media (min-width: 1025px) {
+    .features__wrapper {
+      display: flex;
+      justify-content: space-between; } }
+  @media (min-width: 1025px) {
+    .features__wrapper .featureCard:nth-of-type(2) {
+      transform: translateY(4rem); }
+    .features__wrapper .featureCard:nth-of-type(3) {
+      transform: translateY(8rem); } }
+
+.useCases {
+  margin-bottom: 12rem; }
+  .useCases__wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between; }
+
+.services {
+  margin-bottom: 6rem; }
+  @media (min-width: 1025px) {
+    .services {
+      margin-bottom: 12rem; } }
+  @media (min-width: 1025px) {
+    .services__wrapper {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between; } }
+  @media (min-width: 1025px) {
+    .services .servicesCard {
+      margin-bottom: 4rem; } }
+  .services .servicesCard:not(:last-child) {
+    margin-bottom: 4rem; }
+
+.useCaseCard {
+  width: calc(100% / 2 - 10px);
+  background-color: #ffffff;
+  box-shadow: 0 20px 60px rgba(49, 69, 244, 0.1);
+  margin-bottom: 2rem; }
+  @media (min-width: 1025px) {
+    .useCaseCard {
+      width: calc(100% / 3 - 13px); } }
+  .useCaseCard__wrapper {
+    padding: 2rem; }
+  .useCaseCard h3 {
+    font-family: "Muli Bold", sans-serif;
+    color: #1967fa;
+    text-transform: uppercase;
+    margin-bottom: 2rem; }
+  .useCaseCard p {
+    line-height: 30px;
+    font-size: 1.6rem; }
+
+.servicesCard {
+  display: flex;
+  box-shadow: 0 20px 60px rgba(49, 69, 244, 0.1); }
+  @media (min-width: 1025px) {
+    .servicesCard {
+      width: calc(100% / 2 - 20px); } }
+  .servicesCard__img {
+    background-color: #1968fc;
+    max-width: 80px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center; }
+  .servicesCard__text {
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center; }
+  .servicesCard__icon {
+    padding: 2rem; }
+  .servicesCard__heading {
+    padding: 2rem;
+    font-size: 1.8rem;
+    line-height: 40px;
+    color: #000000;
+    font-family: "Muli Semibold", sans-serif;
+    width: 100%; }
+
+.scheduleCall {
+  background-color: #1968fc;
+  position: relative; }
+  .scheduleCall .container {
+    display: flex;
+    position: relative; }
+  .scheduleCall h2 {
+    font-family: "Muli Bold", sans-serif;
+    color: #ffffff; }
+  .scheduleCall__wrapper {
+    padding: 5rem 0; }
+    @media (min-width: 1025px) {
+      .scheduleCall__wrapper {
+        padding: 8rem 0;
+        width: 58%; } }
+    .scheduleCall__wrapper .heading--underline:after {
+      content: "";
+      display: block;
+      position: absolute;
+      width: 80px;
+      height: 2px;
+      background-color: #ffffff;
+      box-shadow: 0 2px 0 0 #6a9eff;
+      border: none; }
+  .scheduleCall__text {
+    color: #ffffff;
+    font-weight: 400;
+    margin-bottom: 4rem; }
+  .scheduleCall__illustration {
+    display: none; }
+    @media (min-width: 1025px) {
+      .scheduleCall__illustration {
+        position: absolute;
+        display: block;
+        top: 0;
+        right: 0;
+        width: 42%; } }
+  .scheduleCall__img {
+    width: 100%; }
+
+.contact {
+  position: relative; }
+  .contact .container {
+    display: flex;
+    flex-direction: column; }
+  .contact__content {
+    display: flex;
+    flex-direction: column;
+    margin-top: 6rem; }
+    @media (min-width: 1440px) {
+      .contact__content {
+        margin-top: 12rem;
+        width: 50%; } }
+  .contact__form {
+    padding: 0 2rem 0 7rem;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 7.3rem; }
+    @media (min-width: 1025px) {
+      .contact__form {
+        max-width: 350px; } }
+    @media (min-width: 1440px) {
+      .contact__form {
+        padding-left: 5rem;
+        max-width: 450px; } }
+    .contact__form input {
+      border: 0;
+      border-bottom: 2px solid #1968fc;
+      margin-bottom: 1.7rem;
+      padding-bottom: 2rem;
+      background-color: transparent;
+      outline: none; }
+      @media (min-width: 1440px) {
+        .contact__form input {
+          margin-bottom: 3rem; } }
+    .contact__form input[type="text"]::placeholder,
+    .contact__form input[type="email"]::placeholder,
+    .contact__form textarea::placeholder {
+      line-height: 26px;
+      font-size: 1.6rem;
+      letter-spacing: 0.53px;
+      color: #141720;
+      font-family: "Helvetica", sans-serif; }
+    .contact__form textarea {
+      border: none;
+      border-bottom: 2px solid #1968fc;
+      padding-bottom: 8.7rem;
+      margin-bottom: 4rem;
+      background-color: transparent;
+      outline: none; }
+  .contact__btn {
+    display: flex;
+    justify-content: flex-end; }
+  .contact__img {
+    width: 100%;
+    height: 100%; }
+  .contact__map {
+    background-color: #fbfbfb; }
+    @media (min-width: 1025px) {
+      .contact__map {
+        width: 50%;
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%; } }
