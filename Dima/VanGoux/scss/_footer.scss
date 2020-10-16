@@ -1,0 +1,63 @@
+.footer {
+  display: flex;
+  flex-direction: row; 
+  height: 130px;
+  background-color: #fbfbfb;
+  background-image: url(../assets/vincent-illustration.png);
+  background-repeat: no-repeat;
+  background-position: 90% 100%;
+  &__wrap{
+    width: 1160px;
+    margin: 0px auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    @media (max-width: 680px) {
+      flex-wrap: wrap;
+      width: 600px;
+    }
+  }
+  &__logo {
+    order: 1;
+    @media (max-width: 680px) {
+      width: 50%;
+    }
+  }
+
+  &__nav {
+    order: 2;
+    display: flex;
+    width: 40%;
+    justify-content: space-between;
+    a{
+      line-height: 4rem;
+      font-size: 1.4rem;
+    }
+    @media (max-width: 680px) {
+      width: 80%;
+      justify-content: space-around;
+      order: 3;
+    }
+  }
+
+  &__social-links {
+    order: 3;
+    display: flex;
+    width: 20%;
+    justify-content: flex-start;
+    img{
+      margin-right: 40px;
+    }
+    @media (max-width: 680px) {
+      width: 50%;
+      order: 2;
+      justify-content: flex-end;
+    }
+  }
+  @media (max-width: 680px) {
+    height: 200px;
+    background-position: 95% 100%;
+    background-size: 15%;
+  }
+}

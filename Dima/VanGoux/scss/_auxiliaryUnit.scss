@@ -1,0 +1,23 @@
+.auxiliary-unit{
+  display: none;
+  margin-bottom: 50px;
+  @media (max-width: 680px) {
+    display: block;
+    &__card{
+      display: flex;
+      align-items: center;
+      text-align: center;
+      background-color: $auxiliary;
+      height: 180px;
+    }
+    h2{
+      font-size: 2rem;
+      font-weight: 600;
+      line-height: 4rem;
+      color: $white;
+      margin-bottom: 0;
+    }
+  }
+  @media (max-width: 680px) {
+  }
+}

@@ -1,0 +1,47 @@
+.testimonial {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 100px;
+  @media(max-width: 680px){
+    flex-direction: column;
+  }
+    &__cards {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin-top: -70px;
+    }
+    &__card {
+      display: flex;
+      flex-direction: column;
+      width: 48%;
+      background-color: $white;
+      background-image: url(../assets/illustration-quote.png);
+      background-repeat: no-repeat;
+      background-position: 95% 15%;
+      @media(max-width: 680px){
+        width: 100%;
+        margin-bottom: 50px;
+      }
+    }
+    &__card-header {
+      display: flex;
+      flex-direction: row;
+      padding: 30px;
+    }
+    &__card-header-text {
+      padding: 15px;
+      h4{
+        margin-bottom: 10px;
+      }
+      p{
+        color: $secondary;
+        font-weight: 600;
+      }
+  }
+  &__card-text {
+    font-family: $font-secondary;
+    padding: 0px 30px 30px 30px;
+    line-height: 30px;
+  }
+}

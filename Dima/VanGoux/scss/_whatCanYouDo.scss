@@ -1,0 +1,29 @@
+.what-can-you-do {
+  margin-bottom: 120px;
+  &__cards {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+  }
+  &__cards-item {
+    width: 48.5%;
+    background-color: $white;
+    margin-bottom: 3rem;
+    display: flex;
+    flex-direction: row;
+    font-size: 1.8rem;
+    font-weight: 600;
+    align-items: center;
+    font-family: $secondary;
+    @media (max-width: 680px) {
+      width: 100%;
+      margin-bottom: 4rem;
+    }
+    p{
+      margin-left: 2rem;
+    }
+  }
+  @media (max-width: 680px) {
+    margin-bottom: 4rem;
+  }
+}

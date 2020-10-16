@@ -1,0 +1,30 @@
+.for-whom {
+  margin-bottom: 120px;
+	&__cards {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+	}
+
+	&__cards-items {
+    width: 32%;
+    background-color: $white;
+    margin-bottom: 20px;
+    padding: 20px;
+    @media (max-width: 680px) {
+      width: 48%;
+    }
+    h3{
+      margin-bottom: 20px;
+      color: $secondary;
+      line-height: 4rem;
+      font-size: 2rem;
+      text-transform: uppercase;
+    }
+    p{
+      font-family: $font-secondary; 
+      line-height: 3rem;
+      font-size: 1.6rem;
+    }
+	}
+}
