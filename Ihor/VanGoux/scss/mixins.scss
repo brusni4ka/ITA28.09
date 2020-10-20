@@ -1,70 +1,44 @@
 @import 'variables';
 
 @mixin nav_link {
-    font-family : Mulish;
     font-size: 14px;
     font-weight: 600;
-    font-stretch: normal;
-    font-style: normal;
     line-height: 1.43;
-    letter-spacing: normal;
     color: $black;
     text-decoration: none;
 }
 @mixin btn {
     background: $blue;
     text-shadow: 0 10px 40px rgba(25, 104, 252, 0.2);
-    font-family: Mulish;
     font-size: 14px;
     font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
     line-height: 1.43;
-    letter-spacing: normal;
     text-align: center;
     color: $white;
     border:none;
+    outline: none;
+    cursor: pointer;
 }
 
 @mixin btn_white {
     
     background:$white;
     box-shadow: 4px 4px 20px 0 rgba(255, 255, 255, 0.4);
-    font-family: Mulish;
     font-size: 14px;
     font-weight: bold;
-    font-stretch: normal;
-    font-style: normal;
     line-height: 1.43;
-    letter-spacing: normal;
     text-align: center;
     color: $blue;
     border:none;
 }
-@mixin h1_promo {
-    font-family: Mulish;
-    font-size: 40px;
-    font-weight: 600;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.5;
-    letter-spacing: 1px;
-    color: #11223f;
-}
-@mixin h5 {
-    font-family: Mulish;
-    font-size: 20px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 2;
-    letter-spacing: normal;
-    color: #11223f;
-}
-@mixin tab {
-    min-width: 540px;
+
+
+@mixin promocard {
+    box-shadow: 0 20px 60px 0 rgba(25, 104, 252, 0.1);
+    width: 50%;
     min-height: 280px;
     background-color:$white;
+    padding: 40px;
     &_info {
         display: flex;
         justify-content: space-between;
@@ -77,154 +51,115 @@
             .text {
                 display: flex;
                 flex-direction: column;
-                padding-top: 60px;
+                padding-top: 20px;
+                padding-left: 20px;
             }
             .name {
                 display: inline-block;
-                font-family: Mulish;
                 font-size: 18px;
                 font-weight: 600;
-                font-stretch: normal;
-                font-style: normal;
                 line-height: 1.67;
-                letter-spacing: normal;
                 color: $dark_blue;
             }
             .person_info {
                 display: block;
                 opacity: 0.8;
-                font-family: Mulish;
                 font-size: 14px;
                 font-weight: 600;
-                font-stretch: normal;
-                font-style: normal;
                 line-height: 2.14;
-                letter-spacing: normal;
                 color: $blue;
             }
-            .person_img{
-                padding: 40px 20px 0px 40px;
-            }
+           
         }
 
-        .tab_symbol {
-
-            .symbol_img {
-                padding:40px 40px 54px 60px;
-            }
-            
-        }
-        
     }
     .person_text {
-        font-family: Mulish;
         font-size: 16px;
         font-weight: normal;
-        font-stretch: normal;
-        font-style: normal;
         line-height: 1.88;
-        letter-spacing: normal;
         color: $dark_blue;
-        padding: 0 40px 40px 40px;
+    }
+}
+@mixin promocard_mobile {
+    box-shadow: 0 20px 60px 0 rgba(25, 104, 252, 0.1);
+    width: 100%;
+    min-height: 280px;
+    background-color:$white;
+    padding: 40px;
+    &_info {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 40px;
+        .person {
+            display: flex;
+            justify-content: left;
+            align-items: center;
+           
+            .text {
+                display: flex;
+                flex-direction: column;
+                padding-top: 20px;
+                padding-left: 20px;
+            }
+            .name {
+                display: inline-block;
+                font-size: 18px;
+                font-weight: 600;
+                line-height: 1.67;
+                color: $dark_blue;
+            }
+            .person_info {
+                display: block;
+                opacity: 0.8;
+                font-size: 14px;
+                font-weight: 600;
+                line-height: 2.14;
+                color: $blue;
+            }
+           
+        }
+
+    }
+    .person_text {
+        font-size: 16px;
+        font-weight: normal;
+        line-height: 1.88;
+        color: $dark_blue;
     }
 }
 
-@mixin h1 {
-    font-family: Mulish;
-    font-size: 30px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 2;
-    letter-spacing: normal;
-    color: $dark_blue;
-}
 
-@mixin h1_white {
-    font-family: Mulish;
-    font-size: 30px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 2;
-    letter-spacing: normal;
-    color: $white;
-}
-
-@mixin divider_white {
-    width: 80px;
-    height: 2px;
-    box-shadow: 0 2px 0 0 #6a9eff;
-    background-color: $white;
-    position: absolute;
-    right:1120px;
-}
-@mixin divider_white_mobile {
-    width: 80px;
-    height: 2px;
-    box-shadow: 0 2px 0 0 #6a9eff;
-    background-color: $white;
-    position: static;
-    right: 0;
-}
-
-@mixin divider {
-    width: 80px;
-    height: 2px;
-    box-shadow: 0 2px 0 0 #d1e1fe;
-    background-color: $blue;
-    position: absolute;
-    right:1120px;
-}
-@mixin divider_mobile {
-    width: 80px;
-    height: 2px;
-    box-shadow: 0 2px 0 0 #d1e1fe;
-    background-color: $blue;
-    position: static;
-    right: 0;
-}
-
-@mixin feattab {
+@mixin featcard {
     width: 320px;
-            height: 290px;
-        
-            &_head {
-                display: flex;
-                justify-content: left;
-                align-items: center;
-                background-color:$white_2;
+    height: 290px;
+    &_head {
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        background-color:$white_2;
             
-                &_text {
-                    
-                    padding: 20px;
-                    font-family: Mulish;
-                    font-size: 20px;
-                    font-weight: 600;
-                    font-stretch: normal;
-                    font-style: normal;
-                    line-height: 1.5;
-                    letter-spacing: normal;
-                    color: $dark_blue;
-                }
-            }
-            &_text {
-                box-shadow: 0 20px 60px 0 rgba(49, 69, 244, 0.1);
-                background-color: $white;
-                font-family: Mulish;
-                font-size: 16px;
-                font-weight: normal;
-                font-stretch: normal;
-                font-style: normal;
-                line-height: 1.88;
-                letter-spacing: normal;
-                color: $dark_blue;
-                padding: 40px;
-            }
+        &_text {
+            padding: 20px;
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 1.5;
+            color: $dark_blue;
+        }
+    }
+    &_text {
+        box-shadow: 0 20px 60px 0 rgba(49, 69, 244, 0.1);
+        background-color: $white;
+        font-size: 16px;
+        font-weight: normal;
+        line-height: 1.88;
+        color: $dark_blue;
+        padding: 40px;
+    }
 }
-@mixin feattab_mobile {
+
+@mixin featcard_mobile {
     width: 100%;
-    height: 200px;
+    max-height: 200px;
     margin-bottom: 60px;
 
     &_head {
@@ -236,27 +171,19 @@
         &_text {
             
             padding: 20px;
-            font-family: Mulish;
             font-size: 20px;
             font-weight: 600;
-            font-stretch: normal;
-            font-style: normal;
             line-height: 1.5;
-            letter-spacing: normal;
             color: $dark_blue;
         }
     }
     &_text {
         box-shadow: 0 20px 60px 0 rgba(49, 69, 244, 0.1);
         background-color: $white;
-        font-family: Mulish;
         font-size: 16px;
         font-weight: normal;
-        font-stretch: normal;
-        font-style: normal;
         line-height: 1.88;
-        letter-spacing: normal;
         color: $dark_blue;
-        padding: 40px;
+        padding: 30px;
     }
 }
