@@ -4,8 +4,14 @@
   background-image: url(../assets/illustration-main.png);
   background-repeat: no-repeat;
   background-position: right bottom;
+  button{
+    padding: 1.5rem 5rem;
+  }
+  button:hover{
+    box-shadow: none;
+  }
   @media(max-width: 680px){
-    height: 980px; 
+    height: 980px;
   }
   h1{
     margin-bottom: 30px;
@@ -14,4 +20,5 @@
     font-weight: 500;
     margin-bottom: 40px;
   }
+  
 }

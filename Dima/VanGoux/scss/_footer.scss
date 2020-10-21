@@ -20,19 +20,31 @@
   }
   &__logo {
     order: 1;
+    display: flex;
+    width: 25%;
+    align-items: center;
+    a{
+      color: $primary;
+      font-weight: bold;
+    }
     @media (max-width: 680px) {
       width: 50%;
     }
+  }
+  &__text{
+    background-color: #1968fc18;
+    padding: 15px;
   }
 
   &__nav {
     order: 2;
     display: flex;
-    width: 40%;
-    justify-content: space-between;
+    width: 45%;
+    justify-content: space-around;
     a{
       line-height: 4rem;
       font-size: 1.4rem;
+      font-weight: bold;
     }
     @media (max-width: 680px) {
       width: 80%;
