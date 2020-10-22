@@ -447,15 +447,15 @@ li {
     background-color: #ffffff;
     display: flex;
     align-items: center; }
+    .servicesCard__text p {
+      padding: 2rem;
+      font-size: 1.8rem;
+      line-height: 40px;
+      color: #000000;
+      font-family: "Muli Semibold", sans-serif;
+      width: 100%; }
   .servicesCard__icon {
     padding: 2rem; }
-  .servicesCard__heading {
-    padding: 2rem;
-    font-size: 1.8rem;
-    line-height: 40px;
-    color: #000000;
-    font-family: "Muli Semibold", sans-serif;
-    width: 100%; }
 
 .scheduleCall {
   background-color: #1968fc;
@@ -522,31 +522,30 @@ li {
       .contact__form {
         padding-left: 5rem;
         max-width: 450px; } }
-    .contact__form input {
-      border: 0;
-      border-bottom: 2px solid #1968fc;
-      margin-bottom: 1.7rem;
-      padding-bottom: 2rem;
-      background-color: transparent;
-      outline: none; }
-      @media (min-width: 1440px) {
-        .contact__form input {
-          margin-bottom: 3rem; } }
-    .contact__form input[type="text"]::placeholder,
-    .contact__form input[type="email"]::placeholder,
-    .contact__form textarea::placeholder {
+    .contact__form label {
       line-height: 26px;
       font-size: 1.6rem;
       letter-spacing: 0.53px;
       color: #141720;
       font-family: "Helvetica", sans-serif; }
+    .contact__form input {
+      border: 0;
+      border-bottom: 2px solid #1968fc;
+      margin-bottom: 1.7rem;
+      padding-top: 1.6rem;
+      background-color: transparent;
+      outline: none; }
+      @media (min-width: 1440px) {
+        .contact__form input {
+          margin-bottom: 3rem; } }
     .contact__form textarea {
       border: none;
       border-bottom: 2px solid #1968fc;
-      padding-bottom: 8.7rem;
+      padding-top: 8.7rem;
       margin-bottom: 4rem;
       background-color: transparent;
-      outline: none; }
+      outline: none;
+      resize: none; }
   .contact__btn {
     display: flex;
     justify-content: flex-end; }

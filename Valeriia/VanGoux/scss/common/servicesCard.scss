@@ -21,18 +21,18 @@
     background-color: $white;
     display: flex;
     align-items: center;
+
+    p {
+      padding: 2rem;
+      font-size: 1.8rem;
+      line-height: 40px;
+      color: $black;
+      font-family: $font-secondary;
+      width: 100%;
+    }
   }
 
   &__icon {
     padding: 2rem;
-  }
-
-  &__heading {
-    padding: 2rem;
-    font-size: 1.8rem;
-    line-height: 40px;
-    color: $black;
-    font-family: $font-secondary;
-    width: 100%;
   }
 }
