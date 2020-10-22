@@ -17,6 +17,9 @@
       color: $white;
       margin-bottom: 0;
     }
+    h2:before{
+      display: none;
+    }
   }
   @media (max-width: 680px) {
   }

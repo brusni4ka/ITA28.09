@@ -7,14 +7,25 @@
   width: 100%;
   &__logo {
     display: flex;
-    width: 35%;
+    width: 25%;
+    align-items: center;
+    img{
+      margin-right: 15px;
+    }
+    a{
+      font-size: 20px;
+      color: $primary;
+      font-weight: bolder;
+    }
   }
   &__nav {
     display: flex;
     justify-content: space-around;
-    width: 69%;
     font-family: $font-secondary;
-    font-weight: 500;
+    font-weight: 1000;
+    a{
+      margin-right: 50px;
+    }
     @media(max-width: 680px){
       display: none;
     }
@@ -30,5 +41,4 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  width: 70%;
 }
