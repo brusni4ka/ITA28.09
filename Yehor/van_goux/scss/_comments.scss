@@ -1,0 +1,58 @@
+.workers {
+    display: flex;
+    margin-bottom: 150px;
+    .comment {
+        padding: 40px;
+        background-color: #fff;
+        margin-right:40px;
+        width: 50%;
+        box-shadow: 0 20px 60px 0 rgba(25, 104, 252, 0.1);
+    }
+    .comment:last-child {
+        margin: 0px;
+    }
+    p {
+        font-size: 16px;
+        line-height: 1.9;
+    }
+}
+@media (max-width: 1024px) {
+	.workers {
+        flex-direction: column;
+        margin-bottom: 120px;
+        .comment {
+            width: 100%;
+            margin: 0px;
+        }
+        .comment:nth-child(1) {
+            margin-bottom: 50px;
+        }
+    }
+}
+.person {
+    display: flex;
+    justify-content: space-between;
+    .quote-mark {
+        align-self: flex-start;
+    }
+    .photo {
+        width: 100px;
+        margin: 0px 20px 0px 0px;
+    }
+    .name {
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 1.7;
+    }
+    .position {
+        color: #1967fa;
+        line-height: 2.1;
+        font-size: 14px;
+        font-weight: 600;
+    }
+}
+.info {
+    display: flex;
+    align-items: center;
+    margin: 0px 0px 40px 0px
+}
