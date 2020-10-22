@@ -3,35 +3,63 @@
     margin-bottom: 120px;
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-between;
     .forwho-block {
+        padding: 20px;
         margin-right: 20px;
         margin-bottom: 20px;
         width: 30%;
         background-color: #fff;
+        box-shadow: 0 20px 60px 0 rgba(49, 69, 244, 0.1);
     }
-    .forwho-block:last-child {
+    @media (max-width: 1024px) {
+        .forwho-block {
+            width: 48%;
+        }
+        .forwho-block:nth-child(2) {
+            margin-right: 0px;
+        }
+        .forwho-block:nth-child(4) {
+            margin-right: 0px;
+        }
+        .forwho-block:nth-child(6) {
+            margin-right: 0px;
+        }
+    }
+    .forwho-block:nth-child(3) {
+        margin-right: 0px;
+    }
+    .forwho-block:nth-child(6) {
         margin-right: 0px;
     }
     .name {
+        padding-bottom: 20px;
         text-transform: uppercase;
-        padding: 20px;
         font-size: 20px;
         font-weight: bold;
         line-height: 2;
         color: $lite-blue;
     }
     .descripthion {
-        padding: 20px;
         font-size: 16px;
         line-height: 1.9;
         color: $dark-blue;
     }
 }
-
-@media only screen and (max-width: 1025px) {
+@media (max-width: 1024px) {
     .forwho-blockes {
-        .forwho-block {
-            width: 40%;
-        }
+        flex-direction: row;
+        margin-bottom: 80px;
     }
-  }
+}
+.hide-to-pc {
+    display: none;
+}
+@media (max-width: 1024px) {
+    .hide-to-mob {
+        display: none;
+    }
+    .hide-to-pc {
+        display: block;
+    }
+}

@@ -1,29 +1,89 @@
 @import "_variables";
 
+footer {
+    background-color: #fbfbfb;
+}
 .footer {
     height: 150px;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
 }
+
 .dude {
     align-self: flex-end;
+    width: 80px;
+}
+@media (max-width: 1024px) {
+    .dude {
+        padding-top: 30px;
+    }
+}
+@media (max-width: 900px) {
+    .dude {
+        padding-top: 30px;
+        width: 60px;
+    }
 }
 .adv {
     display: flex;
     align-items: center;
-    background-color: rgba(142, 142, 194, 0.26);
+    background-color: #f3f7ff;
     img {
         width: 50px;
     }
-    .text {
+    
+    .logo-text {
         padding: 0px 20px;
         line-height: 1.4;
         font-weight: 600;
         color: $lite-blue;
     }
 }
+@media (max-width: 1024px) {
+    .adv {
+        margin-right: 300px;
+    }
+}
+@media (max-width: 900px) {
+    .adv {
+        margin-right: 100px;
+    }
+}
 .socmedia {
-    width: 30px;
-    margin-right: 20px;
+    height: 20px;
+    margin-right: 30px;
+}
+// @media (max-width: 1024px) {
+// 	.icons {
+//         width: 50%;
+//     }
+// }
+.footer-nav {
+    display: flex;
+}
+.footer-nav-hidepc {
+    display: none;
+}
+@media (max-width: 1024px) {
+	.footer-nav-hidemb {
+        display: none;
+    }
+    .footer-nav-hidepc {
+        display: flex;
+        padding: 50px;
+        width: 90%;
+        justify-content: space-between;
+        font-weight: 600;
+    }
+}
+@media (max-width: 900px) {
+    .footer-nav-hidepc {
+        width: 80%;
+        padding: 20px;
+        a {
+            margin-right: 20px;
+        }
+    }
 }

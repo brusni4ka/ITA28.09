@@ -1,11 +1,12 @@
 .workers {
     display: flex;
-    margin: 0px 0px 150px 0px;
+    margin-bottom: 150px;
     .comment {
         padding: 40px;
         background-color: #fff;
-        margin: 0px 40px 0px 0px;
+        margin-right:40px;
         width: 50%;
+        box-shadow: 0 20px 60px 0 rgba(25, 104, 252, 0.1);
     }
     .comment:last-child {
         margin: 0px;
@@ -13,6 +14,19 @@
     p {
         font-size: 16px;
         line-height: 1.9;
+    }
+}
+@media (max-width: 1024px) {
+	.workers {
+        flex-direction: column;
+        margin-bottom: 120px;
+        .comment {
+            width: 100%;
+            margin: 0px;
+        }
+        .comment:nth-child(1) {
+            margin-bottom: 50px;
+        }
     }
 }
 .person {
@@ -42,13 +56,3 @@
     align-items: center;
     margin: 0px 0px 40px 0px
 }
-
-@media only screen and (max-width: 1025px) {
-    .workers {
-        display: block;
-        .comment {
-            width: 100%;
-        }
-    }
-    
-  }
