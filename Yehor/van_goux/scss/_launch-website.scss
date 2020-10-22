@@ -1,0 +1,55 @@
+@import "_variables";
+.launch-website {
+    display: flex;
+    padding: 0px 20px;
+    max-height: 500px;
+    .text {
+        max-width: 600px;
+        height: 500px;
+    }
+    .launch-title {
+        font-size: 40px;
+        color: $dark-blue;
+        line-height: 1.5;
+        margin: 0px 0px 20px 0px;
+        font-weight: 600;
+    }
+    p {
+        line-height: 2;
+        color: $dark-blue;
+        margin: 0px 0px 40px 0px;
+        font-size: 20px;
+    }
+    button {
+        padding: 15px 50px;
+    }
+}
+.launch-img {
+    position: relative;
+    img {
+        overflow: hidden;
+        position: absolute;
+        top: 50px;
+        left: -70px;
+    }
+}
+
+
+
+@media only screen and (max-width: 1025px) {
+
+    .launch-website {
+        flex-direction: column;
+        margin-bottom: 250px;
+        .launch-img {
+            position: static;
+            img {
+                max-width: 550px;
+                position: static
+            }
+        }
+        .text {
+            margin: 50px;
+        }
+    }
+  }
