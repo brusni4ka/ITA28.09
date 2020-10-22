@@ -1,0 +1,109 @@
+@import "_variables";
+
+.title {
+    display: block;
+    text-transform: uppercase;
+    font-size: 30px;
+    line-height: 2;
+    color: $dark-blue;
+    margin: 0px 0px 60px 0px;
+}
+.title:after {
+    content: "";
+    margin-top: 10px;
+    display: block;
+    width: 80px;
+    background-color: $lite-blue;
+    height: 3px;
+    position: relative;
+    right: 40px;
+}
+@media (max-width: 1120px) {
+	.title:after {
+        content: "";
+        margin-top: 10px;
+        display: block;
+        width: 80px;
+        background-color: $lite-blue;
+        height: 3px;
+        position: relative;
+        right: 0px;
+    }
+}
+
+.features {
+    margin-bottom: 120px;
+}
+.features-blocks {
+    display: flex;
+    margin-bottom: 200px;
+}
+@media (max-width: 1024px) {
+    .features-blocks {
+        flex-direction: column;
+        margin-bottom: 120px;
+    }
+}
+
+.feature-block {
+    background: #ffff;
+    display: flex;
+    flex-direction: column;
+    margin: 0px 75px 0px 0px;
+    box-shadow: 0 20px 60px 0 rgba(49, 69, 244, 0.1);
+    .feature-name {
+        display: flex;
+        align-items: center;
+        background-color: #f3f7ff;
+        img {
+            padding: 40px;
+            margin: 0px 20px 0px 0px;
+            background-color: $lite-blue;
+        }
+        h3 {
+            font-size: 20px;
+            color: $dark-blue;
+            line-height: 1.5;
+            font-weight: 600;
+        }
+    }
+    p {
+        padding: 40px;
+        font-size: 16px;
+        line-height: 1.9;
+        color: $dark-blue;
+    }
+}
+
+.feature-line {
+    display: none;
+    height: 60px;
+    width: 100px;
+    border-right: 3px solid $lite-blue;
+    border-style: dotted;
+}
+@media (max-width: 1024px) {
+    .feature-line {
+        display: block;
+    }
+}
+.feature-block:nth-child(3) { 
+    position: relative;
+    top: 40px;
+  }
+.feature-block:nth-child(5) { 
+    position: relative;
+    top: 80px;
+    margin: 0px;
+    }
+@media (max-width: 1024px) {
+    .feature-block {
+        width: 100%;
+    }
+    .feature-block:nth-child(3) { 
+        position: static;       
+    }
+    .feature-block:nth-child(5) { 
+            position: static;
+        }
+}
