@@ -1,0 +1,71 @@
+
+
+
+export interface IUserSelectedMoviesProps {
+    movies: any,
+    number_of_films: number
+}
+
+export  interface IPreviewMoviesProps {
+    handleChangSortValue: any, // с void get error if it is function
+    number_of_films: number,
+    moviesDefault: [],
+    colorActiveSort?: boolean,
+
+}
+
+export  interface IErrorEmptyResultsProps {
+    number_of_films: number
+}
+
+
+export interface IPreviewMoviesState {
+    moreItem:  boolean
+} 
+
+export interface IMoviesDefault {
+    title: string,
+    poster_path: string,
+    id: number,
+    genres: [],
+    release_date: string,
+    budget: number, 
+    overview: string,
+    revenue: number
+    runtime: number
+    tagline: string
+    vote_average: number
+    vote_count: number
+    rating: number,
+    linkUrl: string
+}
+
+export interface ICardMovie  {
+    key?: number,
+    genres: []
+    release_date: string
+    title: string,
+    id?: number, 
+    poster_path: string,
+    overview?: string,
+    total?:	number,
+    offset?: number,
+    limit?:	number,
+    linkUrl?: string
+
+}
+
+// budget: 55000000
+// genres: (2) ["Drama", "Romance"]
+// id: 337167
+// overview: "Believing they have left behind shadowy figures from their past, newlyweds Christian and Ana fully embrace an inextricable connection and shared life of luxury. But just as she steps into her role as Mrs. Grey and he relaxes into an unfamiliar stability, new threats could jeopardize their happy ending before it even begins."
+// poster_path: "https://image.tmdb.org/t/p/w500/3kcEGnYBHDeqmdYf8ZRbKdfmlUy.jpg"
+// release_date: "2018-02-07"
+// revenue: 136906000
+// runtime: 106
+// tagline: "Don't miss the climax"
+// title: "Fifty Shades Freed"
+// vote_average: 6.1
+// vote_count: 1195
+
+
