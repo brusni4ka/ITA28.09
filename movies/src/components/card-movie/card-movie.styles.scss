@@ -1,0 +1,34 @@
+img {
+    max-width: 100%;
+    // height: 100%;
+}
+
+.card__wrapper {
+    width: 30%;
+    margin: 10px;
+    background-color: white;
+    color: black;
+}
+
+.card__img-wrapper {
+    // height: 295px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    // background-image: url('https://png.pngtree.com/png-vector/20190425/ourlarge/pngtree-camera-film-icon-vector-illustration-in-flat-style-for-any-purpose-png-image_987623.jpg');
+    background-image: url("https://sites.google.com/site/kinematograffrancii/_/rsrc/1444558921022/about-me/1280792_1366884204.jpeg?height=200&width=192");
+}
+ 
+.card__details {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 5px;
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.card__footer {
+    padding: 10px 5px;
+    font-size: 10px;
+}
