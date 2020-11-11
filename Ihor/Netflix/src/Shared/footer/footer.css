@@ -1,0 +1,9 @@
+*{
+    margin: 0;
+}
+.footer-logo {
+    font-size: 20px;
+    color: #FE390C;
+    padding: 20px 150px 20px 150px;
+    background-color:black;
+}

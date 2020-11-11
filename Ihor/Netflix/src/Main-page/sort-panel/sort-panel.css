@@ -1,0 +1,36 @@
+*{
+    margin: 0;
+}
+.sort_panel{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    background-color:#C8C7C7;
+    height: 50px;
+    align-items: center;
+}
+.movies_found {
+    padding-left: 270px;
+}
+.sort {
+    padding-right: 200px;
+    font-size: 17px;
+}
+.sort_by{
+    margin-right: 30px;
+}
+.sort_date {
+    margin-right: 40px;
+    font-size: 15px;
+    border: none;
+    outline: none;
+    background-color:#C8C7C7;
+    font-weight: bold;
+}
+.sort_rating{
+    font-size: 15px;
+    border: none;
+    outline: none;
+    background-color:#C8C7C7;
+    font-weight: bold;
+}
