@@ -1,0 +1,12 @@
+@import "../../assets/scss/main.scss";
+
+.footer {
+  background-color: $primary;
+  margin-top: auto;
+  &__wrapper {
+    padding: 20px;
+    @media screen and(min-width:1025px) {
+      padding: 30px 100px;
+    }
+  }
+}

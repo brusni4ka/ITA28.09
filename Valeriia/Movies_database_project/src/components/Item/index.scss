@@ -1,0 +1,40 @@
+@import "../../assets/scss/main.scss";
+
+.item {
+  width: 48%;
+  margin-bottom: 20px;
+  cursor: pointer;
+  @media screen and(min-width:768px) {
+    width: 30%;
+  }
+  @media screen and(min-width:1025px) {
+    margin-bottom: 40px;
+  }
+
+  &__info {
+    @include flexSpaceBetween;
+    align-items: center;
+    font-weight: 500;
+    @media screen and(min-width:1025px) {
+      font-size: 18px;
+    }
+  }
+
+  &__img {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  &__genre {
+    font-size: 12px;
+    @media screen and(min-width:1025px) {
+      font-size: 14px;
+    }
+  }
+
+  &__date {
+    border: 1px solid $lightGrey;
+    border-radius: $borderRadius;
+    padding: 1px 5px;
+  }
+}

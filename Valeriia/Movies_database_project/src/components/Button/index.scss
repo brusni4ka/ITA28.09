@@ -1,0 +1,40 @@
+@import "../../assets/scss/main.scss";
+
+.button {
+  cursor: pointer;
+  outline: none;
+  border: none;
+  border-radius: $borderRadius;
+  background-color: $secondary;
+  color: $white;
+  padding: 4px 7px;
+
+  &.active {
+    background-color: $red;
+  }
+
+  &.sortButton {
+    border: none;
+    background-color: transparent;
+    color: $black;
+    outline: none;
+  }
+  &.searchButton {
+    background-color: $red;
+    padding: 5px 30px;
+  }
+
+  &.movieButton {
+    background-color: $white;
+    color: $red;
+    font-weight: 600;
+  }
+
+  &.btn-title {
+    margin-right: 15px;
+  }
+
+  &.btn-genre {
+    margin-left: 15px;
+  }
+}
