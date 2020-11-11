@@ -1,0 +1,8 @@
+footer {
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+footer h3 {
+    color: rgb(243, 75, 103);
+}
