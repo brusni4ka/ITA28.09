@@ -1,0 +1,17 @@
+.film__card{
+  background: $black;
+  height: 650px;
+  color: $white;
+  margin: 20px;
+  cursor: pointer;
+  img{
+    height: 500px;
+    margin-bottom: 20px;
+  }
+  &__information{
+    padding: 20px;
+  }
+  &__genre{
+    margin-right: 1rem;
+  }
+}
