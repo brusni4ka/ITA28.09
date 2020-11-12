@@ -2,7 +2,6 @@ import React from 'react'
 
 
 const FilmCard = ({ film }: any) => {
-  
   return(
     <div className="film__card">
       <img 
