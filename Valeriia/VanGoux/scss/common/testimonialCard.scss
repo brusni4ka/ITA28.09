@@ -1,0 +1,45 @@
+.testimonialCard {
+  @media (min-width: 1025px) {
+    width: calc(100% / 2 - 20px);
+  }
+
+  &__wrapper {
+    padding: 4rem;
+    background-color: $white;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(25, 104, 252, 0.1);
+  }
+
+  &__quote {
+    position: absolute;
+    top: 0;
+    right: -2rem;
+  }
+
+  &__info {
+    display: flex;
+    margin-bottom: 4rem;
+    align-items: center;
+  }
+
+  &__name {
+    font-size: 1.8rem;
+    line-height: 30px;
+    font-family: $font-secondary;
+  }
+
+  &__position {
+    line-height: 30px;
+    color: $blue;
+    font-family: $font-secondary;
+  }
+
+  &__img {
+    margin-right: 2rem;
+  }
+
+  &__text {
+    line-height: 30px;
+    font-size: 1.6rem;
+  }
+}

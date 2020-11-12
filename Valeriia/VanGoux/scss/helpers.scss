@@ -1,0 +1,88 @@
+.container {
+  margin-left: 5rem;
+  margin-right: 5rem;
+  @media (min-width: 1440px) {
+    max-width: 1120px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+}
+
+.heading {
+  &--underline {
+    position: relative;
+    margin-bottom: 3.8rem;
+    &:after {
+      content: "";
+      display: block;
+      position: absolute;
+      width: 80px;
+      height: 2px;
+      background-color: $secondary;
+      box-shadow: 0 2px 0 0 $shadow-primary;
+      border: none;
+      @media (min-width: 1440px) {
+        left: -4rem;
+      }
+    }
+  }
+
+  &-1 {
+    font-size: 4rem;
+    font-family: $font-secondary;
+    line-height: 6rem;
+    letter-spacing: 1px;
+    margin-bottom: 2rem;
+  }
+
+  &-2 {
+    font-size: 3rem;
+    line-height: 60px;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+
+  &-3,
+  &-4 {
+    font-size: 2rem;
+    line-height: 4rem;
+  }
+
+  &-3 {
+    font-weight: 400;
+  }
+
+  &-4 {
+    font-family: $font-secondary;
+    padding: 2rem;
+    background-color: $lightBlue;
+    width: 100%;
+  }
+}
+
+.message {
+  background-color: $secondary;
+  margin-bottom: 5rem;
+  @media (min-width: 1025px) {
+    display: none;
+  }
+  p {
+    font-size: 2rem;
+    line-height: 40px;
+    text-transform: uppercase;
+    text-align: center;
+    color: $white;
+    padding: 5rem 0;
+    font-family: $font-tertiary;
+  }
+}
+
+.verticalDivider {
+  height: 6rem;
+  border-right: 2px dotted $secondary;
+  display: inline-block;
+  margin-left: 6rem;
+  @media (min-width: 1025px) {
+    display: none;
+  }
+}

@@ -1,0 +1,29 @@
+.btn {
+  padding: 1.5rem 3.5rem;
+  border-radius: 0;
+  border: none;
+  line-height: 20px;
+  text-transform: uppercase;
+  font-family: $font-tertiary;
+  cursor: pointer;
+
+  &-primary {
+    background-color: $secondary;
+    color: $white;
+    box-shadow: 0 10px 40px rgba(25, 104, 252, 0.2);
+  }
+
+  &-secondary {
+    background-color: $white;
+    color: $secondary;
+    box-shadow: 4px 4px 20px rgba(255, 255, 255, 0.4);
+  }
+
+  &-tertiary {
+    min-width: 250px;
+    font-family: $font-helvetica;
+    background-color: $secondary;
+    color: $white;
+    box-shadow: 4px 4px 20px rgba(255, 255, 255, 0.4);
+  }
+}
