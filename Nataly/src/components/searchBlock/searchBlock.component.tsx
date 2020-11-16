@@ -1,53 +1,164 @@
 import React  from "react"
 import "./searchBlock.styles.scss"
 
+import { parse } from "query-string";
+
+import {withRouter, RouteComponentProps, Link} from "react-router-dom"
+
 import ButtonDefault from "../buttonDefault/buttonDefault.component"
+import SortDetails from "../sort-details/sort-details.component"
 
-const copyGanres =  [
-{id: 12222, name: "Ganres"},
-{id: 28, name: "Action"},
-{id: 12, name: "Adventure"},
-{id: 16, name: "Animation"},
-{id: 35, name: "Comedy"},
-{id: 80, name: "Crime"},
-{id: 99, name: "Documentary"},
-{id: 18, name: "Drama"},
-{id: 10751, name: "Family"},
-{id: 14, name: "Fantasy"},
-{id: 36, name: "History"},
-{id: 27, name: "Horror"},
-{id: 10402, name: "Music"},
-{id: 9648, name: "Mystery"},
-{id: 10749, name: "Romance"},
-{id: 878, name: "Science Fiction"},
-{id: 10770, name: "TV Movie"},
-{id: 53, name: "Thriller"},
-{id: 10752, name: "War"},
-{id: 37, name: "Western"},
+    interface ISearchBlockProps extends  RouteComponentProps { 
+        moviesDefault: [],
+    }
 
-    ]
-
-    interface ISearchBlock {
-        handleSubmit: any,
-        handeleChange: any,
-        handleClickToggle: any,
+    interface  ISearchBlockState {
+        titleOrGenre: boolean,
         value: string,
-        сolorActive?: boolean,
-   
+        сolorActive: boolean, 
+        colorActiveSort: boolean,
+        moviesDefault: any,
+        movies: any,
+        numberFilms: number
+    }
+
+    class SearchBlock extends React.Component<ISearchBlockProps>{
+        location = this.props.location
+        history = this.props.history
         
-    }
+        state = {
+            titleOrGenre: true,
+            сolorActive: true,
 
-    class SearchBlock extends React.Component<ISearchBlock, {}>{
-    
+            value: "",
 
-    handleClick = (e: React.MouseEvent) => {
+            isLoading: false,
+           
+            colorActiveSort: true,
+            moviesDefault: [],
+            movies: [],
+            numberFilms: 0
+        }
+
+
+        componentDidMount = () => {
+
+            this.setState({ isLoading: true });
+        
+            setTimeout(() => {
+              const query = parse(this.props.location.search) as {
+                titleOrGenre: string;
+                search: string;
+                sortBy: string;
+              };
+              const { titleOrGenre, search, sortBy } = query;
+              const listOfMovies = this.state.movies
+                .filter(
+                  (movie: any) =>
+                    movie[titleOrGenre] && movie[titleOrGenre] === search
+                )
+                .sort((a: any, b: any) => {
+                  return b[sortBy] - a[sortBy];
+                });
+        
+              this.setState({
+                movies: listOfMovies,
+                isLoading: false,
+                // numberFilms: this.state.movies.length
+                //   ? listOfMovies
+                //   : this.state.movies.sort((prev, next) => prev.date - next.date),
+              });
+            }, 1000);
+          };
+
+        handleChangSortParam = (e: React.MouseEvent<HTMLButtonElement, MouseEvent> ) => {
+            console.log("new value")
+            this.setState({
+                colorActiveSort: !this.state.colorActiveSort
+            })
+          }
+
+        handleClickToggle = (e: React.MouseEvent) => {
+            e.preventDefault()
+            console.log("works")
+            this.setState({
+                titleOrGenre: !this.state.titleOrGenre,
+                сolorActive: !this.state.сolorActive
+            }) 
+          }    
+        
+        handeleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        console.log("select")
+        this.setState({value: e.target.value})
+      }
+
+        handleSubmit = (e: React.MouseEvent<Element, MouseEvent> | React.KeyboardEvent<HTMLInputElement>)  => {
         e.preventDefault()
-        console.log("works")
-    }
+        console.log("submit")
 
+        const {moviesDefault} = this.props
+        const {titleOrGenre} = this.state
+      
+        if(titleOrGenre === true) {
+      
+            const filterMovies = [...moviesDefault]
+            .filter((item: any) => item.title === this.state.value)
+            .sort((prev: any, next: any) => prev.vote_average - next.vote_average).reverse()
+            console.log(filterMovies)
+            
+            console.log(this.state.value) // ok
+            this.setState({
+                value: "",
+                numberFilms: filterMovies.length,
+
+                movies: filterMovies,
+                renderResult: true
+                
+            })
+           
+            this.props.history.push({
+                pathname: "/",
+                search: `?titleOrGenre=${this.state.titleOrGenre}=title${true}name=${this.state.value}`
+            })
+      
+        }else if(titleOrGenre === false) {
+            //сделала костыльно, пределать !!
+            const resfilterMoviesByGenre: any = []
+      
+            const filterMoviesByGenre = [...moviesDefault].forEach((item: any, index: number) => { 
+              let val =  item.genres.some((genre: any, index: number, arr: []) => {
+                    if(genre === this.state.value) {
+                        resfilterMoviesByGenre.push(item)
+                        return  item
+                    }
+                })   
+                if(val === false) {return}
+      
+            return item
+                  
+            })
+            console.log(resfilterMoviesByGenre)
+      
+            resfilterMoviesByGenre.sort((prev: any, next: any) => prev.vote_average - next.vote_average).reverse()
+            console.log(this.state.value) // ok
+            this.setState({
+                value: "",
+                numberFilms: resfilterMoviesByGenre.length,
+
+                movies: resfilterMoviesByGenre,
+                renderResult: true
+            })
+
+            this.props.history.push({
+                pathname: "/",
+                search: `?titleOrGenre=${this.state.titleOrGenre}&ganre${true}name=${this.state.value}`
+            })
+        }   
+      }
 
     render () {
-        const {handleSubmit, handeleChange, value, handleClickToggle, сolorActive} = this.props 
+        console.log(this.props.moviesDefault)
+        console.log(this.state.movies)
         return (
             <div className="search__block">
                 <form action="">
@@ -55,12 +166,13 @@ const copyGanres =  [
                     <div className="search__block__input-wrapper">
                         <div className="form__group field">
                         <input 
-                        onChange={handeleChange}
+                        onChange={this.handeleChange}
                         type="text" 
                         className="form__field" 
                         placeholder="Name" 
                         name="name" id='name'
-                        value={value} 
+                        value={this.state.value} 
+                        onKeyPress={this.handleSubmit} 
                         required 
                         />
                         <label  className="form__label">Search movies</label>
@@ -70,30 +182,41 @@ const copyGanres =  [
                         <div className="search__block-btn">
                             <h3>Search by</h3>
                             <ButtonDefault 
-                                className={`button__default button__default-sm ${сolorActive ? 'button__default-active' : ""}`} 
-                                // style=backgroundColor={this.state.flag === true ? 'red': 'blue'} 
+                                className={
+                                `button__default button__default-sm ${this.state.сolorActive ? 
+                                'button__default-active' : ""}`} 
                                 type="button" 
-                                onClick={handleClickToggle}>
+                                onClick={this.handleClickToggle}>
                                 title
                             </ButtonDefault>
                             <ButtonDefault 
-                                 className={`button__default button__default-sm ${сolorActive ? "" : 'button__default-active'}`}
+                                className={
+                                    `button__default button__default-sm ${this.state.сolorActive ? 
+                                    "" : 'button__default-active'}`}
                                 type="button" 
-                                onClick={handleClickToggle}>
+                                onClick={this.handleClickToggle}>
                                 genre
                             </ButtonDefault>
                         </div>
                         <ButtonDefault 
                             className="button__default button__default-search" 
                             type="submit" 
-                            onClick={handleSubmit}
+                            onClick={this.handleSubmit}
                         >search
                         </ButtonDefault>
                     </div>
                 </form>
+                <div>
+                <SortDetails
+                    moviesDefault={this.props.moviesDefault}
+                    numberFilms={this.state.numberFilms}
+                    handleChangSortParam={this.handleChangSortParam}
+                    colorActiveSort={this.state.colorActiveSort}
+                 />
+                </div>
             </div>
         )
     }
 }
 
-export default SearchBlock
+export default withRouter(SearchBlock)

@@ -1,4 +1,7 @@
 img {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
     max-width: 100%;
     // height: 100%;
 }
@@ -11,11 +14,10 @@ img {
 }
 
 .card__img-wrapper {
-    // height: 295px;
+
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    // background-image: url('https://png.pngtree.com/png-vector/20190425/ourlarge/pngtree-camera-film-icon-vector-illustration-in-flat-style-for-any-purpose-png-image_987623.jpg');
     background-image: url("https://sites.google.com/site/kinematograffrancii/_/rsrc/1444558921022/about-me/1280792_1366884204.jpeg?height=200&width=192");
 }
  

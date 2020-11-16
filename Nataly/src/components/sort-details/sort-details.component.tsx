@@ -4,22 +4,22 @@ import "./sort-details.styles.scss"
 import {IPreviewMoviesProps} from "../../interfaces/interfaces"
 
 
-const SortDetails = ({handleChangSortValue, number_of_films, colorActiveSort } : IPreviewMoviesProps) => (
+const SortDetails = ({handleChangSortParam, numberFilms, colorActiveSort } : IPreviewMoviesProps) => (
     <div className="sortDetails__wrapper">
         {
-            number_of_films === 0 ? 
+            numberFilms === 0 ? 
             
             <div className="empty__result"></div> 
             : 
             
             <div className="sort__result-wrapper">
             <div className="sort__result-count">
-                <p>{number_of_films} movies found</p>
+                <p>{numberFilms} movies found</p>
             </div>
             <div className="sort__result">
                 <button 
                 className="sort__result-btn" 
-                onClick={() => handleChangSortValue}>
+                onClick={() => handleChangSortParam()}>
                     Sort by
                 </button>
                 <button 
