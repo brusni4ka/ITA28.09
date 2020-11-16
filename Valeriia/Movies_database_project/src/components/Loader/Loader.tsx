@@ -1,5 +1,5 @@
 import React from "react";
-import "./index.scss";
+import "./Loader.scss";
 
 const Loader = ({ isLoading }: { isLoading: boolean }) => (
   <>

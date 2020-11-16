@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "../Button";
-import "./index.scss";
+import "./SortPannel.scss";
 
 interface ISortPannelProps {
   moviesCount: number;

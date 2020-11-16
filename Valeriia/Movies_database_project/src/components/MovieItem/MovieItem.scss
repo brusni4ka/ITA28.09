@@ -1,12 +1,9 @@
 @import "../../assets/scss/main.scss";
 
 .item {
-  width: 48%;
   margin-bottom: 20px;
+  width: 100%;
   cursor: pointer;
-  @media screen and(min-width:768px) {
-    width: 30%;
-  }
   @media screen and(min-width:1025px) {
     margin-bottom: 40px;
   }

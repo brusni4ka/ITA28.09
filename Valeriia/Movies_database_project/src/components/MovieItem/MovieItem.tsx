@@ -1,15 +1,15 @@
 import React from "react";
-import "./index.scss";
+import "./MovieItem.scss";
 
-interface IItemProps {
+interface IMovieItemProps {
   image: string;
   title: string;
   date: number;
   genre: string;
-  click(): void;
 }
-const Item = ({ image, title, date, genre, click }: IItemProps) => (
-  <div className="item" onClick={click}>
+
+const MovieItem = ({ image, title, date, genre }: IMovieItemProps) => (
+  <div className="item">
     <div className="item__poster">
       <img src={`/images/${image}`} alt="movie" className="item__img" />
     </div>
@@ -23,4 +23,4 @@ const Item = ({ image, title, date, genre, click }: IItemProps) => (
   </div>
 );
 
-export default Item;
+export default MovieItem;

@@ -1,21 +1,18 @@
 @import "../../assets/scss/main.scss";
 
-.header {
+.searchForm {
+  padding: 10px 20px 20px;
   background-color: $primary;
   color: $white;
-
-  &__wrapper {
-    padding: 10px 20px 20px;
-    @media screen and(min-width:1025px) {
-      padding: 40px 150px;
-    }
+  @media screen and(min-width: 1025px) {
+    padding: 30px 150px;
   }
 
   &__text {
-    margin-right: 15px;
+    margin-right: 7px;
   }
 
-  &__searchPannel,
+  &__pannel,
   &__searchBy {
     @include flexSpaceBetween;
     align-items: center;
