@@ -1,0 +1,10 @@
+.same_genre_panel {
+    background-color:#C8C7C7;
+    height: 50px;
+    align-items: center;
+}
+.same_genre_panel_text {
+    padding-top: 10px;
+    padding-left: 230px;
+    font-weight: bold;
+}

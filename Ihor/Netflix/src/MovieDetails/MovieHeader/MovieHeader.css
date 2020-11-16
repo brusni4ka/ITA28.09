@@ -1,4 +1,9 @@
-.search_btn{
+.movie_header {
+    display: flex;
+    justify-content: space-between;
+}
+.search_quit{
+    max-height: 50px;
     display: inline-block;
     font-weight: bold;
     color: #fff;
@@ -17,10 +22,10 @@
      inset 0 0 3px rgba(255,255,255,.5);
     transition: .2s;
 }
-.search_btn:hover{
+.search_quit:hover{
     background: rgb(167,91,41) linear-gradient(rgb(126,69,31), rgb(167,91,41) 80%);
 }
-.search_btn:active{
+.search_quit:active{
     background: rgb(120,63,25) linear-gradient(rgb(120,63,25) 20%, rgb(167,91,41));
     box-shadow:
      0 2px rgb(86,38,6),

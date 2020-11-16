@@ -1,7 +1,8 @@
 import React from 'react';
 import './movie.css';
 
-import MovieCard from '../../Main-page/movie-card';
+
+import MovieCard from '../movie-card';
 interface IFilm {
     id: number,
     title: string,
@@ -18,15 +19,16 @@ interface IFilm {
   }
   
   interface IAppProps {
-    movies:IFilm[];
+    movies:IFilm[],
+
   }
 
 function Movie({ movies }:IAppProps) {
 
     return (
         <>
-         {movies.map((film)=> <MovieCard key = {film.id}
-          film = {film}/> )}
+        {movies.map((film)=> <MovieCard key = {film.id}
+        film = {film}/>)}
         </>
     )
 }
