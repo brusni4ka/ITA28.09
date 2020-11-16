@@ -3,9 +3,10 @@ import './Footer.css';
 
 function Footer() {
     return (
-    <footer>
-        <h3>netflixroulette</h3>
-    </footer>)
+        <footer>
+            <h3>netflixroulette</h3>
+        </footer>
+    )
 
 }
 

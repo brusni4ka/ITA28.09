@@ -3,10 +3,11 @@ import './Button.css';
 
 interface IContentProps {
     content: String
+    handler(): void
 }
 
-function Button({ content }: IContentProps) {
-    return <button>{content}</button>
+function Button({ content, handler }: IContentProps) {
+    return <button onClick={handler}>{content}</button>
 }
 
 export default Button;

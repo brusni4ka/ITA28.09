@@ -18,3 +18,9 @@ code {
 p {
   margin: 0px;
 }
+a {
+  color: black;
+}
+a:focus,a:active{outline: none;}
+a, a:visited{text-decoration: none;}
+a:hover{text-decoration: none;}

@@ -1,7 +1,9 @@
+main a {
+    margin-right: 60px;
+}
 .movie {
     display: flex;
     flex-direction: column;
-    margin-right: 100px;
     margin-bottom: 20px;
 }
 .movie:nth-child(3n+3) {

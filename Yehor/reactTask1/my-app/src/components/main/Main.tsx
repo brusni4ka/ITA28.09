@@ -1,6 +1,7 @@
 import React from 'react';
 import './Main.css';
 import Movie from '../movie';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 interface IMovie {
     id: number,
@@ -22,11 +23,12 @@ interface IAppProps {
 }
 
 
-
 function Main({ movies }: IAppProps) {
-    return <main>
-        {movies.map(movie => <Movie key={movie.id} movie={movie} />)}
-    </main>
+    return (
+        <main>
+            {movies.map(movie => <Link to={`/DetailedPage/${movie.id}`}><Movie key={movie.id} movie={movie} /></Link> )}
+        </main>
+    )
 }
 
 export default Main;
