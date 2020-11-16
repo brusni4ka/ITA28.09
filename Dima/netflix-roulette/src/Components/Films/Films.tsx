@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import FilmCard from './FilmCard'
 
 
@@ -21,13 +22,19 @@ interface IHomeProps {
   films: IFilm[]
 }
 
-export default function Films({films}: IHomeProps) {
+export default function Films({ films }: IHomeProps) {
   return(
     <div className="films__wrapp">
       <div className="films__wrapp__content">
-        {films.map( film => <FilmCard key={ film.id }
-          film={ film }
-        />)}
+        {films.map( film => {
+          return (
+            <Link to={`/film/${film.id}`} key={ film.id }>
+              <FilmCard
+                film={ film }
+              />
+            </Link>
+          )
+        })}
       </div>
     </div>
   )

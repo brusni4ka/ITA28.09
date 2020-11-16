@@ -99,12 +99,20 @@ button{
   letter-spacing: 2px;
   outline: none;
   border: none;
+  cursor: pointer;
+}
+
+.button-active{
+  background: $button-active;
+  color: black;
+}
+.button-default{
   color: $white;
   background-color: rgb(105, 105, 105);
 }
 
 button:hover {
   color: $black;
-  background-color: $white;
+  background-color: $button-active;
   transition: all 0.3s ease-in-out;
 }
