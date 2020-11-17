@@ -28,7 +28,6 @@ class SearchPanel extends React.Component<IhandleSearchChangeProps, ISearchPanel
         })
     }
     handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-        e.preventDefault()
         this.setState({
             value: e.target.value
         })
@@ -44,10 +43,10 @@ class SearchPanel extends React.Component<IhandleSearchChangeProps, ISearchPanel
                 <h1 className="search-title">Find your film</h1>
                 <div className="search">
                     {/* <form onSubmit={this.handleSubmit}>
-                    <input type="text" placeholder=" type to search" onChange={this.handleChangeInput} />
+                    <input type="text" value = {this.state.value } placeholder=" type to search" onChange={this.handleChangeInput} />
                     <button type="submit" >Search</button>
                     </form> */}
-                    <input type="text" placeholder=" type to search" onChange={this.handleChangeInput} />
+                    <input type="text" value = {this.state.value } placeholder=" type to search" onChange={this.handleChangeInput} />
                 </div>
                 <div className="btn-row">
                     <div className="search-filter">
