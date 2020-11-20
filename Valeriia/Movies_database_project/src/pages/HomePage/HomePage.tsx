@@ -6,7 +6,7 @@ import Movies from "../../components/Movies";
 import NotFound from "../../components/NotFound";
 import { IMovie } from "../../types";
 import { RouteComponentProps } from "react-router";
-import { parse } from "query-string";
+import { parse, stringify } from "query-string";
 import movies from "../../movies.json";
 import Header from "../../components/Header";
 
@@ -23,7 +23,6 @@ class HomePage extends Component<RouteComponentProps, IHomePageState> {
     movies: [],
     isLoading: false,
     tempListOfMovies: [],
-    movie: undefined,
     sortBy: "date",
   };
 
@@ -31,21 +30,14 @@ class HomePage extends Component<RouteComponentProps, IHomePageState> {
     this.setState({ movie: undefined, isLoading: true });
 
     const tempListOfMovies = this.state.movies.filter(
-      (movieItem: any) =>
-        movieItem[filterBy] && movieItem[filterBy] === searchTerm
+      (movieItem) => movieItem[filterBy] && movieItem[filterBy] === searchTerm
     );
-
+    const query = stringify({ filterBy, searchTerm });
     setTimeout(() => {
       this.setState({ tempListOfMovies, isLoading: false });
       this.props.history.push({
         pathname: "/",
-        search:
-          "?searchBy=" +
-          filterBy +
-          "&search=" +
-          searchTerm +
-          "&sortBy=" +
-          this.state.sortBy,
+        search: query,
       });
     }, 1000);
   };
@@ -55,46 +47,81 @@ class HomePage extends Component<RouteComponentProps, IHomePageState> {
 
     setTimeout(() => {
       const query = parse(this.props.location.search) as {
-        searchBy: string;
-        search: string;
+        filterBy: string;
+        searchTerm: string;
         sortBy: string;
       };
-      const { searchBy, search, sortBy } = query;
-      const tempListOfMovies = movies
-        .filter(
-          (movieItem: any) =>
-            movieItem[searchBy] && movieItem[searchBy] === search
-        )
-        .sort((a: any, b: any) => {
-          return b[sortBy] - a[sortBy];
-        });
+      const { filterBy, searchTerm, sortBy } = query;
+      const tempListOfMovies = movies.filter((movieItem: IMovie) => {
+        if (filterBy && filterBy === "title") {
+          return movieItem.title === searchTerm;
+        } else {
+          return movieItem.genre === searchTerm;
+        }
+      });
+
+      const sortByType = sortBy ? sortBy : "date";
 
       this.setState({
         movies: movies,
         isLoading: false,
+        sortBy: sortByType,
         tempListOfMovies: tempListOfMovies.length
           ? tempListOfMovies
-          : movies.sort((a, b) => b.date - a.date),
+          : movies.sort((a: IMovie, b: IMovie) => {
+              if (sortByType === "date") {
+                return b.date - a.date;
+              } else {
+                return b.vote_average - a.vote_average;
+              }
+            }),
       });
+
+      if (!Object.keys(query).length) {
+        const query = stringify({ sortBy: this.state.sortBy });
+        this.props.history.push({
+          pathname: "/",
+          search: query,
+        });
+      }
     }, 1000);
   };
 
+  componentDidUpdate = (prevProps: RouteComponentProps) => {
+    if (this.props.location.search !== prevProps.location.search) {
+      const query = parse(this.props.location.search) as {
+        sortBy: string;
+      };
+      const { sortBy } = query;
+      const sortByType = sortBy ? sortBy : "date";
+      this.setState({
+        sortBy: sortByType,
+      });
+    }
+  };
+
   onClickSortByHandler = (sortByType: string) => {
+    const query = stringify({ sortBy: sortByType });
+    this.props.history.push({
+      pathname: "/",
+      search: query,
+    });
     const { tempListOfMovies } = this.state;
     const tempListSortMovies = tempListOfMovies.sort((a, b) => {
       return b[sortByType] - a[sortByType];
     });
-    this.setState({ sortBy: sortByType, tempListOfMovies: tempListSortMovies });
+
+    this.setState({
+      sortBy: sortByType,
+      tempListOfMovies: tempListSortMovies,
+    });
   };
 
   render() {
     return (
       <>
         <Header isLinkToShow={false} />
-        <SearchForm
-          onSearchClick={this.onSearchHandler}
-          sortBy={this.state.sortBy}
-        />
+        <SearchForm onSearchClick={this.onSearchHandler} />
         <SortPannel
           moviesCount={this.state.tempListOfMovies.length}
           onClickSortBy={this.onClickSortByHandler}

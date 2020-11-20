@@ -11,13 +11,9 @@ class App extends Component {
     return (
       <Layout>
         <Switch>
-          <Route path="/" exact render={(props) => <HomePage {...props} />} />
-
-          <Route
-            path="/film/:id"
-            render={(props) => <MovieDetails {...props} />}
-          />
-          <Route render={() => <NotFoundPage />} />
+          <Route path="/" exact component={HomePage} />
+          <Route path="/film/:id" component={MovieDetails} />
+          <Route component={NotFoundPage} />
         </Switch>
       </Layout>
     );

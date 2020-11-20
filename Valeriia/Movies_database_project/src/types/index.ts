@@ -1,4 +1,5 @@
-export interface IMovie {
+
+export interface IMovie{
     image: string;
     title: string;
     date: number;
@@ -6,7 +7,8 @@ export interface IMovie {
     vote_average: number;
     duration?: number;
     description?: string;
-    id:number
+    id:number;
+    
 }
 
   

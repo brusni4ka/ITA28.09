@@ -1,31 +1,58 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
+import { RouteComponentProps } from "react-router";
+import { parse } from "query-string";
 import Input from "../Input";
 import Button from "../Button";
 import "./SearchForm.scss";
 
-interface ISearchFormProps {
+interface ISearchFormProps extends RouteComponentProps {
   onSearchClick(searchTerm: string, filterBy: string): void;
-  sortBy: string;
 }
 
 interface ISearchFormState {
   searchTerm: string;
   filterBy: string;
 }
+
 class SearchForm extends Component<ISearchFormProps, ISearchFormState> {
   state = {
     searchTerm: "",
     filterBy: "title",
   };
 
+  componentDidMount = () => {
+    const query = parse(this.props.location.search) as {
+      filterBy: string;
+    };
+    const { filterBy } = query;
+    const filterByType = filterBy ? filterBy : "title";
+    this.setState({
+      filterBy: filterByType,
+    });
+  };
+
+  componentDidUpdate = (prevProps: ISearchFormProps) => {
+    if (this.props.location.search !== prevProps.location.search) {
+      const query = parse(this.props.location.search) as {
+        filterBy: string;
+      };
+      const { filterBy } = query;
+      const filterByType = filterBy ? filterBy : "title";
+      this.setState({
+        filterBy: filterByType,
+      });
+    }
+  };
+
   onChangeHadler = (searchTerm: string) => {
     this.setState({ searchTerm });
   };
 
-  onKeyPressHandler = (e: any) => {
-    if (e.keyCode === 13 || e.charCode === 13) {
+  onKeyPressHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Enter") {
       this.props.onSearchClick(this.state.searchTerm, this.state.filterBy);
-      this.state.searchTerm = "";
+      this.setState({ searchTerm: "" });
     }
   };
 
@@ -35,6 +62,8 @@ class SearchForm extends Component<ISearchFormProps, ISearchFormState> {
   };
 
   render() {
+    console.log("rerender", this.state.filterBy);
+
     return (
       <div className="searchForm">
         <h1>FIND YOUR MOVIE</h1>
@@ -78,4 +107,4 @@ class SearchForm extends Component<ISearchFormProps, ISearchFormState> {
   }
 }
 
-export default SearchForm;
+export default withRouter(SearchForm);

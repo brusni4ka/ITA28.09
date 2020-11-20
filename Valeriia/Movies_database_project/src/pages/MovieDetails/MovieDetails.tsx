@@ -14,7 +14,7 @@ interface IRouteInfo {
 interface IMovieDetailsProps extends RouteComponentProps<IRouteInfo> {}
 
 interface IMovieDetailsState {
-  movie?: IMovie;
+  movie: IMovie | undefined;
   moviesBySameGenre: IMovie[];
 }
 
@@ -28,7 +28,7 @@ class MovieDetails extends Component<IMovieDetailsProps, IMovieDetailsState> {
     const filmId = this.props.match.params.id;
     let moviesData = movies;
     const movie = moviesData.find((movie) => {
-      return movie.id === +filmId;
+      return movie.id === Number(filmId);
     });
     const moviesBySameGenre = moviesData.filter((movieByGenre) => {
       return movie?.genre === movieByGenre.genre;
@@ -36,7 +36,7 @@ class MovieDetails extends Component<IMovieDetailsProps, IMovieDetailsState> {
     this.setState({ movie, moviesBySameGenre });
   };
 
-  componentDidUpdate = (prevProps: any) => {
+  componentDidUpdate = (prevProps: IMovieDetailsProps) => {
     if (this.props.match.params.id !== prevProps.match.params.id) {
       let moviesData = movies;
       const movie = moviesData.find((movie) => {
@@ -52,7 +52,7 @@ class MovieDetails extends Component<IMovieDetailsProps, IMovieDetailsState> {
         <Header isLinkToShow={true} />
         <div className="movieDetails">
           {this.state.movie ? (
-            <Movie movie={this.state.movie} />
+            <Movie movie={this.state.movie!} />
           ) : (
             <div>
               <p>The film by this id is not exist</p>
