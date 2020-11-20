@@ -7,5 +7,5 @@ export default function Footer() {
         <p>netflixroulette</p>
       </div>
     </div>
-  )
+  );
 }

@@ -1,28 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import FilmCard from './FilmCard'
+import IFilmProps from '../../interfaces/IFIlmProps'
 
-
-interface IFilm {
-  id: number,
-  title: string,
-  tagline: string,
-  vote_average: number,
-  vote_count: number,
-  release_date: string,
-  poster_path: string,
-  overview: string,
-  budget: number,
-  revenue: number,
-  genres: Array<string>,
-  runtime: number
-}
-
-interface IHomeProps {
-  films: IFilm[]
-}
-
-export default function Films({ films }: IHomeProps) {
+export default function Films({ films }: IFilmProps) {
   return(
     <div className="films__wrapp">
       <div className="films__wrapp__content">
@@ -34,8 +15,9 @@ export default function Films({ films }: IHomeProps) {
               />
             </Link>
           )
-        })}
+        })
+        }
       </div>
     </div>
-  )
+  );
 }

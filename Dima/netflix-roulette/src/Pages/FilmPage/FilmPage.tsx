@@ -5,32 +5,16 @@ import FilmInfo from '../../Components/FilmInformation/FilmInformation'
 import AdditionalPanel from '../../Components/AdditionalPanel/AdditionalPanel'
 import Films from '../../Components/Films/Films'
 import Footer from '../../Components/Footer/Footer'
+import IFilmProps from '../../interfaces/IFIlmProps'
 import { Link, RouteComponentProps } from 'react-router-dom'
 
-interface IFilm {
-  id: number,
-  title: string,
-  tagline: string,
-  vote_average: number,
-  vote_count: number,
-  release_date: string,
-  poster_path: string,
-  overview: string,
-  budget: number,
-  revenue: number,
-  genres: string[],
-  runtime: number
-}
 
-interface IFilmPageProps {
-  films: IFilm[],
-}
+type FilmDetails = IFilmProps & RouteComponentProps<{id: string}>
 
-type FilmDetails = IFilmPageProps & RouteComponentProps<{id: string}>
-
-export default class FilmPage extends React.Component< FilmDetails> {
+export default class FilmPage extends React.Component<FilmDetails> {
   render() {
-    const { films,match } = this.props
+    const { films, match } = this.props;
+    const currentFilm = films.find(film => String(film.id) === match.params.id);
     return(
       <div>
         <div className="first-screen">
@@ -38,21 +22,21 @@ export default class FilmPage extends React.Component< FilmDetails> {
             <Header />
             <Link to="/">
               <Button 
-              buttonContent="Search" />
+              isActive = { true }
+              buttonContent = "Search" />
             </Link>
           </div>
-          {films.filter((film) => String(film.id) === match.params.id).map(
-            (film) => <FilmInfo key={ film.id } { ...film }/>
-          )}
+          {/* use find instead DONE!!!!!?????*/}
+          {currentFilm ? <FilmInfo film = { currentFilm } /> : <div></div>}
         </div>
         <AdditionalPanel 
-          films={ films }
+          genre = { currentFilm ? currentFilm.genres : '' }
         />
         <Films 
-          films={ films }
+          films = { films }
         />
         <Footer />
       </div>
-    )
-  }
-}
+    );
+  };
+};

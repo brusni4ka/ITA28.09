@@ -2,69 +2,52 @@ import React from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Home from './Pages/Home/Home'
 import FilmPage from './Pages/FilmPage/FilmPage'
+import IState from './interfaces/IState'
 import './scss/main.scss';
 
-interface IFilm {
-  id: number,
-  title: string,
-  tagline: string,
-  vote_average: number,
-  vote_count: number,
-  release_date: string,
-  poster_path: string,
-  overview: string,
-  budget: number,
-  revenue: number,
-  genres: Array<string>,
-  runtime: number
-}
-
-interface IAppState {
-  films: IFilm[],
-  number_of_films: number
-}
-
-export default class App extends React.Component<{}, IAppState> {
-  state: IAppState = {
+export default class App extends React.Component<{}, IState> {
+  state: IState = {
     films: [],
-    number_of_films: 0
-  }
+    //remove number_off DONE!!!!!!!!!!!!!!!!
+  };
+
   getFilms = async (): Promise<void> => {
     try {
-      const data: any = await (await fetch('https://reactjs-cdp.herokuapp.com/movies')).json()
-      this.setState({ films: data.data, number_of_films: data.data.length })
+      const data: any = await (await fetch('https://reactjs-cdp.herokuapp.com/movies')).json();
+      this.setState({ films: data.data });
     }
     catch(err) {
-      console.error(err)
-    }
-  }
+      console.error(err);
+    };
+  };
 
   componentDidMount() {
-    this.getFilms()
-  }
+    this.getFilms();
+  };
+
   render() {
     const { films } = this.state
-    const { number_of_films } = this.state
-  return (
-    <div className="app">
-      <Router>
+    return (
+      <div className="app">
+        <Router>
           <Route 
             exact path="/"
-            render = {(props) => <Home
+            render = { (props) => <Home
               films={ films }
-              number_of_films={ number_of_films }
-              {...props}
-              />}
+                { ...props }
+              /> 
+            }
           />
           <Route
             path="/film/:id"
-            render = {(props) => <FilmPage
+            render = { (props) => <FilmPage
               films={ films }
-              {...props}
-              />}
+                { ...props }
+              />
+            }
           />
-      </Router>
-    </div>
-  );
-  }
-}
+        </Router>
+      </div>
+    );
+  };
+};

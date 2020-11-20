@@ -5,5 +5,5 @@ export default function Header() {
     <div className="top__header">
       <p>netflixroulette</p>
     </div>
-  )
+  );
 }

@@ -1,29 +1,13 @@
-import React from 'react'
+import React from 'react';
+import IButton from '../../interfaces/IButton'
 
-interface IButton {
-  buttonContent: string
-  active?: string
-  buttonHandler?: () => void
-} 
-
-export default function ( { buttonContent, buttonHandler, active }: IButton ) {
-  let activeSerchButton
-  if(buttonContent === 'Title' && active === 'Title') {
-    activeSerchButton = 'button-active'
-  } else if(buttonContent === 'Genre' && active === 'Genre') {
-    activeSerchButton = 'button-active'
-  } else if(buttonContent === 'relise date' && active === 'relise date'){
-    activeSerchButton = 'button-active'
-  } else if(buttonContent === 'raiting' && active === 'raiting'){
-    activeSerchButton = 'button-active'
-  } else if(buttonContent === 'Search'){
-    activeSerchButton = 'button-active'
-  }
+export default function Button ({ buttonContent, buttonHandler, isActive }: IButton) {
+  //WTF DONE!!!!!!!!!!!!
+  let activeSerchButton = isActive ? 'button-active' : 'button-default';
 
   return (
-    <button
-      className={ activeSerchButton }
-      onClick={ buttonHandler }
-    >{ buttonContent }</button>
-  )
-}
+    <button className = { activeSerchButton } onClick = { buttonHandler }>
+      { buttonContent }
+    </button>
+  );
+};

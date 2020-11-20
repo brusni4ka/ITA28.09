@@ -12,7 +12,8 @@ const FilmCard = ({ film }: any) => {
             <span className='film__card__genre' key={film.genres.indexOf(genre)}>
               {genre}
             </span>
-          ))}
+            )
+          )};
         </p>
         <p>{film.release_date.substring(0, 4)}</p>
       </div>
@@ -20,4 +21,4 @@ const FilmCard = ({ film }: any) => {
   );
 };
 
-export default FilmCard;
+export default FilmCard

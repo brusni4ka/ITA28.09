@@ -1,36 +1,24 @@
 import React from 'react'
+import IFilm from '../../interfaces/IFilm'
+interface IFilmInfo {
+  film: IFilm
+};
 
-interface IFilm {
-  id: number,
-  title: string,
-  tagline: string,
-  vote_average: number,
-  vote_count: number,
-  release_date: string,
-  poster_path: string,
-  overview: string,
-  budget: number,
-  revenue: number,
-  genres: string[],
-  runtime: number
-}
-
-
-const FilmInfo = ({ poster_path, title, tagline, release_date, runtime, overview }: IFilm) => {
+const FilmInfo = ({ film }: IFilmInfo) => {
   return(
     <div className="first-screen__film-information" >
-      <img src={ poster_path } />
+      <img src={ film.poster_path } alt={ film.title }/>
       <div className="first-screen__film-information__details" >
-        <h2>{ title }</h2>
-        <p>{ tagline }</p>
+        <h2>{ film.title }</h2>
+        <p>{ film.tagline }</p>
         <div>
-          <p>{ release_date }</p>
-          <p>{ runtime } min</p>
+          <p>{ film.release_date }</p>
+          <p>{ film.runtime } min</p>
         </div>
-        <p>{ overview }</p>
+        <p>{ film.overview }</p>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default FilmInfo
