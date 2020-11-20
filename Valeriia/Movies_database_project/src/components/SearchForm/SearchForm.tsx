@@ -62,8 +62,6 @@ class SearchForm extends Component<ISearchFormProps, ISearchFormState> {
   };
 
   render() {
-    console.log("rerender", this.state.filterBy);
-
     return (
       <div className="searchForm">
         <h1>FIND YOUR MOVIE</h1>

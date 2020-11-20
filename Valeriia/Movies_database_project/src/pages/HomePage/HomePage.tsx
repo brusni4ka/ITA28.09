@@ -33,75 +33,67 @@ class HomePage extends Component<RouteComponentProps, IHomePageState> {
       (movieItem) => movieItem[filterBy] && movieItem[filterBy] === searchTerm
     );
     const query = stringify({ filterBy, searchTerm });
-    setTimeout(() => {
-      this.setState({ tempListOfMovies, isLoading: false });
-      this.props.history.push({
-        pathname: "/",
-        search: query,
-      });
-    }, 1000);
+
+    this.setState({ tempListOfMovies, isLoading: false });
+    this.props.history.push({
+      pathname: "/",
+      search: query,
+    });
+  };
+
+  getParamFromUrlAndUpdateState = () => {
+    const query = parse(this.props.location.search) as {
+      filterBy: string;
+      searchTerm: string;
+      sortBy: string;
+    };
+    const { filterBy, searchTerm, sortBy } = query;
+    const tempListOfMovies = movies.filter((movieItem: IMovie) => {
+      if (filterBy && filterBy === "title") {
+        return movieItem.title === searchTerm;
+      } else {
+        return movieItem.genre === searchTerm;
+      }
+    });
+
+    const sortByType = sortBy ? sortBy : "date";
+
+    this.setState({
+      movies: movies,
+      isLoading: false,
+      sortBy: sortByType,
+      tempListOfMovies: tempListOfMovies.length
+        ? tempListOfMovies
+        : movies.sort((a: IMovie, b: IMovie) => {
+            if (sortByType === "date") {
+              return b.date - a.date;
+            } else {
+              return b.vote_average - a.vote_average;
+            }
+          }),
+    });
   };
 
   componentDidMount = () => {
     this.setState({ isLoading: true });
 
     setTimeout(() => {
-      const query = parse(this.props.location.search) as {
-        filterBy: string;
-        searchTerm: string;
-        sortBy: string;
-      };
-      const { filterBy, searchTerm, sortBy } = query;
-      const tempListOfMovies = movies.filter((movieItem: IMovie) => {
-        if (filterBy && filterBy === "title") {
-          return movieItem.title === searchTerm;
-        } else {
-          return movieItem.genre === searchTerm;
-        }
-      });
-
-      const sortByType = sortBy ? sortBy : "date";
-
-      this.setState({
-        movies: movies,
-        isLoading: false,
-        sortBy: sortByType,
-        tempListOfMovies: tempListOfMovies.length
-          ? tempListOfMovies
-          : movies.sort((a: IMovie, b: IMovie) => {
-              if (sortByType === "date") {
-                return b.date - a.date;
-              } else {
-                return b.vote_average - a.vote_average;
-              }
-            }),
-      });
-
-      if (!Object.keys(query).length) {
-        const query = stringify({ sortBy: this.state.sortBy });
-        this.props.history.push({
-          pathname: "/",
-          search: query,
-        });
-      }
+      this.getParamFromUrlAndUpdateState();
     }, 1000);
   };
 
   componentDidUpdate = (prevProps: RouteComponentProps) => {
     if (this.props.location.search !== prevProps.location.search) {
-      const query = parse(this.props.location.search) as {
-        sortBy: string;
-      };
-      const { sortBy } = query;
-      const sortByType = sortBy ? sortBy : "date";
-      this.setState({
-        sortBy: sortByType,
-      });
+      this.getParamFromUrlAndUpdateState();
     }
   };
 
   onClickSortByHandler = (sortByType: string) => {
-    const query = stringify({ sortBy: sortByType });
+    const queryUrl = parse(this.props.location.search) as {
+      filterBy: string;
+      searchTerm: string;
+    };
+    const query = stringify({ ...queryUrl, sortBy: sortByType });
     this.props.history.push({
       pathname: "/",
       search: query,
