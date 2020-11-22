@@ -24,16 +24,20 @@ class SearchForm extends Component<ISearchFormProps, ISearchFormState> {
   componentDidMount = () => {
     const query = parse(this.props.location.search) as {
       filterBy: string;
+      searchTerm: string;
     };
-    const { filterBy } = query;
-    const filterByType = filterBy ? filterBy : "title";
+    const { filterBy, searchTerm } = query;
     this.setState({
-      filterBy: filterByType,
+      filterBy: filterBy || "title",
+      searchTerm,
     });
   };
 
   componentDidUpdate = (prevProps: ISearchFormProps) => {
-    if (this.props.location.search !== prevProps.location.search) {
+    if (
+      this.props.location.search !== prevProps.location.search &&
+      this.props.history.action === "POP"
+    ) {
       const query = parse(this.props.location.search) as {
         filterBy: string;
       };
@@ -51,8 +55,7 @@ class SearchForm extends Component<ISearchFormProps, ISearchFormState> {
 
   onKeyPressHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter") {
-      this.props.onSearchClick(this.state.searchTerm, this.state.filterBy);
-      this.setState({ searchTerm: "" });
+      this.onSearchClickHandler();
     }
   };
 

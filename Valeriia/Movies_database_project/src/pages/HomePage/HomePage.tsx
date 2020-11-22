@@ -28,12 +28,14 @@ class HomePage extends Component<RouteComponentProps, IHomePageState> {
 
   onSearchHandler = (searchTerm: string, filterBy: string): void => {
     this.setState({ movie: undefined, isLoading: true });
-
+    const queryUrl = parse(this.props.location.search) as {
+      filterBy: string;
+      searchTerm: string;
+    };
+    const query = stringify({ ...queryUrl, filterBy, searchTerm });
     const tempListOfMovies = this.state.movies.filter(
       (movieItem) => movieItem[filterBy] && movieItem[filterBy] === searchTerm
     );
-    const query = stringify({ filterBy, searchTerm });
-
     this.setState({ tempListOfMovies, isLoading: false });
     this.props.history.push({
       pathname: "/",

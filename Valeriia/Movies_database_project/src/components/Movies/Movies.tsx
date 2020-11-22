@@ -13,7 +13,7 @@ const Movies = ({ movies }: IMoviesProps) => (
     {movies.map((item) => {
       return (
         <Link to={"/film/" + item.id} key={item.id} className="movies__item">
-          <MovieItem {...item} />
+          <MovieItem {...(item as IMovie)} />
         </Link>
       );
     })}
