@@ -1,0 +1,7 @@
+
+export  const moviesTypes = {
+    FETCH_REQUESTED: "FETCH_REQUESTED",
+    MOVIESDEFAULT: "MOVIESDEFAULT",
+    FETCH_FAILED: "FETCH_FAILED",
+    
+}

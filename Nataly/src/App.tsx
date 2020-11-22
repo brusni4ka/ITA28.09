@@ -14,50 +14,18 @@ import Header from './components/header/header.component';
 import Footer from './components/footer/footer.component';
 
 
-interface IApp {
-  moviesDefault: any // [] дает ошибку!!!!
-}
 
-class App extends React.Component<{}, IApp> {
-
-  state: IApp = {
-    moviesDefault: [],
-}
-
-componentDidMount() {
-
-  setTimeout(() => {
-      fetch('http://reactjs-cdp.herokuapp.com/movies')
-      .then(res => res.json())
-      .then(res => 
-          this.setState({moviesDefault: res.data}))
-  }, 1000)
-  
-}
-
-
-render () {
-  const { 
-    moviesDefault,
-  } = this.state
-
-    return (
+const  App: React.FC = () => (
       <div className="App">
         <Header />
 
         <Switch>
 
-          <Route exact path="/">
-            <CapitalPage 
-              moviesDefault={moviesDefault}
-            />
-          </Route>
+          <Route exact path="/" component={CapitalPage} />
 
           <Route exact path={`/particularpage/:id`}  >
             <Suspense fallback={<div>Загрузка...</div>}>
-              <ParticularFilm
-                moviesDefault={moviesDefault} 
-              />
+              <ParticularFilm/>
             </Suspense>
           </Route>
 
@@ -67,7 +35,7 @@ render () {
         <Footer />
       </div>
     );
-  }
-}
+  
+
 
 export default App;

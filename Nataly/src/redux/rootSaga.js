@@ -1,5 +1,5 @@
 import { all, call } from 'redux-saga/effects';
-import { moviesSaga} from "./movies/movies.saga"
+import moviesSaga from "./movies/movies.saga"
 
 
 

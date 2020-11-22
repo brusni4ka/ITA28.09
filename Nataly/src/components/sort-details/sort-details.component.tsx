@@ -1,20 +1,26 @@
 import React from "react"
 import "./sort-details.styles.scss"
 
-import {IPreviewMoviesProps} from "../../interfaces/interfaces"
 
+export  interface IPreviewMoviesProps {
+    handleChangSortParam?: any,
+    handleChangSortValue?: any,
+    colorActiveSort?: boolean,
+    movies: []
+}
 
-const SortDetails = ({handleChangSortParam, numberFilms, colorActiveSort } : IPreviewMoviesProps) => (
+const SortDetails = ({handleChangSortParam, handleChangSortValue, movies, colorActiveSort } : IPreviewMoviesProps) => (
     <div className="sortDetails__wrapper">
         {
-            numberFilms === 0 ? 
+            movies.length === 0 ? 
             
             <div className="empty__result"></div> 
+
             : 
             
             <div className="sort__result-wrapper">
             <div className="sort__result-count">
-                <p>{numberFilms} movies found</p>
+                <p>{movies.length} movies found</p>
             </div>
             <div className="sort__result">
                 <button 
@@ -24,22 +30,20 @@ const SortDetails = ({handleChangSortParam, numberFilms, colorActiveSort } : IPr
                 </button>
                 <button 
                 className={`sort__result-span ${colorActiveSort ? "" : "sort__result-active"} `}  
-                // onClick={() => handleChangSortValue()}
+                onClick={() => handleChangSortValue()}
                 >
                     release date
                 </button>
                 <button 
                 className={`sort__result-span ${colorActiveSort ? "sort__result-active" : ""}`}  
-                // onClick={() => handleChangSortValue()}
+                onClick={() => handleChangSortValue()}
                 >
                     rating
                 </button>
             </div>
         </div>
         }
-       
     </div>
-   
 )
 
 export default  SortDetails

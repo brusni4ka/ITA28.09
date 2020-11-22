@@ -1,4 +1,6 @@
-import React  from "react"
+import React, {useEffect, useState, }  from "react"
+import {connect, useDispatch, useSelector, ConnectedProps } from "react-redux";
+// import {useDispatch} from 'redux'
 
 import Header from "../../components/header/header.component"
 import PreviewMovies from "../../components/previewMovies/previewMovies.component"
@@ -10,35 +12,78 @@ import UserSelectedMovies from "../../components/user-selected-movies/userSelect
 import SortDetails from "../../components/sort-details/sort-details.component"
 import ParticularFilm from "../particular-film/particularFilm.page"
 
+import {moviesFetchStartAction, moviesFetchDataActionSuccess} from "../../redux/movies/movies.actions"
+
+
+interface RootState {
+    movies: any
+    moviesDefault: []  
+}
+
 interface ICapitalPageProps {
 
     moviesDefault: any // [] дает ошибку!!!!
+    moviesFetchStartAction(): void
 }
 
+const mapStateToProps = (state: RootState) => ({
+    moviesDefault: state.movies.moviesDefault
+})
 
-const  CapitalPage: React.FC<ICapitalPageProps>  = (props) => {
-  
-        const {
-            moviesDefault
-        } = props
+
+const mapDispatchToProps = (dispatch: any) => ({ 
+    moviesFetchStartAction: () => dispatch(moviesFetchStartAction())
+    
+}) 
+
+const connector = connect(mapStateToProps,mapDispatchToProps)
+type PropsFromRedux = ConnectedProps<typeof connector>
+
+type Props = PropsFromRedux & {
+    backgroundColor: string
+  }
+
+
+const  CapitalPage: React.FC = (props: any) => {
+
+        // const {moviesDefault} = props
+        // console.log(props)
+////////////////////////////////////////////////////////////////////////////////////////
+        const [movies, setMoviesDefault] = useState({
+            moviesDefault : []
+        })
+      
+        useEffect( () => { 
+            const fetchData = async() => {
+                const movies = await  fetch('http://reactjs-cdp.herokuapp.com/movies')
+                const res = await movies.json()
+                const onlyMovies = res.data
+                setMoviesDefault({moviesDefault: onlyMovies})
+        }
+        fetchData()
+    }, []) 
+        const {moviesDefault} = movies
+        console.log(moviesDefault) // done
+///////////////////////////////////////////////////////////////////////////////////////////////
 
         return (
             <div>
+                capital 
                 <SearchBlock
-                moviesDefault={moviesDefault}
+                moviesDefault={moviesDefault} 
                     // сolorActive={сolorActive}
                     // value={value}
                     // handeleChange={handeleChange}
                     // handleSubmit={handleSubmit}
-                    // handleClickToggle={handleClickToggle}
+                    // handleClickToggle={handleClickToggle} */}
                    
-                />
-                {/* {
+                 /> 
+                {/* { 
                     renderResult ? 
                     <UserSelectedMovies 
                         moviesDefault={moviesDefault}
-                        movies={movies}
-                        number_of_films={number_of_films}
+                        // movies={movies}
+                        // number_of_films={number_of_films}
                     />
                     :
                     <PreviewMovies 
@@ -47,7 +92,23 @@ const  CapitalPage: React.FC<ICapitalPageProps>  = (props) => {
                 }         */}
             </div>
         )
-    
+     
 }
 
-export default CapitalPage
+
+export default connector(CapitalPage)
+
+
+// const mapStateToProps = (state: any) => ({
+//     moviesDefault: state.movies
+// })
+
+
+// const mapDispatchToProps = (dispatch: any) => ({ 
+//     moviesFetchStartAction: () => dispatch(moviesFetchStartAction()),
+//     // moviesFetchDataActionSuccess: () =>  dispatch(moviesFetchDataActionSuccess())
+// }) 
+
+// export default connect(mapStateToProps,  mapDispatchToProps)(CapitalPage)
+
+// export default CapitalPage

@@ -1,29 +1,13 @@
-
-
-
 export interface IUserSelectedMoviesProps {
     movies: any,
     number_of_films: number
     moviesDefault: []
-
-}
-
-export  interface IPreviewMoviesProps {
-    handleChangSortParam: any, // с void get error if it is function
-    numberFilms: number,
-    moviesDefault: [],
-    colorActiveSort?: boolean,
-
 }
 
 export  interface IErrorEmptyResultsProps {
     number_of_films: number
 }
 
-
-export interface IPreviewMoviesState {
-    moreItem:  boolean
-} 
 
 export interface IMoviesDefault {
     title: string,

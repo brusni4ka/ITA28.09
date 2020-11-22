@@ -4,8 +4,19 @@ import CardMovie from '../card-movie/card-movie.component';
 
 import {Link, withRouter, RouteComponentProps} from "react-router-dom"
 
-import {IPreviewMoviesProps, IMoviesDefault, IPreviewMoviesState} from "../../interfaces/interfaces"
+import { IMoviesDefault } from "../../interfaces/interfaces"
 
+export interface IPreviewMoviesState {
+    moreItem:  boolean
+} 
+
+export  interface IPreviewMoviesProps {
+    handleChangSortParam: any, // с void get error if it is function
+    numberFilms: number,
+    moviesDefault: [],
+    colorActiveSort?: boolean,
+
+}
 
 
 class PreviewMovies extends React.Component<
