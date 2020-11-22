@@ -1,5 +1,9 @@
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  RouteComponentProps,
+} from "react-router-dom";
 import MoviePageMain from "../src/HomePage/MoviePageMain";
 import MovieDetailsMain from "../src/MovieDetails/MovieDetailsMain";
 import IMovie from "./Interfaces/IMovie";
@@ -28,11 +32,21 @@ class App extends React.Component<{}, IMovies> {
           <Route
             exact
             path="/"
-            render={(props) => <MoviePageMain movies={movies} {...props} />}
+            render={(props) => (
+              <MoviePageMain
+                movies={movies}
+                {...(props as RouteComponentProps)}
+              />
+            )}
           />
           <Route
             path="/movieinfo/:id"
-            render={(props) => <MovieDetailsMain movies={movies} {...props} />}
+            render={(props) => (
+              <MovieDetailsMain
+                movies={movies}
+                {...(props as RouteComponentProps<{ id: string }>)}
+              />
+            )}
           />
         </Router>
       </div>

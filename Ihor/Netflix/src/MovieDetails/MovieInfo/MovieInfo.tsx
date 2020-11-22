@@ -16,8 +16,8 @@ const MovieInfo = ({ movie }: IMovieProps) => {
           <span className="m_rating">{movie.vote_average}</span>
         </div>
         <p className="m_genre">
-          {movie.genres.map((item: string) => (
-            <span className="genre_item" key={movie.genres.indexOf(item)}>
+          {movie.genres.map((item: string, i: number) => (
+            <span className="genre_item" key={item[i]}>
               {item}{" "}
             </span>
           ))}

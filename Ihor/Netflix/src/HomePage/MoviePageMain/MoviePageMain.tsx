@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "../header";
 import { RouteComponentProps } from "react-router-dom";
-import Movie from "../../Shared/movie";
+import Movies from "../../Shared/movie";
 import SortPanel from "../sortPanel/sortPanel";
 import Footer from "../../Shared/footer";
 import SearchPanel from "../SearchPanel";
@@ -23,14 +23,17 @@ class MoviePageMain extends React.Component<MovieDetailsMainProps> {
     search: string;
     searchBy: string;
   }) => {
-    const query = stringify({ search, searchBy });
+    const queryUrl = parse(this.props.location.search) as {
+      sortBy: string;
+    };
+    const query = stringify({ ...queryUrl, search, searchBy });
     this.props.history.push({
       pathname: "/",
       search: query,
     });
   };
 
-  handleSortChange = ({ sortBy }: { sortBy: string }) => {
+  handleSortChange = (sortBy: string) => {
     const queryUrl = parse(this.props.location.search) as {
       searchBy: string;
       search: string;
@@ -60,7 +63,7 @@ class MoviePageMain extends React.Component<MovieDetailsMainProps> {
           handleSortChange={this.handleSortChange}
         />
         <div className="movies">
-          <Movie movies={movies} />
+          <Movies movies={movies} />
         </div>
         <div className="footer">
           <Footer />

@@ -7,7 +7,7 @@ interface IAppProps {
   movies: IMovie[];
 }
 
-function Movie({ movies }: IAppProps) {
+function Movies({ movies }: IAppProps) {
   return (
     <>
       {movies.map((film) => (
@@ -17,4 +17,4 @@ function Movie({ movies }: IAppProps) {
   );
 }
 
-export default Movie;
+export default Movies;

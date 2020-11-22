@@ -1,2 +1,2 @@
-import Movie from './movie';
-export default Movie;
+import Movies from './Movies';
+export default Movies;
