@@ -1,5 +1,6 @@
 import  {moviesTypes} from "./movies.types"
 
+
 // export interface IMovies {
 //      moviesDefault: any
 // }
@@ -42,7 +43,7 @@ import  {moviesTypes} from "./movies.types"
 //     error: error
 
 // })
-
+////////////////////////////////////////////////////////////////////////
 import {fetchMovies} from "../utilits"
 
 export  const moviesFetchStartAction = ()  => ({
@@ -50,13 +51,13 @@ export  const moviesFetchStartAction = ()  => ({
 
 })
 
-export const moviesFetchDataActionSuccess = (moviesDefault) => ({
-    type:  moviesTypes.MOVIESDEFAULT,
-    payload: moviesDefault
+export const moviesFetchDataActionSuccess = (data) => ({
+    type:  moviesTypes.MOVIES_DEFAULT,
+    payload: data
 })
 
 export const moviesFetchDataActionFail = (error) => ({
     type:  moviesTypes.FETCH_FAILED,
-    error: error
+    payload: error.errorMesage
 
 })

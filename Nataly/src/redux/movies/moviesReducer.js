@@ -14,15 +14,15 @@ const moviesReducer = (state = INITIAL_STATE, action) => {
             ...state, 
             isFatching: true,
         }
-        case moviesTypes.MOVIESDEFAULT: return {
+        case moviesTypes.MOVIES_DEFAULT: return {
             ...state, 
             isFatching: false,
-            moviesDefault: [...state.moviesDefault , action.payload]
+            moviesDefault: action.payload
         }
         case moviesTypes.FETCH_FAILED : return {
             ...state, 
             isFatching: false,
-            errorMesage: action.error
+            errorMesage: action.payload
         }
         default: return state;
     }

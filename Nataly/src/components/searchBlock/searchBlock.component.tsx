@@ -102,7 +102,7 @@ import SortDetails from "../sort-details/sort-details.component"
             console.log("select")
             setSearchBlockState({value: e.target.value})
             console.log(value)
-      }
+        }
 
         const handleSubmit = (e: React.MouseEvent<Element, MouseEvent> | React.KeyboardEvent<HTMLInputElement>)  => {
             e.preventDefault()
