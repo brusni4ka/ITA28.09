@@ -17,7 +17,7 @@ const MovieInfo = ({ movie }: IMovieProps) => {
         </div>
         <p className="m_genre">
           {movie.genres.map((item: string, i: number) => (
-            <span className="genre_item" key={item[i]}>
+            <span className="genre_item" key={i}>
               {item}{" "}
             </span>
           ))}

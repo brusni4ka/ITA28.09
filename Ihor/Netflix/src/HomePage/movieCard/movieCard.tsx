@@ -19,7 +19,7 @@ const MovieCard = ({ film }: { film: IMovie }) => {
       </div>
       <p className="movie_genre">
         {film.genres.map((item: string, i: number) => (
-          <span className="genre_item" key={item[i]}>
+          <span className="genre_item" key={i}>
             {item}{" "}
           </span>
         ))}
