@@ -16,6 +16,7 @@ interface IInitPage{
     type:MoviesActionTypes.ON_INIT_PAGE;
     filterBy:string;
     searchTerm:string;
+    sortBy:string;
 }
 
 interface ILoading{
@@ -30,13 +31,15 @@ interface ISort{
 export const onSearch = (filterBy:string, searchTerm:string): ISearchAction => ({
     type: MoviesActionTypes.ON_SEARCH,
     filterBy,
-    searchTerm
+    searchTerm,
+
 });
 
-export const onInitPage = (filterBy:string, searchTerm:string): IInitPage => ({
+export const onInitPage = (filterBy:string, searchTerm:string,sortBy: string): IInitPage => ({
     type: MoviesActionTypes.ON_INIT_PAGE,
     filterBy,
-    searchTerm
+    searchTerm,
+    sortBy
 });
 
 export const onLoading = (): ILoading => ({

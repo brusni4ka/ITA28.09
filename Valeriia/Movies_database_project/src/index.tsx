@@ -1,17 +1,25 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
-import { createStore } from "redux";
+import { combineReducers, createStore } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { Provider } from "react-redux";
-import reducer from "./store/reducers/MoviesReducer";
+import { IMoviesState } from "./store/reducers/MoviesReducer";
+import moviesReducer from "./store/reducers/MoviesReducer";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import ErrorBoundary from "./components/ErrorBoundary";
 
+const rootReducer = combineReducers({
+  movies: moviesReducer,
+});
+
+export interface IRootState {
+  movies: IMoviesState;
+}
 const composeEnhancers = composeWithDevTools({ trace: true });
-const store = createStore(reducer, composeEnhancers());
+const store = createStore(rootReducer, composeEnhancers());
 
 ReactDOM.render(
   <React.StrictMode>

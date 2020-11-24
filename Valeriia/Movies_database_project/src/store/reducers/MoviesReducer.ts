@@ -1,7 +1,9 @@
 import { MoviesActionTypes, MoviesAction} from '../actions';
 import {IMovie} from '../../types';
+import movies from '../../movies.json';
 
-interface IMoviesState{
+
+export interface IMoviesState{
   movies: IMovie[] | [];
   isLoading: boolean;
   tempListOfMovies: IMovie[] | [];
@@ -15,10 +17,10 @@ const initialState: IMoviesState = {
     sortBy: "date"
 }
  
-const reducer = (state = initialState, action: MoviesAction) => {
+const moviesReducer = (state = initialState, action: MoviesAction) => {
     switch(action.type){
         case MoviesActionTypes.ON_SEARCH:{
-            const tempListOfMovies = state.movies.filter(
+            const tempListOfMovies = movies.filter(
                 (movieItem) => {
                     if(action.filterBy === "title"){
                         return movieItem.title === action.searchTerm
@@ -29,12 +31,13 @@ const reducer = (state = initialState, action: MoviesAction) => {
               );
             return {
                 ...state,
-                movies : tempListOfMovies
+                tempListOfMovies : tempListOfMovies
             }
         }
+
         case MoviesActionTypes.ON_INIT_PAGE:{
-            const sortByType = state.sortBy ? state.sortBy : "date";
-            const tempListOfMovies = state.movies.filter((movieItem: IMovie) => {
+            const sortByType = action.sortBy ? action.sortBy : "date";
+            const tempListOfMovies = movies.filter((movieItem: IMovie) => {
                 if (action.filterBy && action.filterBy === "title") {
                   return movieItem.title === action.searchTerm;
                 } else {
@@ -44,11 +47,11 @@ const reducer = (state = initialState, action: MoviesAction) => {
             
             return {
                 ...state,
-                movies: state.movies,
+                movies: movies,
                 sortBy: sortByType,
                 tempListOfMovies: tempListOfMovies.length
                     ? tempListOfMovies
-                    : state.movies.sort((a: IMovie, b: IMovie) => {
+                    : movies.sort((a: IMovie, b: IMovie) => {
                         if (sortByType === "date") {
                         return b.date - a.date;
                         } else {
@@ -57,14 +60,16 @@ const reducer = (state = initialState, action: MoviesAction) => {
                     })
             }
         }
+
         case MoviesActionTypes.ON_LOADING:{
             return {
                 ...state,
                 isLoading: true
             }
         }
+
         case MoviesActionTypes.ON_SORT:{
-            const tempListSortMovies = state.tempListOfMovies.sort((a, b) => {
+            const tempListSortMovies = state.movies.sort((a, b) => {
                 if(action.sortByType === "date"){
                     return b.date - a.date;
                 } else{
@@ -83,4 +88,4 @@ const reducer = (state = initialState, action: MoviesAction) => {
    
 }
 
-export default reducer;
+export default moviesReducer;

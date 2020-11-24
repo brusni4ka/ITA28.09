@@ -1,31 +1,20 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
+import { connect, ConnectedProps } from "react-redux";
 import SearchForm from "../../components/SearchForm";
 import SortPannel from "../../components/SortPannel";
 import Loader from "../../components/Loader";
 import Movies from "../../components/Movies";
 import NotFound from "../../components/NotFound";
-import { IMovie } from "../../types";
 import { RouteComponentProps } from "react-router";
 import { parse, stringify } from "query-string";
-import movies from "../../movies.json";
 import Header from "../../components/Header";
+import { IRootState } from "../..";
+import { onSearch, onInitPage, onLoading, onSort } from "../../store/actions";
+import { IMoviesState } from "../../store/reducers/MoviesReducer";
 
-interface IHomePageState {
-  movies: IMovie[] | [];
-  isLoading: boolean;
-  tempListOfMovies: IMovie[] | [];
-  sortBy: string;
-}
+type MoviesProps = MoviesConnectProps & RouteComponentProps;
 
-class HomePage extends Component<RouteComponentProps, IHomePageState> {
-  state = {
-    movies: [],
-    isLoading: false,
-    tempListOfMovies: [],
-    sortBy: "date",
-  };
-
+class HomePage extends Component<MoviesProps, IMoviesState> {
   onSearchHandler = (searchTerm: string, filterBy: string): void => {
     this.setState({ isLoading: true });
     const queryUrl = parse(this.props.location.search) as {
@@ -33,10 +22,7 @@ class HomePage extends Component<RouteComponentProps, IHomePageState> {
       searchTerm: string;
     };
     const query = stringify({ ...queryUrl, filterBy, searchTerm });
-    const tempListOfMovies = this.state.movies.filter(
-      (movieItem) => movieItem[filterBy] && movieItem[filterBy] === searchTerm
-    );
-    this.setState({ tempListOfMovies, isLoading: false });
+    this.props.onSearch(filterBy, searchTerm);
     this.props.history.push({
       pathname: "/",
       search: query,
@@ -50,30 +36,7 @@ class HomePage extends Component<RouteComponentProps, IHomePageState> {
       sortBy: string;
     };
     const { filterBy, searchTerm, sortBy } = query;
-    const tempListOfMovies = movies.filter((movieItem: IMovie) => {
-      if (filterBy && filterBy === "title") {
-        return movieItem.title === searchTerm;
-      } else {
-        return movieItem.genre === searchTerm;
-      }
-    });
-
-    const sortByType = sortBy ? sortBy : "date";
-
-    this.setState({
-      movies: movies,
-      isLoading: false,
-      sortBy: sortByType,
-      tempListOfMovies: tempListOfMovies.length
-        ? tempListOfMovies
-        : movies.sort((a: IMovie, b: IMovie) => {
-            if (sortByType === "date") {
-              return b.date - a.date;
-            } else {
-              return b.vote_average - a.vote_average;
-            }
-          }),
-    });
+    this.props.onInitPage(filterBy, searchTerm, sortBy);
   };
 
   componentDidMount = () => {
@@ -100,15 +63,8 @@ class HomePage extends Component<RouteComponentProps, IHomePageState> {
       pathname: "/",
       search: query,
     });
-    const { tempListOfMovies } = this.state;
-    const tempListSortMovies = tempListOfMovies.sort((a, b) => {
-      return b[sortByType] - a[sortByType];
-    });
 
-    this.setState({
-      sortBy: sortByType,
-      tempListOfMovies: tempListSortMovies,
-    });
+    this.props.onSort(sortByType);
   };
 
   render() {
@@ -117,19 +73,38 @@ class HomePage extends Component<RouteComponentProps, IHomePageState> {
         <Header isLinkToShow={false} />
         <SearchForm onSearchClick={this.onSearchHandler} />
         <SortPannel
-          moviesCount={this.state.tempListOfMovies.length}
+          moviesCount={this.props.tempListOfMovies.length}
           onClickSortBy={this.onClickSortByHandler}
-          sortBy={this.state.sortBy}
+          sortBy={this.props.sortBy}
         />
-        <Loader isLoading={this.state.isLoading} />
-        {!!this.state.tempListOfMovies.length && !this.state.isLoading && (
-          <Movies movies={this.state.tempListOfMovies} />
+        <Loader isLoading={this.props.isLoading} />
+        {!!this.props.tempListOfMovies.length && !this.props.isLoading && (
+          <Movies movies={this.props.tempListOfMovies} />
         )}
-        {!this.state.isLoading && !this.state.tempListOfMovies.length && (
+        {!this.props.isLoading && !this.props.tempListOfMovies.length && (
           <NotFound message="No films found" />
         )}
       </>
     );
   }
 }
-export default connect()(HomePage);
+
+const mapStateToProps = (state: IRootState) => {
+  return {
+    movies: state.movies.movies,
+    isLoading: state.movies.isLoading,
+    tempListOfMovies: state.movies.tempListOfMovies,
+    sortBy: state.movies.sortBy,
+  };
+};
+
+const mapDispatchToProps = {
+  onSearch,
+  onInitPage,
+  onLoading,
+  onSort,
+};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+export type MoviesConnectProps = ConnectedProps<typeof connector>;
+export default connector(HomePage);
