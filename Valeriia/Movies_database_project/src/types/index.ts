@@ -1,4 +1,3 @@
-
 export interface IMovie{
     image: string;
     title: string;

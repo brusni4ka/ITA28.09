@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import SearchForm from "../../components/SearchForm";
 import SortPannel from "../../components/SortPannel";
 import Loader from "../../components/Loader";
@@ -14,7 +15,6 @@ interface IHomePageState {
   movies: IMovie[] | [];
   isLoading: boolean;
   tempListOfMovies: IMovie[] | [];
-  movie?: IMovie;
   sortBy: string;
 }
 
@@ -27,7 +27,7 @@ class HomePage extends Component<RouteComponentProps, IHomePageState> {
   };
 
   onSearchHandler = (searchTerm: string, filterBy: string): void => {
-    this.setState({ movie: undefined, isLoading: true });
+    this.setState({ isLoading: true });
     const queryUrl = parse(this.props.location.search) as {
       filterBy: string;
       searchTerm: string;
@@ -132,4 +132,4 @@ class HomePage extends Component<RouteComponentProps, IHomePageState> {
     );
   }
 }
-export default HomePage;
+export default connect()(HomePage);
