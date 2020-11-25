@@ -6,18 +6,26 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { Provider } from "react-redux";
 import { IMoviesState } from "./store/reducers/MoviesReducer";
 import moviesReducer from "./store/reducers/MoviesReducer";
+import movieReducer from "./store/reducers/MovieReducer";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import ErrorBoundary from "./components/ErrorBoundary";
+import { IMovieDetailsState } from "./store/reducers/MovieReducer";
 
 const rootReducer = combineReducers({
   movies: moviesReducer,
+  movie: movieReducer,
 });
 
 export interface IRootState {
   movies: IMoviesState;
 }
+
+export interface IRootMovieState {
+  movie: IMovieDetailsState;
+}
+
 const composeEnhancers = composeWithDevTools({ trace: true });
 const store = createStore(rootReducer, composeEnhancers());
 

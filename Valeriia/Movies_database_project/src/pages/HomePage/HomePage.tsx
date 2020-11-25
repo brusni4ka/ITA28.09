@@ -8,21 +8,28 @@ import NotFound from "../../components/NotFound";
 import { RouteComponentProps } from "react-router";
 import { parse, stringify } from "query-string";
 import Header from "../../components/Header";
-import { IRootState } from "../..";
-import { onSearch, onInitPage, onLoading, onSort } from "../../store/actions";
+import { IRootState } from "../../index";
+import {
+  onSearch,
+  onInitPage,
+  onStartLoading,
+  onEndLoading,
+  onSort,
+} from "../../store/actions";
 import { IMoviesState } from "../../store/reducers/MoviesReducer";
 
 type MoviesProps = MoviesConnectProps & RouteComponentProps;
 
 class HomePage extends Component<MoviesProps, IMoviesState> {
   onSearchHandler = (searchTerm: string, filterBy: string): void => {
-    this.setState({ isLoading: true });
+    this.props.onStartLoading();
     const queryUrl = parse(this.props.location.search) as {
       filterBy: string;
       searchTerm: string;
     };
     const query = stringify({ ...queryUrl, filterBy, searchTerm });
     this.props.onSearch(filterBy, searchTerm);
+    this.props.onEndLoading();
     this.props.history.push({
       pathname: "/",
       search: query,
@@ -37,11 +44,11 @@ class HomePage extends Component<MoviesProps, IMoviesState> {
     };
     const { filterBy, searchTerm, sortBy } = query;
     this.props.onInitPage(filterBy, searchTerm, sortBy);
+    this.props.onEndLoading();
   };
 
   componentDidMount = () => {
-    this.setState({ isLoading: true });
-
+    this.props.onStartLoading();
     setTimeout(() => {
       this.getParamFromUrlAndUpdateState();
     }, 1000);
@@ -101,7 +108,8 @@ const mapStateToProps = (state: IRootState) => {
 const mapDispatchToProps = {
   onSearch,
   onInitPage,
-  onLoading,
+  onStartLoading,
+  onEndLoading,
   onSort,
 };
 

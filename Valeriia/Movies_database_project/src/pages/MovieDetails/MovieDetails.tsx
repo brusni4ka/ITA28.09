@@ -1,68 +1,66 @@
 import React, { Component } from "react";
-import { IMovie } from "../../types";
+import { connect, ConnectedProps } from "react-redux";
 import Movie from "../../components/Movie";
 import { RouteComponentProps } from "react-router";
-import movies from "../../movies.json";
 import Movies from "../../components/Movies";
 import "./MovieDetails.scss";
 import Header from "../../components/Header";
+import { IMovieDetailsState } from "../../store/reducers/MovieReducer";
+import { onInitMovie, onUpdateMovie } from "../../store/movieActios";
+import { IRootMovieState } from "../../index";
 
 interface IRouteInfo {
   id: string;
 }
 
-interface IMovieDetailsProps extends RouteComponentProps<IRouteInfo> {}
+type MovieProps = MovieConnectProps & RouteComponentProps<IRouteInfo>;
 
-interface IMovieDetailsState {
-  movie: IMovie | undefined;
-  moviesBySameGenre: IMovie[];
-}
-
-class MovieDetails extends Component<IMovieDetailsProps, IMovieDetailsState> {
-  state = {
-    movie: undefined,
-    moviesBySameGenre: [],
-  };
-
+class MovieDetails extends Component<MovieProps, IMovieDetailsState> {
   componentDidMount = () => {
     const filmId = this.props.match.params.id;
-    let moviesData = movies;
-    const movie = moviesData.find((movie) => {
-      return movie.id === Number(filmId);
-    });
-    const moviesBySameGenre = moviesData.filter((movieByGenre) => {
-      return movie?.genre === movieByGenre.genre;
-    });
-    this.setState({ movie, moviesBySameGenre });
+    this.props.onInitMovie(filmId);
+    console.log(this.props.movie);
   };
 
-  componentDidUpdate = (prevProps: IMovieDetailsProps) => {
+  componentDidUpdate = (prevProps: MovieProps) => {
     if (this.props.match.params.id !== prevProps.match.params.id) {
-      let moviesData = movies;
-      const movie = moviesData.find((movie) => {
-        return movie.id === +this.props.match.params.id;
-      });
-      this.setState({ movie });
+      const id = Number(this.props.match.params.id);
+      this.props.onUpdateMovie(id);
     }
   };
 
   render() {
+    console.log(this.props.movie);
     return (
       <>
         <Header isLinkToShow={true} />
         <div className="movieDetails">
-          {this.state.movie ? (
-            <Movie movie={this.state.movie!} />
+          {this.props.movie ? (
+            <Movie movie={this.props.movie!} />
           ) : (
             <div>
               <p>The film by this id is not exist</p>
             </div>
           )}
         </div>
-        <Movies movies={this.state.moviesBySameGenre} />
+        <Movies movies={this.props.moviesBySameGenre} />
       </>
     );
   }
 }
 
-export default MovieDetails;
+const mapStateToProps = (state: IRootMovieState) => {
+  return {
+    movie: state.movie.movie,
+    moviesBySameGenre: state.movie.moviesBySameGenre,
+  };
+};
+
+const mapDispatchToProps = {
+  onInitMovie,
+  onUpdateMovie,
+};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+export type MovieConnectProps = ConnectedProps<typeof connector>;
+export default connector(MovieDetails);

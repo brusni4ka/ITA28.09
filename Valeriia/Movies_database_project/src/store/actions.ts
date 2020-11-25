@@ -1,7 +1,8 @@
 export enum MoviesActionTypes{
     ON_SEARCH = 'ON_SEARCH',
     ON_INIT_PAGE= 'ON_INIT_PAGE',
-    ON_LOADING= 'ON_LOADING',
+    ON_START_LOADING= 'ON_START_LOADING',
+    ON_END_LOADING= 'ON_END_LOADING',
     ON_SORT= 'ON_SORT'
 }
 
@@ -19,8 +20,12 @@ interface IInitPage{
     sortBy:string;
 }
 
-interface ILoading{
-    type:MoviesActionTypes.ON_LOADING;
+interface IStartLoading{
+    type:MoviesActionTypes.ON_START_LOADING;
+}
+
+interface IEndLoading{
+    type:MoviesActionTypes.ON_END_LOADING;
 }
 
 interface ISort{
@@ -42,8 +47,12 @@ export const onInitPage = (filterBy:string, searchTerm:string,sortBy: string): I
     sortBy
 });
 
-export const onLoading = (): ILoading => ({
-    type: MoviesActionTypes.ON_LOADING
+export const onStartLoading = (): IStartLoading => ({
+    type: MoviesActionTypes.ON_START_LOADING
+});
+
+export const onEndLoading = (): IEndLoading => ({
+    type: MoviesActionTypes.ON_END_LOADING
 });
 
 export const onSort = (sortByType:string): ISort => ({
@@ -51,4 +60,4 @@ export const onSort = (sortByType:string): ISort => ({
     sortByType
 });
 
-export type MoviesAction = ISearchAction | IInitPage | ILoading | ISort;
+export type MoviesAction = ISearchAction | IInitPage | IStartLoading | IEndLoading | ISort;

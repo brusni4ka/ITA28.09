@@ -61,10 +61,17 @@ const moviesReducer = (state = initialState, action: MoviesAction) => {
             }
         }
 
-        case MoviesActionTypes.ON_LOADING:{
+        case MoviesActionTypes.ON_START_LOADING:{
             return {
                 ...state,
                 isLoading: true
+            }
+        }
+
+        case MoviesActionTypes.ON_END_LOADING:{
+            return {
+                ...state,
+                isLoading: false
             }
         }
 
