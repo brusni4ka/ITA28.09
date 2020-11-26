@@ -1,6 +1,9 @@
 import {MoviesActionTypes} from '../actions/actionTypes';
 import {all, call, put, takeLatest} from 'redux-saga/effects';
-import {onRequestErrorMovies, onRequestSuccessMovies, IRequestMoviesByTitleAction, onRequestMoviesByTitleError, onRequestMoviesByTitleSuccess,IRequestMoviesByGenreAction } from '../actions/moviesAction';
+import {
+    IRequestMoviesAction,
+    onRequestErrorMovies, onRequestSuccessMovies
+} from '../actions/moviesAction';
 import {fetchListOfMovies, fetchListOfMoviesByTitle, fetchListOfMoviesByGenre} from '../sagas/utilits';
 
 function* requestMoviesSaga(){
@@ -12,30 +15,28 @@ function* requestMoviesSaga(){
     }
 }
 
-function* requestMoviesByTitleSaga(action: IRequestMoviesByTitleAction){
+function* requestMoviesByTitleSaga(action: IRequestMoviesAction){
     try{
-        const movies = yield call(fetchListOfMoviesByTitle, action.value);
-        yield put(onRequestMoviesByTitleSuccess(movies));
+        const movies = yield call(fetchListOfMoviesByTitle, action.searchTerm);
+        yield put(onRequestSuccessMovies(movies));
     } catch(e) {
-        yield put(onRequestMoviesByTitleError());
+        yield put(onRequestErrorMovies());
     }
 }
 
-function* requestMoviesByGenreSaga(action: IRequestMoviesByGenreAction){
+function* requestMoviesByGenreSaga(action: IRequestMoviesAction){
     try{
-        const movies = yield call(fetchListOfMoviesByGenre, action.value );
+        const movies = yield call(fetchListOfMoviesByGenre, action.searchTerm );
         yield put(onRequestSuccessMovies(movies));
     } catch (e){
         yield put(onRequestErrorMovies());
     }
 }
 
-
-
 export function* watchFetchMovies () {
     yield takeLatest(MoviesActionTypes.ON_REQUEST_MOVIES, requestMoviesSaga)
-    yield takeLatest(MoviesActionTypes.ON_REQUEST_MOVIES_BY_TITLE, requestMoviesByTitleSaga)
-    yield takeLatest(MoviesActionTypes.ON_REQUEST_MOVIES_BY_GENRE, requestMoviesByGenreSaga)
+    yield takeLatest(MoviesActionTypes.ON_REQUEST_MOVIES, requestMoviesByTitleSaga)
+    yield takeLatest(MoviesActionTypes.ON_REQUEST_MOVIES, requestMoviesByGenreSaga)
 }
 
 export function* moviesSagas(){
