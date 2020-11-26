@@ -10,12 +10,13 @@ import { parse, stringify } from "query-string";
 import Header from "../../components/Header";
 import { IRootState } from "../../index";
 import {
-  onSearch,
-  onInitPage,
+  onRequestMovies,
   onStartLoading,
   onEndLoading,
   onSort,
-} from "../../store/actions";
+  onRequestMoviesByTitle,
+  onRequestMoviesByGenre,
+} from "../../store/actions/moviesAction";
 import { IMoviesState } from "../../store/reducers/MoviesReducer";
 
 type MoviesProps = MoviesConnectProps & RouteComponentProps;
@@ -24,11 +25,13 @@ class HomePage extends Component<MoviesProps, IMoviesState> {
   onSearchHandler = (searchTerm: string, filterBy: string): void => {
     this.props.onStartLoading();
     const queryUrl = parse(this.props.location.search) as {
-      filterBy: string;
       searchTerm: string;
+      filterBy: string;
     };
-    const query = stringify({ ...queryUrl, filterBy, searchTerm });
-    this.props.onSearch(filterBy, searchTerm);
+    const query = stringify({ ...queryUrl, searchTerm, filterBy });
+
+    this.props.onRequestMoviesByTitle(searchTerm);
+
     this.props.onEndLoading();
     this.props.history.push({
       pathname: "/",
@@ -42,16 +45,14 @@ class HomePage extends Component<MoviesProps, IMoviesState> {
       searchTerm: string;
       sortBy: string;
     };
-    const { filterBy, searchTerm, sortBy } = query;
-    this.props.onInitPage(filterBy, searchTerm, sortBy);
+    const { searchTerm } = query;
+    this.props.onRequestMoviesByTitle(searchTerm);
     this.props.onEndLoading();
   };
 
   componentDidMount = () => {
     this.props.onStartLoading();
-    setTimeout(() => {
-      this.getParamFromUrlAndUpdateState();
-    }, 1000);
+    this.props.onRequestMovies();
   };
 
   componentDidUpdate = (prevProps: RouteComponentProps) => {
@@ -75,20 +76,22 @@ class HomePage extends Component<MoviesProps, IMoviesState> {
   };
 
   render() {
+    console.log(this.props.movies);
     return (
       <>
         <Header isLinkToShow={false} />
         <SearchForm onSearchClick={this.onSearchHandler} />
         <SortPannel
-          moviesCount={this.props.tempListOfMovies.length}
+          moviesCount={this.props.movies.length}
           onClickSortBy={this.onClickSortByHandler}
           sortBy={this.props.sortBy}
         />
         <Loader isLoading={this.props.isLoading} />
-        {!!this.props.tempListOfMovies.length && !this.props.isLoading && (
+        <Movies movies={this.props.movies} />
+        {/* {!!this.props.tempListOfMovies.length && !this.props.isLoading && (
           <Movies movies={this.props.tempListOfMovies} />
-        )}
-        {!this.props.isLoading && !this.props.tempListOfMovies.length && (
+        )} */}
+        {!this.props.isLoading && !this.props.movies.length && (
           <NotFound message="No films found" />
         )}
       </>
@@ -100,17 +103,17 @@ const mapStateToProps = (state: IRootState) => {
   return {
     movies: state.movies.movies,
     isLoading: state.movies.isLoading,
-    tempListOfMovies: state.movies.tempListOfMovies,
     sortBy: state.movies.sortBy,
   };
 };
 
 const mapDispatchToProps = {
-  onSearch,
-  onInitPage,
   onStartLoading,
   onEndLoading,
   onSort,
+  onRequestMovies,
+  onRequestMoviesByTitle,
+  onRequestMoviesByGenre,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

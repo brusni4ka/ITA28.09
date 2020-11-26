@@ -1,9 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
-import { combineReducers, createStore } from "redux";
+import { combineReducers, createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { Provider } from "react-redux";
+import createSagaMiddleware from "redux-saga";
 import { IMoviesState } from "./store/reducers/MoviesReducer";
 import moviesReducer from "./store/reducers/MoviesReducer";
 import movieReducer from "./store/reducers/MovieReducer";
@@ -12,6 +13,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { IMovieDetailsState } from "./store/reducers/MovieReducer";
+import rootSaga from "./store/sagas/rootSaga";
 
 const rootReducer = combineReducers({
   movies: moviesReducer,
@@ -27,7 +29,15 @@ export interface IRootMovieState {
 }
 
 const composeEnhancers = composeWithDevTools({ trace: true });
-const store = createStore(rootReducer, composeEnhancers());
+
+const sagaMiddleware = createSagaMiddleware();
+
+const store = createStore(
+  rootReducer,
+  composeEnhancers(applyMiddleware(sagaMiddleware))
+);
+
+sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
   <React.StrictMode>

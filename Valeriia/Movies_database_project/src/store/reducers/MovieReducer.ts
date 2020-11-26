@@ -1,6 +1,7 @@
 import { IMovie } from "../../types";
-import { MovieAction, MovieActionTypes } from "../movieActios";
-import movies from '../../movies.json';
+import { MovieAction} from "../actions/movieActios";
+import {MovieActionTypes} from '../actions/actionTypes';
+
 
 export interface IMovieDetailsState {
   movie: IMovie | undefined;
@@ -16,29 +17,28 @@ const initialState: IMovieDetailsState  = {
 const movieReducer = (state = initialState, action: MovieAction) => {
     switch(action.type){
         case MovieActionTypes.ON_INIT_MOVIE:{
-          console.log("iii");
-            let moviesData = movies;
-            const movie = moviesData.find((movie) => {
-                return movie.id === Number(action.filmId);
-              });
-              const moviesBySameGenre = moviesData.filter((movieByGenre) => {
-                return movie?.genre === movieByGenre.genre;
-              });
+            // let moviesData = movies;
+            // const movie = moviesData.find((movie) => {
+            //     return movie.id === Number(action.filmId);
+            //   });
+            //   const moviesBySameGenre = moviesData.filter((movieByGenre) => {
+            //     return movie?.genre === movieByGenre.genre;
+            //   });
             return {
                 ...state,
-                movie: movie,
-                moviesBySameGenre: moviesBySameGenre
+                // movie: movie,
+                // moviesBySameGenre: moviesBySameGenre
             }
         }
 
         case MovieActionTypes.ON_UPDATE_MOVIE:{
-            let moviesData = movies;
-            const movie = moviesData.find((movie) => {
-                return movie.id === Number(action.id);
-              });
+            // let moviesData = movies;
+            // const movie = moviesData.find((movie) => {
+            //     return movie.id === Number(action.id);
+            //   });
               return {
                 ...state,
-                movie
+                // movie
             }
         }
         default: return state;

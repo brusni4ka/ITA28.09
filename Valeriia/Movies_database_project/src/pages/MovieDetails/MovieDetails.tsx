@@ -6,7 +6,7 @@ import Movies from "../../components/Movies";
 import "./MovieDetails.scss";
 import Header from "../../components/Header";
 import { IMovieDetailsState } from "../../store/reducers/MovieReducer";
-import { onInitMovie, onUpdateMovie } from "../../store/movieActios";
+import { onInitMovie, onUpdateMovie } from "../../store/actions/movieActios";
 import { IRootMovieState } from "../../index";
 
 interface IRouteInfo {
@@ -18,14 +18,14 @@ type MovieProps = MovieConnectProps & RouteComponentProps<IRouteInfo>;
 class MovieDetails extends Component<MovieProps, IMovieDetailsState> {
   componentDidMount = () => {
     const filmId = this.props.match.params.id;
-    this.props.onInitMovie(filmId);
+    this.props.onInitMovie();
     console.log(this.props.movie);
   };
 
   componentDidUpdate = (prevProps: MovieProps) => {
     if (this.props.match.params.id !== prevProps.match.params.id) {
       const id = Number(this.props.match.params.id);
-      this.props.onUpdateMovie(id);
+      this.props.onUpdateMovie();
     }
   };
 

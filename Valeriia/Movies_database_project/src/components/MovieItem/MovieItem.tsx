@@ -2,23 +2,28 @@ import React from "react";
 import "./MovieItem.scss";
 
 interface IMovieItemProps {
-  image: string;
+  poster_path: string;
   title: string;
-  date: number;
-  genre: string;
+  release_date: string;
+  genres: string[];
 }
 
-const MovieItem = ({ image, title, date, genre }: IMovieItemProps) => (
+const MovieItem = ({
+  poster_path,
+  title,
+  release_date,
+  genres,
+}: IMovieItemProps) => (
   <div className="item">
     <div className="item__poster">
-      <img src={`/images/${image}`} alt="movie" className="item__img" />
+      <img src={poster_path} alt="movie" className="item__img" />
     </div>
     <div className="item__info">
       <span>{title}</span>
-      <span className="item__date">{date}</span>
+      <span className="item__date">{release_date.substr(0, 4)}</span>
     </div>
     <div className="item__genre">
-      <span>{genre}</span>
+      <span>{genres.slice(0, 1)}</span>
     </div>
   </div>
 );
