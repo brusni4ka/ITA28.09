@@ -1,0 +1,20 @@
+.wrapper {
+  background-image: url(https://www.horror.land/wp-content/uploads/2017/07/Covered_Eyes_MAIN_Images_V01.jpg);
+}
+.blur {
+  background-color: rgba(0, 0, 0, 0.685);
+}
+.top-container {
+  width: 1024px;
+  margin: 0 auto;
+}
+.main-container {
+  width: 1100px;
+  margin: 0 auto;
+}
+.sort-wrapper {
+  background-color: rgb(212, 224, 236);
+}
+.wrapper-footer {
+  background-color: rgb(62, 73, 83);
+}

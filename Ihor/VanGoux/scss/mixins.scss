@@ -1,0 +1,189 @@
+@import 'variables';
+
+@mixin nav_link {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.43;
+    color: $black;
+    text-decoration: none;
+}
+@mixin btn {
+    background: $blue;
+    text-shadow: 0 10px 40px rgba(25, 104, 252, 0.2);
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.43;
+    text-align: center;
+    color: $white;
+    border:none;
+    outline: none;
+    cursor: pointer;
+}
+
+@mixin btn_white {
+    
+    background:$white;
+    box-shadow: 4px 4px 20px 0 rgba(255, 255, 255, 0.4);
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.43;
+    text-align: center;
+    color: $blue;
+    border:none;
+}
+
+
+@mixin promocard {
+    box-shadow: 0 20px 60px 0 rgba(25, 104, 252, 0.1);
+    width: 50%;
+    min-height: 280px;
+    background-color:$white;
+    padding: 40px;
+    &_info {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 40px;
+        .person {
+            display: flex;
+            justify-content: left;
+            align-items: center;
+           
+            .text {
+                display: flex;
+                flex-direction: column;
+                padding-top: 20px;
+                padding-left: 20px;
+            }
+            .name {
+                display: inline-block;
+                font-size: 18px;
+                font-weight: 600;
+                line-height: 1.67;
+                color: $dark_blue;
+            }
+            .person_info {
+                display: block;
+                opacity: 0.8;
+                font-size: 14px;
+                font-weight: 600;
+                line-height: 2.14;
+                color: $blue;
+            }
+           
+        }
+
+    }
+    .person_text {
+        font-size: 16px;
+        font-weight: normal;
+        line-height: 1.88;
+        color: $dark_blue;
+    }
+}
+@mixin promocard_mobile {
+    box-shadow: 0 20px 60px 0 rgba(25, 104, 252, 0.1);
+    width: 100%;
+    min-height: 280px;
+    background-color:$white;
+    padding: 40px;
+    &_info {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 40px;
+        .person {
+            display: flex;
+            justify-content: left;
+            align-items: center;
+           
+            .text {
+                display: flex;
+                flex-direction: column;
+                padding-top: 20px;
+                padding-left: 20px;
+            }
+            .name {
+                display: inline-block;
+                font-size: 18px;
+                font-weight: 600;
+                line-height: 1.67;
+                color: $dark_blue;
+            }
+            .person_info {
+                display: block;
+                opacity: 0.8;
+                font-size: 14px;
+                font-weight: 600;
+                line-height: 2.14;
+                color: $blue;
+            }
+           
+        }
+
+    }
+    .person_text {
+        font-size: 16px;
+        font-weight: normal;
+        line-height: 1.88;
+        color: $dark_blue;
+    }
+}
+
+
+@mixin featcard {
+    width: 320px;
+    height: 290px;
+    &_head {
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        background-color:$white_2;
+            
+        &_text {
+            padding: 20px;
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 1.5;
+            color: $dark_blue;
+        }
+    }
+    &_text {
+        box-shadow: 0 20px 60px 0 rgba(49, 69, 244, 0.1);
+        background-color: $white;
+        font-size: 16px;
+        font-weight: normal;
+        line-height: 1.88;
+        color: $dark_blue;
+        padding: 40px;
+    }
+}
+
+@mixin featcard_mobile {
+    width: 100%;
+    max-height: 200px;
+    margin-bottom: 60px;
+
+    &_head {
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        background-color:$white_2;
+    
+        &_text {
+            
+            padding: 20px;
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 1.5;
+            color: $dark_blue;
+        }
+    }
+    &_text {
+        box-shadow: 0 20px 60px 0 rgba(49, 69, 244, 0.1);
+        background-color: $white;
+        font-size: 16px;
+        font-weight: normal;
+        line-height: 1.88;
+        color: $dark_blue;
+        padding: 30px;
+    }
+}
