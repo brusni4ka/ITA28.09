@@ -14,6 +14,7 @@ import reportWebVitals from "./reportWebVitals";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { IMovieDetailsState } from "./store/reducers/MovieReducer";
 import rootSaga from "./store/sagas/rootSaga";
+import { IMovie } from "./types";
 
 const rootReducer = combineReducers({
   movies: moviesReducer,
@@ -26,6 +27,9 @@ export interface IRootState {
 
 export interface IRootMovieState {
   movie: IMovieDetailsState;
+  movies: {
+    movies: IMovie[];
+  };
 }
 
 const composeEnhancers = composeWithDevTools({ trace: true });

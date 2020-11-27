@@ -4,8 +4,7 @@ import {
     IRequestMoviesAction,
     onRequestErrorMovies, onRequestSuccessMovies,
 } from '../actions/moviesAction';
-import {fetchListOfMoviesBySortType} from '../sagas/utilits';
-
+import {fetchListOfMoviesBySortType} from './services';
 
 function* requestMoviesSaga(action: IRequestMoviesAction){
     try{

@@ -4,13 +4,11 @@ import {MovieActionTypes} from '../actions/actionTypes';
 
 export interface IMovieDetailsState {
   movie: IMovie | undefined;
-  moviesBySameGenre: IMovie[];
   isError: boolean
 }
 
 const initialState: IMovieDetailsState  = {
     movie: undefined,
-    moviesBySameGenre: [],
     isError: false
 }
 
@@ -27,7 +25,6 @@ const movieReducer = (state = initialState, action: MovieAction) => {
             return {
                 ...state,
                movie: action.movie,
-            
             }
         }
 

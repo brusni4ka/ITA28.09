@@ -21,7 +21,7 @@ const Movie = ({ movie }: IMovieProps) => (
           <h2>{movie.title}</h2>
           <p>{movie.vote_average}</p>
         </div>
-        <h2>{movie.genres.slice(0, 1)}</h2>
+        <h2>{movie.genres.join(", ")}</h2>
         <span className="movie__genre">{movie.release_date.substr(0, 4)}</span>
         <span>{movie.runtime || "123"} min</span>
         <p>{movie.overview}</p>

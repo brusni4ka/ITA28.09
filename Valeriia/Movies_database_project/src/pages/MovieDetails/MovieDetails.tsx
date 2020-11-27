@@ -41,7 +41,7 @@ class MovieDetails extends Component<MovieProps, IMovieDetailsState> {
             </div>
           )}
         </div>
-        <Movies movies={this.props.moviesBySameGenre} />
+        {this.props.movies && <Movies movies={this.props.movies} />}
       </>
     );
   }
@@ -50,7 +50,7 @@ class MovieDetails extends Component<MovieProps, IMovieDetailsState> {
 const mapStateToProps = (state: IRootMovieState) => {
   return {
     movie: state.movie.movie,
-    moviesBySameGenre: state.movie.moviesBySameGenre,
+    movies: state.movies.movies,
   };
 };
 

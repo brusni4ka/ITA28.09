@@ -38,7 +38,6 @@ class HomePage extends Component<MoviesProps, IMoviesState> {
       sortBy: string;
     };
     const { searchTerm, filterBy, sortBy } = queryUrl;
-
     const sortByType = sortBy ? sortBy : "release_date";
     this.props.onRequestMovies(sortByType, filterBy, searchTerm);
   };
@@ -51,7 +50,6 @@ class HomePage extends Component<MoviesProps, IMoviesState> {
         sortBy: string;
       };
       const { searchTerm, filterBy, sortBy } = queryUrl;
-
       const sortByType = sortBy ? sortBy : "release_date";
       this.props.onRequestMovies(sortByType, filterBy, searchTerm);
     }
