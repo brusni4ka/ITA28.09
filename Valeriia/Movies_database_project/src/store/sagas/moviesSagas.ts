@@ -20,7 +20,6 @@ export function* watchFetchMovies () {
     yield takeLatest(MoviesActionTypes.ON_REQUEST_MOVIES, requestMoviesSaga)
 }
 
-
 export function* moviesSagas(){
     return yield all([
         watchFetchMovies(),

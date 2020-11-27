@@ -6,7 +6,7 @@ import Movies from "../../components/Movies";
 import "./MovieDetails.scss";
 import Header from "../../components/Header";
 import { IMovieDetailsState } from "../../store/reducers/MovieReducer";
-import { onInitMovie, onUpdateMovie } from "../../store/actions/movieActios";
+import { onRequestMovie } from "../../store/actions/movieActions";
 import { IRootMovieState } from "../../index";
 
 interface IRouteInfo {
@@ -17,20 +17,18 @@ type MovieProps = MovieConnectProps & RouteComponentProps<IRouteInfo>;
 
 class MovieDetails extends Component<MovieProps, IMovieDetailsState> {
   componentDidMount = () => {
-    const filmId = this.props.match.params.id;
-    this.props.onInitMovie();
-    console.log(this.props.movie);
+    const filmId = Number(this.props.match.params.id);
+    this.props.onRequestMovie(filmId);
   };
 
   componentDidUpdate = (prevProps: MovieProps) => {
     if (this.props.match.params.id !== prevProps.match.params.id) {
-      const id = Number(this.props.match.params.id);
-      this.props.onUpdateMovie();
+      const filmId = Number(this.props.match.params.id);
+      this.props.onRequestMovie(filmId);
     }
   };
 
   render() {
-    console.log(this.props.movie);
     return (
       <>
         <Header isLinkToShow={true} />
@@ -57,8 +55,7 @@ const mapStateToProps = (state: IRootMovieState) => {
 };
 
 const mapDispatchToProps = {
-  onInitMovie,
-  onUpdateMovie,
+  onRequestMovie,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

@@ -10,9 +10,7 @@ import { parse, stringify } from "query-string";
 import Header from "../../components/Header";
 import { IRootState } from "../../index";
 import { onRequestMovies } from "../../store/actions/moviesAction";
-import moviesReducer, {
-  IMoviesState,
-} from "../../store/reducers/MoviesReducer";
+import { IMoviesState } from "../../store/reducers/MoviesReducer";
 
 type MoviesProps = MoviesConnectProps & RouteComponentProps;
 

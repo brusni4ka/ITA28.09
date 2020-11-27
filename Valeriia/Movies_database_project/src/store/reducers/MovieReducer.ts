@@ -1,46 +1,43 @@
 import { IMovie } from "../../types";
-import { MovieAction} from "../actions/movieActios";
+import { MovieAction} from "../actions/movieActions";
 import {MovieActionTypes} from '../actions/actionTypes';
-
 
 export interface IMovieDetailsState {
   movie: IMovie | undefined;
   moviesBySameGenre: IMovie[];
+  isError: boolean
 }
-
 
 const initialState: IMovieDetailsState  = {
     movie: undefined,
     moviesBySameGenre: [],
+    isError: false
 }
 
 const movieReducer = (state = initialState, action: MovieAction) => {
     switch(action.type){
-        case MovieActionTypes.ON_INIT_MOVIE:{
-            // let moviesData = movies;
-            // const movie = moviesData.find((movie) => {
-            //     return movie.id === Number(action.filmId);
-            //   });
-            //   const moviesBySameGenre = moviesData.filter((movieByGenre) => {
-            //     return movie?.genre === movieByGenre.genre;
-            //   });
+        case MovieActionTypes.ON_REQUEST_MOVIE:{
             return {
                 ...state,
-                // movie: movie,
-                // moviesBySameGenre: moviesBySameGenre
+                id: action.id,
             }
         }
 
-        case MovieActionTypes.ON_UPDATE_MOVIE:{
-            // let moviesData = movies;
-            // const movie = moviesData.find((movie) => {
-            //     return movie.id === Number(action.id);
-            //   });
-              return {
+        case MovieActionTypes.ON_REQUEST_MOVIE_SUCCESS:{
+            return {
                 ...state,
-                // movie
+               movie: action.movie,
+            
             }
         }
+
+        case MovieActionTypes.ON_REQUEST_MOVIE_ERROR:{
+            return {
+                ...state,
+                isError: action.error
+            }
+        }
+
         default: return state;
     }
 }
