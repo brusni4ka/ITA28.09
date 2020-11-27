@@ -1,17 +1,9 @@
 import axios from "axios";
 
-export const fetchListOfMovies = async(): Promise<[]> => {
-    const result = await axios("https://reactjs-cdp.herokuapp.com/movies?sortOrder=desc&limit=20");
-    return result.data.data;
-}
-
-export const fetchListOfMoviesByTitle = async(searchTerm: string): Promise<[]> => {
-    const result = await axios(`https://reactjs-cdp.herokuapp.com/movies?sortOrder=desc&search=${searchTerm}&searchBy=title&limit=20`);
-    return result.data.data;
-}
-
-export const fetchListOfMoviesByGenre = async(searchTerm: string): Promise<[]> => {
-    const result = await axios(`https://reactjs-cdp.herokuapp.com/movies?sortOrder=desc&searchBy=genres&filter=${searchTerm}&limit=20`);
+export const fetchListOfMoviesBySortType = async(sortByType: string, searchBy?: string, searchValue?: string): Promise<[]> => {
+    let url = searchBy && searchValue ? `https://reactjs-cdp.herokuapp.com/movies?sortBy=${sortByType}&searchBy=${searchBy}&sortOrder=desc&${searchBy === "title" ? `search=${searchValue}` : `filter=${searchValue}`}&limit=20` :
+                `https://reactjs-cdp.herokuapp.com/movies?sortBy=${sortByType}&sortOrder=desc&limit=20`
+    const result = await axios(url); 
     return result.data.data;
 }
 

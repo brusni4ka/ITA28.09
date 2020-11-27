@@ -1,16 +1,6 @@
 import {MoviesActionTypes} from './actionTypes';
 import { IMovie } from '../../types';
 
-interface ISort{
-    type:MoviesActionTypes.ON_SORT;
-    sortByType:string
-}
-
-export interface IRequestMoviesAction{
-    type: MoviesActionTypes.ON_REQUEST_MOVIES;
-    searchTerm?: string
-}
-
 interface IRequestMoviesSuccessAction{
     type: MoviesActionTypes.ON_REQUEST_MOVIES_SUCCESS;
     movies:IMovie[];
@@ -18,19 +8,15 @@ interface IRequestMoviesSuccessAction{
 
 interface IRequestMoviesErrorAction{
     type: MoviesActionTypes.ON_REQUEST_MOVIES_ERROR;
+    error: string
 }
 
-
-export const onSort = (sortByType:string): ISort => ({
-    type: MoviesActionTypes.ON_SORT,
-    sortByType
-});
-
-export const onRequestMovies = (searchTerm?: string): IRequestMoviesAction => (
-    {
-    type: MoviesActionTypes.ON_REQUEST_MOVIES,
-    searchTerm
-});
+export interface IRequestMoviesAction{
+    type: MoviesActionTypes.ON_REQUEST_MOVIES;
+    sortByType: string;
+    searchBy?: string;
+    searchValue?: string;
+}
 
 export const onRequestSuccessMovies = (movies: IMovie[]): IRequestMoviesSuccessAction => (
     {
@@ -38,16 +24,21 @@ export const onRequestSuccessMovies = (movies: IMovie[]): IRequestMoviesSuccessA
     movies
 });
 
-export const onRequestErrorMovies = (): IRequestMoviesErrorAction => (
+export const onRequestErrorMovies = (error: string): IRequestMoviesErrorAction => (
     {
     type: MoviesActionTypes.ON_REQUEST_MOVIES_ERROR,
+    error
+});
+
+export const onRequestMovies = (sortByType: string, searchBy?: string, searchValue?: string): IRequestMoviesAction => (
+    {
+    type: MoviesActionTypes.ON_REQUEST_MOVIES,
+    sortByType,
+    searchBy,
+    searchValue
 });
 
 
-
-
-
 export type MoviesAction = 
-ISort | IRequestMoviesAction
-| IRequestMoviesSuccessAction |
-IRequestMoviesErrorAction;
+IRequestMoviesSuccessAction |
+IRequestMoviesErrorAction | IRequestMoviesAction;

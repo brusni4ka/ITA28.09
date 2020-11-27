@@ -6,23 +6,18 @@ export interface IMoviesState{
   movies: IMovie[] | [];
   isLoading: boolean;
   sortBy: string;
+  isError: boolean
 }
 
 const initialState: IMoviesState = {
     movies: [],
     isLoading: false,
-    sortBy: "date"
+    sortBy: "release_date",
+    isError: false
 }
  
 const moviesReducer = (state = initialState, action: MoviesAction) => {
     switch(action.type){
-        case MoviesActionTypes.ON_REQUEST_MOVIES:{
-            return {
-                ...state,
-                isLoading: true
-            }
-        }
-
         case MoviesActionTypes.ON_REQUEST_MOVIES_SUCCESS:{
             return {
                 ...state,
@@ -34,7 +29,16 @@ const moviesReducer = (state = initialState, action: MoviesAction) => {
         case MoviesActionTypes.ON_REQUEST_MOVIES_ERROR:{
             return {
                 ...state,
-                isLoading: false
+                isLoading: false,
+                isError: action.error
+            }
+        }
+
+        case MoviesActionTypes.ON_REQUEST_MOVIES:{
+            return {
+                ...state,
+                isLoading: true,
+                sortBy: action.sortByType
             }
         }
 
