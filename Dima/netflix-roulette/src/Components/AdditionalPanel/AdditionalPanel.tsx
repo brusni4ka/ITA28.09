@@ -1,14 +1,14 @@
 import React from 'react'
 
 interface IGenreProps {
-  genre: string[] | string
+  genre: string
 };
 
-function AdditionalPanel({ genre} : IGenreProps) {
+function AdditionalPanel({ genre }: IGenreProps) {
   return(
     <div className="sort__wrapp">
       <div className="sort__wrapp__content">
-        <p>Films by {genre[0]} genre</p>
+        <p>Films by {genre} genre</p>
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ import { parse } from 'query-string'
 import * as H from 'history'
 
 interface ISortProps {
-  handleSearchChange( sortBy: any ): void,
+  handleSearchChange( { sortBy}: { sortBy: string } ): void,
   numberOfFilms: number,
   location: H.Location
 };
@@ -15,7 +15,7 @@ interface ISortState {
 
 export default class Sort extends React.Component<ISortProps, ISortState>{
   state: ISortState = {
-    sortBy: 'relise date'
+    sortBy: 'release_date'
   };
 
   componentDidMount() {
@@ -23,8 +23,7 @@ export default class Sort extends React.Component<ISortProps, ISortState>{
       sortBy: string;
     };
     let { sortBy } = URLData;
-    console.log(sortBy);
-    sortBy ? this.setState({ sortBy: sortBy }) : sortBy = 'relise date';
+    sortBy && this.setState({ sortBy });
   };
 
   setSortState (value: string) {
@@ -44,13 +43,13 @@ export default class Sort extends React.Component<ISortProps, ISortState>{
           <div className="sort__wrapp__content__params">
             <p>Sort by</p>
             <Button 
-              isActive = { this.state.sortBy === 'relise date' }
-              buttonHandler = { () => this.setSortState('relise date') }
-              buttonContent = { 'relise date' }
+              isActive = { this.state.sortBy === 'release_date' }
+              buttonHandler = { () => this.setSortState('release_date') }
+              buttonContent = { 'release date' }
             />
             <Button
-              isActive = { this.state.sortBy === 'raiting' }
-              buttonHandler = { () => this.setSortState('raiting') }
+              isActive = { this.state.sortBy === 'vote_average' }
+              buttonHandler = { () => this.setSortState('vote_average') }
               buttonContent = { 'raiting' }
             />
           </div>

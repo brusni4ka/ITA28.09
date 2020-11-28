@@ -1,21 +1,22 @@
 import React from 'react';
+import IFilm from '../../interfaces/IFilm'
 
 
-const FilmCard = ({ film }: any) => {
+const FilmCard = ({ film }: { film: IFilm }) => {
   return (
     <div className='film__card'>
-      <img src={film.poster_path} alt={film.title} />
+      <img src = { film.poster_path } alt = { film.title } />
       <div className='film__card__information'>
-        <h3>{film.title}</h3>
+        <h3>{ film.title }</h3>
         <p>
-          {film.genres.map((genre: string) => (
-            <span className='film__card__genre' key={film.genres.indexOf(genre)}>
+          {film.genres.map((genre: string, index: number) => (
+            <span className='film__card__genre' key = { index }>
               {genre}
             </span>
             )
           )};
         </p>
-        <p>{film.release_date.substring(0, 4)}</p>
+        <p>{ film.release_date.substring(0, 4) }</p>
       </div>
     </div>
   );

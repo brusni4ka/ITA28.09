@@ -6,31 +6,77 @@ import Sort from '../../Components/Sort/Sort'
 import Footer from '../../Components/Footer/Footer'
 import { RouteComponentProps } from 'react-router-dom'
 import { parse, stringify } from 'query-string'
-import IFilmProps from '../../interfaces/IFIlmProps'
-// please move to some interface file and reuse Done !!!!!!!!!!!!!!
+// import IFilmProps from '../../interfaces/IFIlmProps'
+import { FilmsRequested, IFilmsRequested } from 'redux/Actions/requestActions'
+import { connect, ConnectedProps } from 'react-redux'
 
-type FilmDetails = IFilmProps & RouteComponentProps
+interface IRootState {
+  films: any
+};
+const mapStateToProps = (state: IRootState) => ({
+  films: state.films.films
+});
+const mapDispatchToProps = {
+  FilmsRequested
+}
 
-export default class Home extends React.Component<FilmDetails> {
-    //remove it from state. DONE!!!!!!!!!!!!!!!!!!
+const connector = connect(mapStateToProps, mapDispatchToProps)
 
-  handleSearchChangeForSearch = ( { search, searchBy }: {search: string, searchBy: string } ) => {
-    const URLData = parse(this.props.location.search) as { search: string, searchBy: string };
-    const newParams = stringify({ ...URLData, search, searchBy });
+type PropsFromRouteAndRedux = ConnectedProps<typeof connector> & RouteComponentProps
+
+class Home extends React.Component<PropsFromRouteAndRedux> {
+
+  componentDidMount() {
+    const URLData = parse(this.props.location.search) as { search: string, searchBy: string, sortBy: string };
+    const requestData = stringify({...URLData})
+    if(requestData) {
+      this.props.FilmsRequested(requestData);
+    } else {
+      this.props.FilmsRequested(`sortBy=release_date`)
+    }
+  };
+  componentDidUpdate(prevProps: PropsFromRouteAndRedux) {
+    if(this.props.location !== prevProps.location) {
+      const URLData = parse(this.props.location.search) as { 
+          search: string, 
+          searchBy: string, 
+          sortBy: string 
+        };
+      const requestData = stringify({ ...URLData });
+      this.props.FilmsRequested(requestData);
+    };
+  };
+
+  handleSearchChangeForSearch = ( { search, searchBy }: { search: string, searchBy: string } ) => {
+    const URLData = parse(this.props.location.search) as { sortBy: string };
+    let requestData = stringify({ ...URLData, search, searchBy })
+    if(searchBy === 'genre' && search) {
+      requestData = `searchBy=${searchBy}&filter=${search}`
+      this.props.FilmsRequested(requestData);
+    } else if(searchBy === 'title' && search){
+      requestData = `searchBy=${searchBy}&search=${search}`
+    } else {
+      return requestData
+    }
     this.props.history.push({
       pathname: "/",
-      search: newParams
+      search: requestData
     });
   };
 
   handleSearchChangeForSort = ({ sortBy }: { sortBy: string }) => {
     const URLData = parse(this.props.location.search) as { sortBy: string };
-    const newParams = stringify({ ...URLData, sortBy } );
+    let requestData = stringify({ ...URLData, sortBy } );
     this.props.history.push( {
       pathname: "/",
-      search: newParams
-    } );
+      search: requestData
+    });
+    this.props.FilmsRequested(requestData);
   };
+
+  // handlePgination = ( offset: number ) => {
+  //   const requestData = `offset=${offset}`
+  // }
 
   render() {
     const { films } = this.props;
@@ -52,9 +98,12 @@ export default class Home extends React.Component<FilmDetails> {
         />
         <Films 
           films = { films }
+          // handlePagination = { this.handlePgination }
         />
         <Footer />
       </div>
     );
   };
 };
+
+export default connector(Home);

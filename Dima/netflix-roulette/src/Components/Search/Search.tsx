@@ -3,18 +3,21 @@ import Button from '../../Shared/Buttons/Button'
 import { parse } from 'query-string'
 import * as H from 'history'
 
-// remove config DONE!!!!!!!!!!
-
 interface ISearchProps{
   handleSearchChange({ search, searchBy }: {search: string, searchBy:string}): void,
   location: H.Location
 };
 
+enum IsearchParams {
+  Title = 'title',
+  Genre = 'genre'
+}
+
 export default class Search extends React.Component<ISearchProps> {
 
   state = {
     searchInput: '',
-    searchBy: 'Title',
+    searchBy: 'title',
   };
 
   componentDidMount() {
@@ -23,10 +26,17 @@ export default class Search extends React.Component<ISearchProps> {
       search: string
     };
     let { searchBy, search } = URLData;
-    searchBy ? this.setState({ searchBy: searchBy.replace(/\s+/g, ''), searchInput: search }) : searchBy = 'Title';
+    if(searchBy) {
+      searchBy === IsearchParams.Title
+        ? this.setState({ searchBy: IsearchParams.Title }) 
+          : this.setState({ searchBy: IsearchParams.Genre })
+    } else {
+      this.setState({ searchBy: IsearchParams.Title })
+      search ? this.setState({ searchInput: search }) : search = ''
+    };
   };
 
-  setSearchState = (value: string) => {
+  setSearchByState = (value: string) => {
     this.setState({ searchBy: value});
   };
 
@@ -45,15 +55,10 @@ export default class Search extends React.Component<ISearchProps> {
   keyPressHandler = (e:React.KeyboardEvent) => {
     if(e.key === 'Enter') {
       this.searchHandler();
-      return (
-        this.setSearchInputState, 
-        this.setSearchState
-      );
     };
   };
   render() {
     return(
-      // wrap in form or add keypreess handler DONE!!!!!!!!!!!!!!!!!!
       <div className="search">
         <h2>FIND YOUR MOVIE</h2>
         <input
@@ -65,18 +70,18 @@ export default class Search extends React.Component<ISearchProps> {
           <div className="search__menu__params">
             <p>SEARCH BY</p>
             <Button 
-              isActive = { this.state.searchBy === 'Title' }
-              buttonHandler = { () => this.setSearchState('Title') }
+              isActive = { this.state.searchBy === 'title' }
+              buttonHandler = { () => this.setSearchByState('title') }
               buttonContent = { 'Title' }
             />
             <Button
-              isActive = { this.state.searchBy === 'Genre' }
-              buttonHandler = { () => this.setSearchState('Genre') }
+              isActive = { this.state.searchBy === 'genre' }
+              buttonHandler = { () => this.setSearchByState('genre') }
               buttonContent = { 'Genre' }
             />
           </div>
           <Button
-            isActive = { true }
+            isActive
             buttonHandler = { this.searchHandler }
             buttonContent = { "Search" }
           />  
