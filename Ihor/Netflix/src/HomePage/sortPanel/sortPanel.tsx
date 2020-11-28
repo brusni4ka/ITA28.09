@@ -13,8 +13,8 @@ interface ISortPanelState {
   sortBy: IsortBy;
 }
 enum IsortBy {
-  date = "date",
-  rating = "rating",
+  date = "release_date",
+  rating = "vote_average",
 }
 class SortPanel extends React.Component<ISortPanelProps, ISortPanelState> {
   state: ISortPanelState = {
@@ -25,11 +25,13 @@ class SortPanel extends React.Component<ISortPanelProps, ISortPanelState> {
     const query = parse(this.props.location.search) as { sortBy: string };
     let { sortBy } = query;
     if (sortBy) {
-      if (sortBy === "date") {
+      if (sortBy === IsortBy.date) {
         this.setState({ sortBy: IsortBy.date });
       } else {
         this.setState({ sortBy: IsortBy.rating });
       }
+    } else {
+      this.setState({ sortBy: IsortBy.date });
     }
   }
 

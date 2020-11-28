@@ -39,7 +39,7 @@ class SearchPanel extends React.Component<
     };
     let { searchBy, search } = query;
     if (searchBy) {
-      if (searchBy === IsearchBy.title) {
+      if (this.state.searchBy === IsearchBy.title) {
         this.setState({ searchBy: IsearchBy.title });
       } else {
         this.setState({ searchBy: IsearchBy.genre });
@@ -47,7 +47,8 @@ class SearchPanel extends React.Component<
     } else {
       this.setState({ searchBy: IsearchBy.title });
     }
-    search ? this.setState({ value: search }) : (search = "");
+
+    search && this.setState({ value: search });
   }
 
   handleSearchParams = (value: IsearchBy) => {

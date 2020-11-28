@@ -2,10 +2,14 @@ import React from "react";
 
 import "./SameGenrePanel.css";
 
-const SameGenrePanel = () => {
+interface ISameGenrePanelProps {
+  genre: string;
+}
+
+const SameGenrePanel = ({ genre }: ISameGenrePanelProps) => {
   return (
     <div className="same_genre_panel">
-      <p className="same_genre_panel_text">Movies with the same genre</p>
+      <p className="same_genre_panel_text">Films by {genre} genre</p>
     </div>
   );
 };

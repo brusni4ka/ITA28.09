@@ -2,56 +2,30 @@ import React from "react";
 import {
   BrowserRouter as Router,
   Route,
-  RouteComponentProps,
 } from "react-router-dom";
 import MoviePageMain from "../src/HomePage/MoviePageMain";
 import MovieDetailsMain from "../src/MovieDetails/MovieDetailsMain";
-import IMovie from "./Interfaces/IMovie";
-interface IMovies {
-  movies: IMovie[];
+
+
+const App = () => {
+
+return (
+  <div className="App">
+    <Router>
+      <Route
+        exact
+        path="/"
+        component = {MoviePageMain}
+      />
+      <Route
+        path="/movieinfo/:id"
+        component = {MovieDetailsMain}
+      />
+    </Router>
+  </div>
+);
 }
 
-class App extends React.Component<{}, IMovies> {
-  state = {
-    movies: [],
-  };
-
-  componentDidMount = () => {
-    fetch("https://reactjs-cdp.herokuapp.com/movies")
-      .then((response) => response.json())
-      .then((receivedData) => {
-        this.setState({ movies: receivedData.data });
-      });
-  };
-
-  render() {
-    const { movies } = this.state;
-    return (
-      <div className="App">
-        <Router>
-          <Route
-            exact
-            path="/"
-            render={(props) => (
-              <MoviePageMain
-                movies={movies}
-                {...(props as RouteComponentProps)}
-              />
-            )}
-          />
-          <Route
-            path="/movieinfo/:id"
-            render={(props) => (
-              <MovieDetailsMain
-                movies={movies}
-                {...(props as RouteComponentProps<{ id: string }>)}
-              />
-            )}
-          />
-        </Router>
-      </div>
-    );
-  }
-}
 
 export default App;
+
