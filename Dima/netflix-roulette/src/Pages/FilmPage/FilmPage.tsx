@@ -33,8 +33,17 @@ type PropsFromRouteAndRedux = ConnectedProps<typeof connector> & RouteComponentP
 
 
 class FilmPage extends React.Component<PropsFromRouteAndRedux> {
+  requestsChain = async() => {
+    await this.props.CurrentFilmRequested(this.props.match.params.id) 
+    const sortBy = 'vote_average'
+    const searchBy = 'genre'
+    const search = this.props.currentFilm.genres[0]
+    await this.props.FilmsRequested(sortBy, searchBy, search)
+    await console.log(sortBy, searchBy, search)
+  }
+
   componentDidMount() {
-    this.props.CurrentFilmRequested(this.props.match.params.id);
+    this.requestsChain()
   };
   
   componentDidUpdate(prevProps: PropsFromRouteAndRedux) {
@@ -46,7 +55,6 @@ class FilmPage extends React.Component<PropsFromRouteAndRedux> {
     const { sortBy } = URLData
     const searchBy = 'genre'
     const search = this.props.currentFilm.genres[0]
-    console.log(sortBy, searchBy, search)
     this.props.match.params.id !== prevProps.match.params.id 
       && this.props.CurrentFilmRequested(this.props.match.params.id) 
         && this.props.FilmsRequested(sortBy, searchBy, search)

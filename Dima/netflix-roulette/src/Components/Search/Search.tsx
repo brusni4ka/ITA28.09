@@ -32,7 +32,7 @@ export default class Search extends React.Component<ISearchProps> {
           : this.setState({ searchBy: IsearchParams.Genre })
     } else {
       this.setState({ searchBy: IsearchParams.Title })
-      search ? this.setState({ searchInput: search }) : search = ''
+      search && this.setState({ searchInput: search })
     };
   };
 
