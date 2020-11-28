@@ -4,8 +4,10 @@ import { takeLatest, call, put, all } from 'redux-saga/effects';
 import { IFilmsRequested, FilmsRecieved, FilmsFailed, ICurrentFilmRequested } from '../Actions/requestActions';
 import IFilm from 'interfaces/IFilm';
 
-export const getFIlms = async(requestData: string): Promise<IFilm[]> => {
-  const films = await(await fetch(`https://reactjs-cdp.herokuapp.com/movies?${requestData}&limit=9`)).json();
+export const getFIlms = async(sortBy: string, searchBy?: string, search?: string): Promise<IFilm[]> => {
+  const url = searchBy && search ? `https://reactjs-cdp.herokuapp.com/movies/?${searchBy === "title" ? `search=${search}` : `filter=${search}`}&searchBy=${searchBy}&sortBy=${sortBy}&sortOrder=desc&limit=9`
+  : `https://reactjs-cdp.herokuapp.com/movies?sortBy=${sortBy}&sortOrder=desc&limit=9` 
+  const films = await(await fetch(url)).json();
   return films.data
 };
 
@@ -16,7 +18,7 @@ export const getCurrentFilm = async(id: string): Promise<IFilm> => {
 
 function* requestFilmSaga(action: IFilmsRequested) {
   try {
-    const films = yield call(getFIlms, action.payload);
+    const films = yield call(getFIlms, action.sortBy, action.searchBy, action.search);
     yield put(FilmsRecieved(films));
   }
   catch {

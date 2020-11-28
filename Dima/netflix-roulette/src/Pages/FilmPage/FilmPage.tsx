@@ -10,9 +10,10 @@ import { Link, RouteComponentProps } from 'react-router-dom'
 import { CurrentFilmRequested, FilmsRequested } from 'redux/Actions/requestActions'
 import { connect, ConnectedProps } from 'react-redux'
 import IFilm from 'interfaces/IFilm'
+import { parse } from 'query-string'
 
 interface IRootState {
-  films: any,
+  films: any, //and here too((((
   currentFilm: IFilm,
   id: string
 };
@@ -34,14 +35,21 @@ type PropsFromRouteAndRedux = ConnectedProps<typeof connector> & RouteComponentP
 class FilmPage extends React.Component<PropsFromRouteAndRedux> {
   componentDidMount() {
     this.props.CurrentFilmRequested(this.props.match.params.id);
-    // const requestData = `search=genre&filter=${this.props.currentFilm.genres[0]}`
-    // this.props.FilmsRequested(requestData)
   };
+  
   componentDidUpdate(prevProps: PropsFromRouteAndRedux) {
-    const requestData = `search=genre&filter=${this.props.currentFilm.genres[0]}`
+    const URLData = parse(this.props.location.search) as { 
+      sortBy: string,
+      searchBy: string,
+      search: string
+    };
+    const { sortBy } = URLData
+    const searchBy = 'genre'
+    const search = this.props.currentFilm.genres[0]
+    console.log(sortBy, searchBy, search)
     this.props.match.params.id !== prevProps.match.params.id 
       && this.props.CurrentFilmRequested(this.props.match.params.id) 
-        && this.props.FilmsRequested(requestData)
+        && this.props.FilmsRequested(sortBy, searchBy, search)
   }
   render() {
     const { currentFilm, films } = this.props;

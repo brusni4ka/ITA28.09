@@ -3,7 +3,9 @@ import IFilm from '../../interfaces/IFilm'
 
 export interface IFilmsRequested {
   type: RequestActionsTypes.FILMS_REQUESTED,
-  payload: string
+  sortBy: string,
+  searchBy?: string,
+  search?: string
 };
 interface IFilmsRecieved {
   type: RequestActionsTypes.FILMS_RECIEVED,
@@ -25,9 +27,9 @@ interface ICurrentFilmFailed {
   type: RequestActionsTypes.CURRENTFILM_FAILED
 }
 
-export const FilmsRequested = (requestData: string):IFilmsRequested => ({
+export const FilmsRequested = (sortBy: string, searchBy?: string, search?: string):IFilmsRequested => ({
   type: RequestActionsTypes.FILMS_REQUESTED,
-  payload: requestData
+  sortBy, searchBy, search
 });
 export const FilmsRecieved = (films: IFilm[]):IFilmsRecieved => ({
   type: RequestActionsTypes.FILMS_RECIEVED,

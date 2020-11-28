@@ -15,13 +15,15 @@ interface IInitialState {
   films: IFilm[] | [],
   currentFilm: IFilm | null,
   error: string,
+  sortBy: string
 }
 
 const initialState: IInitialState = {
   loading: false,
   films: [],
-  currentFilm: null,
-  error: ''
+  currentFilm: null, // help!!!!! pleaseeeeeeee
+  error: '',
+  sortBy: 'release_date'
 }
 
 const requestReduser = (state = initialState, action: RequestActions) => {
@@ -30,6 +32,7 @@ const requestReduser = (state = initialState, action: RequestActions) => {
       return {
         ...state,
         loading: true,
+        sortBy: action.sortBy
       };
     case 'FILMS_RECIEVED':
       return {

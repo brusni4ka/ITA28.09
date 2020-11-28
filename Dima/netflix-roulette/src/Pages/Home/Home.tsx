@@ -9,9 +9,10 @@ import { parse, stringify } from 'query-string'
 // import IFilmProps from '../../interfaces/IFIlmProps'
 import { FilmsRequested, IFilmsRequested } from 'redux/Actions/requestActions'
 import { connect, ConnectedProps } from 'react-redux'
+import IFilm from 'interfaces/IFilm'
 
 interface IRootState {
-  films: any
+  films: any //i need help here((((
 };
 const mapStateToProps = (state: IRootState) => ({
   films: state.films.films
@@ -28,12 +29,8 @@ class Home extends React.Component<PropsFromRouteAndRedux> {
 
   componentDidMount() {
     const URLData = parse(this.props.location.search) as { search: string, searchBy: string, sortBy: string };
-    const requestData = stringify({...URLData})
-    if(requestData) {
-      this.props.FilmsRequested(requestData);
-    } else {
-      this.props.FilmsRequested(`sortBy=release_date`)
-    }
+    const { search, searchBy, sortBy } = URLData
+    this.props.FilmsRequested(sortBy, searchBy, search);
   };
   componentDidUpdate(prevProps: PropsFromRouteAndRedux) {
     if(this.props.location !== prevProps.location) {
@@ -42,31 +39,28 @@ class Home extends React.Component<PropsFromRouteAndRedux> {
           searchBy: string, 
           sortBy: string 
         };
-      const requestData = stringify({ ...URLData });
-      this.props.FilmsRequested(requestData);
+        const { search, searchBy, sortBy } = URLData
+        this.props.FilmsRequested(sortBy, searchBy, search);
     };
   };
 
   handleSearchChangeForSearch = ( { search, searchBy }: { search: string, searchBy: string } ) => {
-    const URLData = parse(this.props.location.search) as { sortBy: string };
+    const URLData = parse(this.props.location.search) as { sortBy: string, search: string, searchBy: string };
+    const { sortBy } = URLData
     let requestData = stringify({ ...URLData, search, searchBy })
-    if(searchBy === 'genre' && search) {
-      requestData = `searchBy=${searchBy}&filter=${search}`
-      this.props.FilmsRequested(requestData);
-    } else if(searchBy === 'title' && search){
-      requestData = `searchBy=${searchBy}&search=${search}`
-    } else {
-      return requestData
-    }
+    this.props.FilmsRequested(sortBy, searchBy, search)
     this.props.history.push({
       pathname: "/",
       search: requestData
     });
+
   };
 
   handleSearchChangeForSort = ({ sortBy }: { sortBy: string }) => {
-    const URLData = parse(this.props.location.search) as { sortBy: string };
+    const URLData = parse(this.props.location.search) as { search: string, searchBy: string };
+    const { searchBy, search } = URLData
     let requestData = stringify({ ...URLData, sortBy } );
+    this.props.FilmsRequested(sortBy, searchBy, search)
     this.props.history.push( {
       pathname: "/",
       search: requestData
