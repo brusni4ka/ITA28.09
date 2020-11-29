@@ -1,11 +1,18 @@
 import axios from "axios";
 import { IMovie } from "../../types";
 
-export const fetchListOfMoviesBySortType = async(sortByType: string, searchBy?: string, searchValue?: string): Promise<[]> => {
-    console.log(searchValue)
-    let url = searchBy && searchValue ? `https://reactjs-cdp.herokuapp.com/movies?sortBy=${sortByType}&${searchBy==="title" ?`search=${searchValue}`:`filter=${searchValue}`}&searchBy=${searchBy}&sortOrder=desc&limit=20`
-     : `https://reactjs-cdp.herokuapp.com/movies?sortBy=${sortByType}&sortOrder=desc&limit=20`;
-    const result = await axios(url); 
+export const fetchListOfMovies = async(sortByType: string, searchBy?: string, searchValue?: string): Promise<IMovie[]> => {
+    let searchByParams = searchBy==="title" ? {search: searchValue } :  {filter: searchValue}
+    const result = await axios("https://reactjs-cdp.herokuapp.com/movies", {params: {
+        sortBy: sortByType,
+        sortOrder: "desc",
+        limit:20,
+        ...searchBy && searchValue && {
+            searchBy: searchBy,
+            ...searchByParams
+        }
+    }}
+    ); 
     return result.data.data;
 }
 

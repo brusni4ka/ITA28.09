@@ -29,6 +29,8 @@ export interface IRootMovieState {
   movie: IMovieDetailsState;
   movies: {
     movies: IMovie[];
+    isLoading: boolean;
+    isError: boolean;
   };
 }
 

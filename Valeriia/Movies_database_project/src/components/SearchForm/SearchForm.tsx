@@ -40,11 +40,13 @@ class SearchForm extends Component<ISearchFormProps, ISearchFormState> {
     ) {
       const query = parse(this.props.location.search) as {
         filterBy: string;
+        searchTerm: string;
       };
-      const { filterBy } = query;
+      const { filterBy, searchTerm } = query;
       const filterByType = filterBy ? filterBy : "title";
       this.setState({
         filterBy: filterByType,
+        searchTerm: searchTerm,
       });
     }
   };

@@ -16,10 +16,6 @@ interface IRequestMovieErrorAction{
     error: string
 }
 
-interface IUpdateMovie{
-    type:MovieActionTypes.ON_UPDATE_MOVIE;
-}
-
 export const onRequestMovie = (id: number): IRequestMovieAction => (
     {
     type: MovieActionTypes.ON_REQUEST_MOVIE,
@@ -38,8 +34,4 @@ export const onRequestMovieError = (error: string): IRequestMovieErrorAction => 
     error
 });
 
-export const onUpdateMovie = (): IUpdateMovie => ({
-    type: MovieActionTypes.ON_UPDATE_MOVIE,
-});
-
-export type MovieAction = IRequestMovieAction | IRequestMovieSuccessAction | IRequestMovieErrorAction | IUpdateMovie;
+export type MovieAction = IRequestMovieAction | IRequestMovieSuccessAction | IRequestMovieErrorAction;

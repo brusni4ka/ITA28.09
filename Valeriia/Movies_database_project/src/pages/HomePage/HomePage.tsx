@@ -1,20 +1,27 @@
 import React, { Component } from "react";
-import { connect, ConnectedProps } from "react-redux";
 import SearchForm from "../../components/SearchForm";
 import SortPannel from "../../components/SortPannel";
-import Loader from "../../components/Loader";
 import Movies from "../../components/Movies";
-import NotFound from "../../components/NotFound";
 import { RouteComponentProps } from "react-router";
 import { parse, stringify } from "query-string";
 import Header from "../../components/Header";
-import { IRootState } from "../../index";
-import { onRequestMovies } from "../../store/actions/moviesAction";
+import { MoviesConnectProps } from "./index";
 import { IMoviesState } from "../../store/reducers/MoviesReducer";
 
 type MoviesProps = MoviesConnectProps & RouteComponentProps;
 
 class HomePage extends Component<MoviesProps, IMoviesState> {
+  fetchData = () => {
+    const queryUrl = parse(this.props.location.search) as {
+      filterBy: string;
+      searchTerm: string;
+      sortBy: string;
+    };
+    const { searchTerm, filterBy, sortBy } = queryUrl;
+    const sortByType = sortBy ? sortBy : "release_date";
+    this.props.onRequestMovies(sortByType, filterBy, searchTerm);
+  };
+
   onSearchHandler = (searchTerm: string, filterBy: string): void => {
     const queryUrl = parse(this.props.location.search) as {
       searchTerm: string;
@@ -32,26 +39,15 @@ class HomePage extends Component<MoviesProps, IMoviesState> {
   };
 
   componentDidMount = () => {
-    const queryUrl = parse(this.props.location.search) as {
-      filterBy: string;
-      searchTerm: string;
-      sortBy: string;
-    };
-    const { searchTerm, filterBy, sortBy } = queryUrl;
-    const sortByType = sortBy ? sortBy : "release_date";
-    this.props.onRequestMovies(sortByType, filterBy, searchTerm);
+    this.fetchData();
   };
 
   componentDidUpdate = (prevProps: RouteComponentProps) => {
-    if (this.props.location !== prevProps.location) {
-      const queryUrl = parse(this.props.location.search) as {
-        filterBy: string;
-        searchTerm: string;
-        sortBy: string;
-      };
-      const { searchTerm, filterBy, sortBy } = queryUrl;
-      const sortByType = sortBy ? sortBy : "release_date";
-      this.props.onRequestMovies(sortByType, filterBy, searchTerm);
+    if (
+      this.props.location !== prevProps.location &&
+      this.props.history.action === "POP"
+    ) {
+      this.fetchData();
     }
   };
 
@@ -70,19 +66,6 @@ class HomePage extends Component<MoviesProps, IMoviesState> {
   };
 
   render() {
-    let moviesResult;
-    if (!this.props.isLoading && this.props.isError) {
-      moviesResult = (
-        <NotFound message="Please try again, something went wrong..." />
-      );
-    } else if (!this.props.isLoading && !this.props.movies.length) {
-      moviesResult = <NotFound message="No films found" />;
-    } else if (this.props.isLoading) {
-      moviesResult = <Loader isLoading={this.props.isLoading} />;
-    } else {
-      moviesResult = <Movies movies={this.props.movies} />;
-    }
-
     return (
       <>
         <Header isLinkToShow={false} />
@@ -92,25 +75,14 @@ class HomePage extends Component<MoviesProps, IMoviesState> {
           onClickSortBy={this.onClickSortByHandler}
           sortBy={this.props.sortBy}
         />
-        {moviesResult}
+        <Movies
+          movies={this.props.movies}
+          isLoading={this.props.isLoading}
+          isError={this.props.isError}
+        />
       </>
     );
   }
 }
 
-const mapStateToProps = (state: IRootState) => {
-  return {
-    movies: state.movies.movies,
-    isLoading: state.movies.isLoading,
-    sortBy: state.movies.sortBy,
-    isError: state.movies.isError,
-  };
-};
-
-const mapDispatchToProps = {
-  onRequestMovies,
-};
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-export type MoviesConnectProps = ConnectedProps<typeof connector>;
-export default connector(HomePage);
+export default HomePage;

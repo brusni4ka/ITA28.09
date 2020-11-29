@@ -1,13 +1,11 @@
 import React, { Component } from "react";
-import { connect, ConnectedProps } from "react-redux";
 import Movie from "../../components/Movie";
 import { RouteComponentProps } from "react-router";
 import Movies from "../../components/Movies";
 import "./MovieDetails.scss";
 import Header from "../../components/Header";
 import { IMovieDetailsState } from "../../store/reducers/MovieReducer";
-import { onRequestMovie } from "../../store/actions/movieActions";
-import { IRootMovieState } from "../../index";
+import { MovieConnectProps } from "./index";
 
 interface IRouteInfo {
   id: string;
@@ -41,23 +39,16 @@ class MovieDetails extends Component<MovieProps, IMovieDetailsState> {
             </div>
           )}
         </div>
-        {this.props.movies && <Movies movies={this.props.movies} />}
+        {this.props.movies && (
+          <Movies
+            movies={this.props.movies}
+            isLoading={this.props.isLoading}
+            isError={this.props.isError}
+          />
+        )}
       </>
     );
   }
 }
 
-const mapStateToProps = (state: IRootMovieState) => {
-  return {
-    movie: state.movie.movie,
-    movies: state.movies.movies,
-  };
-};
-
-const mapDispatchToProps = {
-  onRequestMovie,
-};
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-export type MovieConnectProps = ConnectedProps<typeof connector>;
-export default connector(MovieDetails);
+export default MovieDetails;

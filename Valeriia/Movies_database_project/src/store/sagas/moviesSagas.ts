@@ -4,11 +4,11 @@ import {
     IRequestMoviesAction,
     onRequestErrorMovies, onRequestSuccessMovies,
 } from '../actions/moviesAction';
-import {fetchListOfMoviesBySortType} from './services';
+import {fetchListOfMovies} from './services';
 
 function* requestMoviesSaga(action: IRequestMoviesAction){
     try{
-        const movies = yield call(fetchListOfMoviesBySortType, action.sortByType, action.searchBy, action.searchValue );
+        const movies = yield call(fetchListOfMovies, action.sortByType, action.searchBy, action.searchValue );
         yield put(onRequestSuccessMovies(movies));
     } catch (error){
         yield put(onRequestErrorMovies(error));
