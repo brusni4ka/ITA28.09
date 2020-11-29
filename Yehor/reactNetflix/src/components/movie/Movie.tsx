@@ -14,8 +14,8 @@ function Movie({ movie }: IMovieProps) {
         <div className="title-genres">
           <div className="title">{movie.title}</div>
           <div className="genres">
-            {movie.genres.map((genre) => (
-              <span key={movie.genres.indexOf(genre)}>{genre}</span>
+            {movie.genres.map((genre, index) => (
+              <span key={index}>{genre}</span>
             ))}
           </div>
         </div>

@@ -26,21 +26,20 @@ class SortPanel extends React.Component<ISortPanelProps, ISortPanelState> {
     this.setState({
       sortBy: SortBy.Date,
     });
-    this.props.handlerSortChange("release date");
+    this.props.handlerSortChange(SortBy.Date);
   };
   sortByRate = () => {
     this.setState({
       sortBy: SortBy.Rating,
     });
-    this.props.handlerSortChange("rating");
+    this.props.handlerSortChange(SortBy.Rating);
   };
   componentDidMount() {
     const querySrch = parse(this.props.location.search) as { sortBy: string };
-    console.log(querySrch);
 
     const { sortBy } = querySrch;
     if (sortBy) {
-      if (sortBy === "release date") {
+      if (sortBy === SortBy.Date) {
         this.setState({ sortBy: SortBy.Date });
       } else {
         this.setState({ sortBy: SortBy.Rating });

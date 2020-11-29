@@ -10,33 +10,43 @@ import DetailedPage from "./pages/detailedPage";
 import { moveEmitHelpers } from "typescript";
 import IMovies from "./interfaces/IMovies";
 
-class App extends React.Component<{}, IMovies> {
-  state: IMovies = {
-    movies: [],
-  };
+// import { LoadData ,ILoadData} from "./redux/actions/moviesActions";
+// import {connect,ConnectedProps} from 'react-redux';
 
-  componentDidMount() {
-    fetch("https://reactjs-cdp.herokuapp.com/movies")
-      .then((response) => response.json())
-      .then((receivedData) => {
-        this.setState({ movies: receivedData.data });
-      });
-  }
+// interface RootState {
+//   movies: any;
+// }
 
+// const mapStateToProps = (state: RootState) => ({
+//   movies: state.movies.movies,
+// })
+
+// const mapDispatchToProps = (dispatch:(arg: ILoadData) => (ILoadData)) => ({ 
+//   LoadData: () => dispatch(LoadData("Data is loading"))
+// }) 
+
+// const connector = connect(mapStateToProps, mapDispatchToProps)
+// type PropsFromRedux = ConnectedProps<typeof connector>
+
+class App extends React.Component<{}, {}> {
+
+  // componentDidMount(){
+  //   this.props.LoadData();
+  // }
+  
   render() {
-    const { movies } = this.state;
+    // const { movies } = this.props;
+    
     return (
       <Router>
         <Route
           path="/"
           exact
-          render={(props) => (
-            <HomePage movies={movies} {...(props as RouteComponentProps)} />
-          )}
+          component={HomePage}
         />
         <Route
           path="/DetailedPage/:id"
-          render={(props) => <DetailedPage movies={movies} {...props} />}
+          component={DetailedPage}
         />
       </Router>
     );

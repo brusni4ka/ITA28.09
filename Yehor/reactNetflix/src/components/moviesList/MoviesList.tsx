@@ -8,7 +8,7 @@ function MoviesList({ movies }: IMovies) {
   return (
     <main>
       {movies.map((movie) => (
-        <Link to={`/DetailedPage/${movie.id}`}>
+        <Link to={`/DetailedPage/${movie.id}`} key={movie.id}>
           <Movie key={movie.id} movie={movie} />
         </Link>
       ))}

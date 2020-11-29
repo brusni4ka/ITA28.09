@@ -9,9 +9,56 @@ import { RouteComponentProps } from "react-router-dom";
 import { stringify, parse } from "query-string";
 import IMovies from "../../interfaces/IMovies";
 
-type HomePageProps = IMovies & RouteComponentProps;
+import { LoadData, ReceivedData, ILoadData} from "../../redux/actions/moviesActions";
+import {connect,ConnectedProps} from 'react-redux';
 
-class HomePage extends React.Component<HomePageProps> {
+interface RootState {
+  movies: any;
+}
+
+const mapStateToProps = (state: RootState) => {
+  console.log(state);
+  
+  return {
+  movies: state.movies.movies,
+}}
+
+const mapDispatchToProps = {
+  LoadData
+};
+// const mapDispatchToProps = (dispatch:(arg: ILoadData) => (ILoadData)) => ({ 
+//   LoadData: () => dispatch(LoadData("Data is loading"))
+// }) 
+
+const connector = connect(mapStateToProps, mapDispatchToProps)
+type PropsFromRedux = ConnectedProps<typeof connector> & RouteComponentProps
+
+
+
+class HomePage extends React.Component<PropsFromRedux, {}> {
+
+  componentDidMount() {
+    const queryUrl = parse(this.props.location.search) as {
+      searchBy: string;
+      search: string;
+      sortBy: string;
+    };
+    const { sortBy, searchBy, search } = queryUrl;
+    this.props.LoadData("movie is loading", sortBy, searchBy, search);
+  }
+
+  componentDidUpdate = (prevProps: RouteComponentProps) => {
+    if (this.props.location !== prevProps.location) {
+      const queryUrl = parse(this.props.location.search) as {
+        searchBy: string;
+        search: string;
+        sortBy: string;
+      };
+    const { sortBy, searchBy, search } = queryUrl;
+    this.props.LoadData("movie is loading", sortBy, searchBy, search);
+  }
+}
+
   handleSearchChange = ({
     search,
     searchBy,
@@ -37,6 +84,10 @@ class HomePage extends React.Component<HomePageProps> {
       search: query,
     });
   };
+
+  // componentDidMount(){
+  //   this.props.LoadData();
+  // }
 
   render() {
     return (
@@ -74,4 +125,4 @@ class HomePage extends React.Component<HomePageProps> {
     );
   }
 }
-export default HomePage;
+export default connector(HomePage);
