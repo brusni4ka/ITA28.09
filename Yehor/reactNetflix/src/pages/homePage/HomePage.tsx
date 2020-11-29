@@ -8,9 +8,12 @@ import ErrorBlock from "../../components/errorBlock";
 import { RouteComponentProps } from "react-router-dom";
 import { stringify, parse } from "query-string";
 import IMovies from "../../interfaces/IMovies";
-
-import { LoadData, ReceivedData, ILoadData} from "../../redux/actions/moviesActions";
-import {connect,ConnectedProps} from 'react-redux';
+import {
+  LoadData,
+  ReceivedData,
+  ILoadData,
+} from "../../redux/actions/moviesActions";
+import { connect, ConnectedProps } from "react-redux";
 
 interface RootState {
   movies: any;
@@ -18,25 +21,20 @@ interface RootState {
 
 const mapStateToProps = (state: RootState) => {
   console.log(state);
-  
+
   return {
-  movies: state.movies.movies,
-}}
+    movies: state.movies.movies,
+  };
+};
 
 const mapDispatchToProps = {
-  LoadData
+  LoadData,
 };
-// const mapDispatchToProps = (dispatch:(arg: ILoadData) => (ILoadData)) => ({ 
-//   LoadData: () => dispatch(LoadData("Data is loading"))
-// }) 
 
-const connector = connect(mapStateToProps, mapDispatchToProps)
-type PropsFromRedux = ConnectedProps<typeof connector> & RouteComponentProps
-
-
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector> & RouteComponentProps;
 
 class HomePage extends React.Component<PropsFromRedux, {}> {
-
   componentDidMount() {
     const queryUrl = parse(this.props.location.search) as {
       searchBy: string;
@@ -54,10 +52,10 @@ class HomePage extends React.Component<PropsFromRedux, {}> {
         search: string;
         sortBy: string;
       };
-    const { sortBy, searchBy, search } = queryUrl;
-    this.props.LoadData("movie is loading", sortBy, searchBy, search);
-  }
-}
+      const { sortBy, searchBy, search } = queryUrl;
+      this.props.LoadData("movie is loading", sortBy, searchBy, search);
+    }
+  };
 
   handleSearchChange = ({
     search,
@@ -84,10 +82,6 @@ class HomePage extends React.Component<PropsFromRedux, {}> {
       search: query,
     });
   };
-
-  // componentDidMount(){
-  //   this.props.LoadData();
-  // }
 
   render() {
     return (

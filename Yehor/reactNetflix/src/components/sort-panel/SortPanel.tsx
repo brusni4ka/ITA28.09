@@ -13,8 +13,8 @@ interface ISortPanelState {
   sortBy: SortBy;
 }
 enum SortBy {
-  Date = "release date",
-  Rating = "rating",
+  Date = "release_date",
+  Rating = "vote_average",
 }
 
 class SortPanel extends React.Component<ISortPanelProps, ISortPanelState> {
