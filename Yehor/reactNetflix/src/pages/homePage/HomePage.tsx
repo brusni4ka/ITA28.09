@@ -8,19 +8,12 @@ import ErrorBlock from "../../components/errorBlock";
 import { RouteComponentProps } from "react-router-dom";
 import { stringify, parse } from "query-string";
 import IMovies from "../../interfaces/IMovies";
-<<<<<<< HEAD
 import {
   LoadData,
   ReceivedData,
   ILoadData,
 } from "../../redux/actions/moviesActions";
 import { connect, ConnectedProps } from "react-redux";
-=======
-
-
-import { LoadData, ReceivedData, ILoadData} from "../../redux/actions/moviesActions";
-import {connect,ConnectedProps} from 'react-redux';
->>>>>>> 3eee4086f645f1726cf9356bd71ba9999abe5023
 
 interface RootState {
   movies: any;

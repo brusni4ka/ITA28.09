@@ -49,7 +49,6 @@ class DetailedPage extends React.Component<DetailedPageProps, {}> {
     console.log(movie);
 
     return (
-<<<<<<< HEAD
       <div className="allpageWrapper">
         <div className="wrapper">
           <div className="blur">
@@ -61,19 +60,6 @@ class DetailedPage extends React.Component<DetailedPageProps, {}> {
                 <div>There is no movie</div>
               )}
             </div>
-=======
-    <div className="allpageWrapper">
-      <div className="wrapper">
-        <div className="blur">
-          <div className="top-container">
-            <Header />
-            {movie ? (
-              <DetailedMovie movie={movie} />
-
-            ) : (
-              <div>There is no movie</div>
-            )}
->>>>>>> 3eee4086f645f1726cf9356bd71ba9999abe5023
           </div>
         </div>
         <div className="main-container">
@@ -82,17 +68,10 @@ class DetailedPage extends React.Component<DetailedPageProps, {}> {
         {/* <div className="main-container">
         <MoviesList movies={movies} />
       </div> */}
-<<<<<<< HEAD
         <div className="wrapper-footer">
           <div className="main-container">
             <Footer />
           </div>
-=======
-
-      <div className="wrapper-footer">
-        <div className="main-container">
-          <Footer />
->>>>>>> 3eee4086f645f1726cf9356bd71ba9999abe5023
         </div>
       </div>
     );

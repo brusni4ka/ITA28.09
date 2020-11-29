@@ -11,10 +11,6 @@ import { moveEmitHelpers } from "typescript";
 import IMovies from "./interfaces/IMovies";
 
 class App extends React.Component<{}, {}> {
-<<<<<<< HEAD
-=======
-
->>>>>>> 3eee4086f645f1726cf9356bd71ba9999abe5023
   render() {
     return (
       <Router>
