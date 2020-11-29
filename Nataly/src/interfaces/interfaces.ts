@@ -1,13 +1,3 @@
-export interface IUserSelectedMoviesProps {
-    movies: any,
-    number_of_films: number
-    moviesDefault: []
-}
-
-export  interface IErrorEmptyResultsProps {
-    number_of_films: number
-}
-
 
 export interface IMoviesDefault {
     title: string,

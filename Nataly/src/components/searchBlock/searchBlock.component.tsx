@@ -1,84 +1,69 @@
-import React, {useState, useEffect}  from "react"
+import React, {useState, useEffect, useReducer}  from "react"
 import "./searchBlock.styles.scss"
 
-import { parse } from "query-string";
+import {useSelector, useDispatch} from "react-redux"
 
-import {withRouter, RouteComponentProps, Link} from "react-router-dom"
+import { parse, stringify } from "query-string";
+
+import {withRouter, RouteComponentProps} from "react-router-dom"
 
 import ButtonDefault from "../buttonDefault/buttonDefault.component"
 import SortDetails from "../sort-details/sort-details.component"
+import { moviesFetchStartAction} from "../../redux/movies/movies.actions"
 
-    interface ISearchBlockProps extends  RouteComponentProps { 
-        moviesDefault: any,
-    }
 
     interface  ISearchBlockState {
         titleOrGenre?: boolean,
         value?: string,
         сolorActive?: boolean, 
         colorActiveSort?: boolean,
-        movies?: any,
         isLoading?: boolean,
-        renderResult?: boolean
+        renderResult?: boolean,
+
     }
 
-    const  SearchBlock: React.FC<ISearchBlockProps> = (props) => {
+    interface ISeachParam {
+        searchTerm: string,
+        filterBy: string,
+    }
+
+    interface RootState {
+        movies: any
+    }
+    
+
+    const  SearchBlock: React.FC<RouteComponentProps> = (props) => {
+
        const location = props.location
        const history = props.history
 
-        const {moviesDefault} = props 
-        console.log(moviesDefault)
+       const disputch = useDispatch()
+       const movies = useSelector<RootState>((state) => state.movies.movies) 
+
+       const [searchParam, setSeachParm] = useState<ISeachParam>({
+        searchTerm: "",
+        filterBy: "title",
+       })
+
+       const {searchTerm, filterBy} = searchParam
+
+       console.log(movies)
+
+        const [value, setValue] = useState("")
 
         const [searchBlockstate, setSearchBlockState] = useState<ISearchBlockState>({
-            titleOrGenre: true,
             сolorActive: true,
-            value: "",
             isLoading: false,
             colorActiveSort: true,
-            movies: [],
-            // numberFilms: 0,
             renderResult: false
         })
 
         const {
-            titleOrGenre,
             сolorActive,
-            value,
             isLoading,
             colorActiveSort,
-            movies,
-            // numberFilms,
             renderResult
         } = searchBlockstate
-
-        // useEffect(() => {
-
-        //     setSearchBlockState({isLoading: true });
-        
-        //     () => {
-        //       const query = parse(props.location.search) as {
-        //         titleOrGenre: string;
-        //         search: string;
-        //         sortBy: string;
-        //       };
-        //       const { titleOrGenre, search, sortBy } = query;
-        //       const listOfMovies = searchBlockstate.movies
-        //         .filter(
-        //           (movie: any) =>
-        //             movie[titleOrGenre] && movie[titleOrGenre] === search
-        //         )
-        //         .sort((a: any, b: any) => {
-        //           return b[sortBy] - a[sortBy];
-        //         });
-        
-        //         setSearchBlockState({
-        //             movies: listOfMovies,
-        //             isLoading: false,
-        //         //   ? listOfMovies
-        //         //   : movies.sort((prev: any, next: any) => prev.date - next.date),
-        //       });
-        //     };
-        //   });
 
 
         const  handleChangSortParam = (e: React.MouseEvent<HTMLButtonElement, MouseEvent> ): void => {
@@ -86,82 +71,61 @@ import SortDetails from "../sort-details/sort-details.component"
             setSearchBlockState({
                 colorActiveSort: !searchBlockstate.colorActiveSort
             })
-          }
+        }
         
-
         const handleClickToggle = (e: React.MouseEvent) => {
             e.preventDefault()
-            console.log("works")
+            console.log("works red color active")
             setSearchBlockState({
-                titleOrGenre: !searchBlockstate.titleOrGenre,
                 сolorActive: !searchBlockstate.сolorActive
             }) 
-          }    
+        }    
         
-         const handeleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-            console.log("select")
-            setSearchBlockState({value: e.target.value})
+        const handeleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+            console.log("value from input")
+            setValue(e.target.value)
             console.log(value)
         }
 
-        const handleSubmit = (e: React.MouseEvent<Element, MouseEvent> | React.KeyboardEvent<HTMLInputElement>)  => {
-            e.preventDefault()
-            console.log("submit")
-      
-            if(titleOrGenre === true) {
-        
-                const filterMovies = [...moviesDefault]
-                .filter((item: any) => item.title === value)
-                .sort((prev: any, next: any) => prev.vote_average - next.vote_average).reverse()
-                console.log(filterMovies)
-                
-                console.log(value) // ok
-                setSearchBlockState({
-                    value: "",
-                    movies: filterMovies,
-                    renderResult: true
-                    
-                })
-            
-                props.history.push({
-                    pathname: "/",
-                    search: `?titleOrGenre=${titleOrGenre}=title${true}seacth=${value}`
-                })
-      
-            }else if(titleOrGenre === false) {
-            //сделала костыльно, пределать !!
-                const resfilterMoviesByGenre: any = []
-      
-                const filterMoviesByGenre = [...moviesDefault].forEach((item: any, index: number) => { 
-                let val =  item.genres.some((genre: any, index: number, arr: []) => {
-                        if(genre === value) {
-                            resfilterMoviesByGenre.push(item)
-                            return  item
-                        }
-                    })   
-                if(val === false) {return}
-      
-            return item
-                  
-            })
-            console.log(resfilterMoviesByGenre)
-      
-            resfilterMoviesByGenre.sort((prev: any, next: any) => prev.vote_average - next.vote_average).reverse()
-            console.log(value) // ok
+        const searchHandler = (searchTerm: string, filterBy: string): void => {
+            const queryUrl = parse(props.location.search) as {
+              searchTerm: string;
+              filterBy: string;
+              sortBy: string;
+            };
+            const { sortBy } = queryUrl;
+            const query = stringify({ ...queryUrl, searchTerm, filterBy });
+            const sortByType = sortBy ? sortBy : "release_date";
 
-            setSearchBlockState({
-                value: "",
-                movies: resfilterMoviesByGenre,
-                renderResult: true
-            })
+            disputch(moviesFetchStartAction(sortByType, filterBy, searchTerm))
 
             props.history.push({
+              pathname: "/",
+              search: query,
+            });
+          };
+
+        const handleSubmit = (e: React.MouseEvent<Element, MouseEvent> | React.KeyboardEvent<HTMLInputElement>)  => {
+            e.preventDefault()
+
+            console.log("submit")
+            const queryUrl = parse(props.location.search) as {
+                searchTerm: string;
+                filterBy: string;
+                sortBy: string;
+              };
+              const { sortBy } = queryUrl;
+              const query = stringify({ ...queryUrl, searchTerm, filterBy });
+              const sortByType = sortBy ? sortBy : "release_date";
+  
+              disputch(moviesFetchStartAction(sortByType, filterBy, searchTerm))
+  
+              props.history.push({
                 pathname: "/",
-                search: `?titleOrGenre=${titleOrGenre}&ganre${true}name=${value}`
-            })
-        }   
+                search: query,
+              });  
       }
-console.log(movies)
+
         return (
             <div className="search__block">
                 <form >
@@ -175,7 +139,7 @@ console.log(movies)
                         placeholder="Name" 
                         name="name" id='name'
                         value={value} 
-                        // onKeyPress={handleSubmit} 
+                        // onKeyPress={handleSubmit}  // if it added  onChange don't works
                         required 
                         />
                         <label  className="form__label">Search movies</label>
@@ -210,12 +174,11 @@ console.log(movies)
                     </div>
                 </form>
                 <div>
-                {/* <SortDetails
+                <SortDetails
                     movies={movies}
-                    // handleChangSortParam={handleChangSortParam}
-                    // handleChangSortValue={handleChangSortValue}
+                    handleChangSortParam={handleChangSortParam}
                     colorActiveSort={colorActiveSort}
-                 /> */}
+                 />
                 </div>
             </div>
         )

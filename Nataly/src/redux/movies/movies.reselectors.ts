@@ -1,6 +1,6 @@
 import {createSelector} from "reselect"
 
-const selectMovies = state => state.movies
+const selectMovies = (state: any) => state.movies
 
 const selectAllMovies = createSelector(
     [selectMovies],

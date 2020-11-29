@@ -6,29 +6,28 @@ import './App.css';
 
 import {Switch, Route, Redirect} from "react-router-dom"
 
-import CapitalPage from './pages/capital-page/capitalPage.page';
+// import CapitalPage from './pages/capital-page/capitalPage.page';
 
 import ParticularFilm from "./pages/particular-film/particularFilm.page"
 import ErrorEmptyResults from './components/error-empty-results/error-empty-results.component';
 import Header from './components/header/header.component';
 import Footer from './components/footer/footer.component';
 
-
+const CapitalPage = React.lazy(() => import('./pages/capital-page/capitalPage.page'))
 
 const  App: React.FC = () => (
       <div className="App">
+        <ParticularFilm />
         <Header />
 
         <Switch>
 
-          <Route exact path="/" component={CapitalPage} />
+          <Suspense fallback={<div>Загрузка...</div>}>
+            <Route exact path="/" component={CapitalPage} />
+          </Suspense>  
 
-          <Route exact path={`/particularpage/:id`}  >
-            <Suspense fallback={<div>Загрузка...</div>}>
-              <ParticularFilm/>
-            </Suspense>
-          </Route>
-
+          <Route  path={`/particularpage/:id`} component={ParticularFilm} />
+           
           <Redirect from="/particularpage" to="/" />
         
         </Switch>

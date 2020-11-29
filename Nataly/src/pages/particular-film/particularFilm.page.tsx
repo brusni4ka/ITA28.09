@@ -1,6 +1,6 @@
-import React, {lazy, Suspense} from "react"
+import React, {lazy, Suspense, useState, useEffect} from "react"
 import "./particular-film.scss"
-import {withRouter, RouteComponentProps, Link} from "react-router-dom"
+import {withRouter, RouteComponentProps, Link,  useHistory , } from "react-router-dom"
 
 
 import CardMovie from "../../components/card-movie/card-movie.component"
@@ -26,36 +26,27 @@ interface IProps extends RouteComponentProps<any> {
   }
   
 
-class  ParticularFilm extends React.Component<IProps> { 
-    state = {
-        film: []
-    }
+const  ParticularFilm: React.FC<IProps> = (props) =>  { 
+    
+    const [film, setFilm] = useState([])
 
-    history = this.props.history
-    location = this.props.location
-    matchId = this.props.match.params.id 
+    const  history =  props.history
+    const  location = props.location
+    const  matchId = props.match.params.id 
  
-    componentDidMount () {
-            this.setState({
-                film: this.props.moviesDefault.filter((filmId: any) => 
-                filmId.id == this.matchId)
-            })
-       
-    }
+    useEffect(() => {}, [])
     
     // let { path, url } = useRouteMatch();
 
-    handleRedirectToSearch  = () => {
+    const  handleRedirectToSearch = (e: React.MouseEvent<Element, MouseEvent>) => {
         console.log("redirect to")
-        // this.props.history.push("/");
+        history.push("/");
     }
-render () { 
-    console.log(this.props.history);
-    console.log(this.props.location);
-    console.log(this.matchId);
-    console.log(this.props.moviesDefault);
-    console.log(this.state.film)
-    const {movies, number_of_films, moviesDefault} = this.props
+ 
+    console.log(history);
+    console.log(location);
+    console.log(matchId);
+    console.log(film)
     return(
         <div className="particular__film-wrapper">
             <div className="particular__film-btn-wrapper">
@@ -63,17 +54,17 @@ render () {
                     <ButtonDefault 
                         className={`button__default button__default-redirect`} 
                         type="button" 
-                        onClick={this.handleRedirectToSearch}>
+                        onClick={handleRedirectToSearch}>
                         search
                     </ButtonDefault>
                 </Link>
             </div>
             <div className="particular__film-info">
             <Suspense fallback={<div>Загрузка...</div>}>
-            <FilmDetails 
-                id={this.matchId}
-                film={this.state.film}
-            />
+                <FilmDetails 
+                    id={matchId}
+                    film={film}
+                />
             </Suspense>
                 
                 info about film
@@ -85,18 +76,15 @@ render () {
             particular__film-same-genre
             </div>
             {/* <CardMovie 
-             key={moviesDefault.id} 
+             key={movies.id} 
              title={title}
              release_date={release_date}/>
             <UserSelectedMovies 
               movies={movies}
-              number_of_films={number_of_films}
               /> */}
             Film info
         </div>
     )
-    }
-
 }
        
 

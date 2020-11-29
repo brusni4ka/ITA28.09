@@ -4,12 +4,15 @@ import "./sort-details.styles.scss"
 
 export  interface IPreviewMoviesProps {
     handleChangSortParam?: any,
-    handleChangSortValue?: any,
     colorActiveSort?: boolean,
-    movies: []
+    movies: any,
 }
 
-const SortDetails = ({handleChangSortParam, handleChangSortValue, movies, colorActiveSort } : IPreviewMoviesProps) => (
+const SortDetails = ({
+    handleChangSortParam, 
+    movies, 
+    colorActiveSort } : IPreviewMoviesProps) => (
+
     <div className="sortDetails__wrapper">
         {
             movies.length === 0 ? 
@@ -30,13 +33,13 @@ const SortDetails = ({handleChangSortParam, handleChangSortValue, movies, colorA
                 </button>
                 <button 
                 className={`sort__result-span ${colorActiveSort ? "" : "sort__result-active"} `}  
-                onClick={() => handleChangSortValue()}
+                onClick={() => handleChangSortParam()}
                 >
                     release date
                 </button>
                 <button 
                 className={`sort__result-span ${colorActiveSort ? "sort__result-active" : ""}`}  
-                onClick={() => handleChangSortValue()}
+                onClick={() => handleChangSortParam()}
                 >
                     rating
                 </button>

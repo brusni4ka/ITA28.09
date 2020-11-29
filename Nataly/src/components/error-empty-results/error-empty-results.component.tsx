@@ -1,10 +1,12 @@
 import React from "react"
 import "./error-empty-results.styles.scss"
 
-import {IErrorEmptyResultsProps} from "../../interfaces/interfaces"
+// export  interface IErrorEmptyResultsProps {
+//     number_of_films: number
+// }
 
 
-const ErrorEmptyResults:  React.FC<IErrorEmptyResultsProps> = () => (
+const ErrorEmptyResults:  React.FC = () => (
         <div>
             <div className="error__empty__results">
                 <p>No films found</p>

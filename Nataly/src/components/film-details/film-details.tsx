@@ -2,8 +2,8 @@ import React, { FC } from "react"
 import "./film-details.styles.scss"
 
 interface IFilmDetailsProps  {
-    film: any
-    id: string
+    film?: any,
+    id?: string
 
 }
 
