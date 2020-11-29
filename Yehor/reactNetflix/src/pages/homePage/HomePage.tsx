@@ -9,6 +9,7 @@ import { RouteComponentProps } from "react-router-dom";
 import { stringify, parse } from "query-string";
 import IMovies from "../../interfaces/IMovies";
 
+
 import { LoadData, ReceivedData, ILoadData} from "../../redux/actions/moviesActions";
 import {connect,ConnectedProps} from 'react-redux';
 
@@ -85,10 +86,6 @@ class HomePage extends React.Component<PropsFromRedux, {}> {
     });
   };
 
-  // componentDidMount(){
-  //   this.props.LoadData();
-  // }
-
   render() {
     return (
       <>
@@ -126,3 +123,4 @@ class HomePage extends React.Component<PropsFromRedux, {}> {
   }
 }
 export default connector(HomePage);
+

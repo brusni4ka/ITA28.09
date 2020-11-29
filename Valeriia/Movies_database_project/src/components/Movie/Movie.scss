@@ -1,0 +1,63 @@
+@import "../../assets/scss/main.scss";
+
+.movie {
+  padding: $paddingPrimary;
+
+  margin-bottom: 50px;
+  @media screen and(min-width:1025px) {
+    padding: 40px 150px;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0 50px;
+  }
+
+  &__img {
+    width: 100%;
+  }
+
+  &__description {
+    display: flex;
+    flex-direction: column;
+    @media screen and(min-width:1025px) {
+      flex-direction: row;
+    }
+  }
+
+  &__info {
+    color: $white;
+    font-size: 18px;
+    @media screen and(min-width:1025px) {
+      width: 60%;
+    }
+  }
+
+  &__heading {
+    display: flex;
+    & h2 {
+      margin-right: 10px;
+      font-size: 30px;
+      color: $red;
+    }
+    & p {
+      font-size: 25px;
+      color: $white;
+      border: 1px solid $white;
+      border-radius: 50%;
+      padding: 5px 15px;
+    }
+  }
+
+  &__poster {
+    @media screen and(min-width:1025px) {
+      width: 40%;
+      margin-right: 100px;
+    }
+  }
+
+  &__genre {
+    margin-right: 20px;
+  }
+}

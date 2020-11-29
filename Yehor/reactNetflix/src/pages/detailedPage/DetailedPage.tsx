@@ -57,6 +57,7 @@ class DetailedPage extends React.Component<DetailedPageProps, {}> {
             <Header />
             {movie ? (
               <DetailedMovie movie={movie} />
+
             ) : (
               <div>There is no movie</div>
             )}
@@ -69,6 +70,7 @@ class DetailedPage extends React.Component<DetailedPageProps, {}> {
       {/* <div className="main-container">
         <MoviesList movies={movies} />
       </div> */}
+
       <div className="wrapper-footer">
         <div className="main-container">
           <Footer />

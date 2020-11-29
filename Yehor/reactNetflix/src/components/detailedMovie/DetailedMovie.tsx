@@ -7,8 +7,6 @@ interface IMovieProps {
 }
 
 function DetailedMovie({ movie }: IMovieProps) {
-  console.log(movie);
-  
   return (
     <div className="dmovie">
       <img className="dmovie_img" src={movie.poster_path} alt={movie.title} />
