@@ -7,7 +7,6 @@ const mapStateToProps = (state: IRootState) => {
     return {
       movies: state.movies.movies,
       isLoading: state.movies.isLoading,
-      sortBy: state.movies.sortBy,
       isError: state.movies.isError,
     };
   };

@@ -1,6 +1,7 @@
 import MovieDetails from './MovieDetails';
 import { connect, ConnectedProps } from "react-redux";
 import { onRequestMovie } from "../../store/actions/movieActions";
+import { onRequestMovies } from "../../store/actions/moviesAction";
 import { IRootMovieState } from "../../index";
 
 const mapStateToProps = (state: IRootMovieState) => {
@@ -14,6 +15,7 @@ const mapStateToProps = (state: IRootMovieState) => {
   
 const mapDispatchToProps = {
     onRequestMovie,
+    onRequestMovies
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

@@ -1,16 +1,14 @@
 import {MovieActionTypes} from '../actions/actionTypes';
 import {all, call, put, takeLatest} from 'redux-saga/effects';
-import {fetchListOfMovies, fetchMovieById} from './services';
+import {fetchMovieById} from './services';
 import {IRequestMovieAction, onRequestMovieSuccess, onRequestMovieError} from '../actions/movieActions';
-import { onRequestSuccessMovies } from '../actions/moviesAction';
+import { onRequestMovies } from '../actions/moviesAction';
 
 function* requestMovieSaga(action: IRequestMovieAction){
     try{
         const movie = yield call(fetchMovieById, action.id);
-        const moviesBySameGenre = yield call(fetchListOfMovies, "release_date", "genres", movie.genres)
         yield put(onRequestMovieSuccess(movie));
-        yield put(onRequestSuccessMovies(moviesBySameGenre));
-     
+        yield put(onRequestMovies("genres", "release_date", movie.genres.join(","), 9,true));
     } catch (error){
         yield put(onRequestMovieError(error));
     }

@@ -23,7 +23,7 @@ const MovieItem = ({
       <span className="item__date">{release_date.substr(0, 4)}</span>
     </div>
     <div className="item__genre">
-      <span>{genres.slice(0, 1)}</span>
+      <span>{genres.join(", ")}</span>
     </div>
   </div>
 );

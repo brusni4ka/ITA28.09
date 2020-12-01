@@ -63,7 +63,6 @@ class SearchForm extends Component<ISearchFormProps, ISearchFormState> {
 
   onSearchClickHandler = () => {
     this.props.onSearchClick(this.state.searchTerm, this.state.filterBy);
-    this.setState({ searchTerm: "" });
   };
 
   render() {

@@ -17,7 +17,7 @@ const Movies = ({ movies, isLoading, isError }: IMoviesProps) => {
     return <NotFound message="Please try again, something went wrong..." />;
   } else if (!isLoading && !movies.length) {
     return <NotFound message="No films found" />;
-  } else if (isLoading) {
+  } else if (!movies.length && isLoading) {
     return <Loader isLoading={isLoading} />;
   } else {
     return (

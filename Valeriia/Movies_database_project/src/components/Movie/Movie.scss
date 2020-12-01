@@ -51,6 +51,7 @@
   }
 
   &__poster {
+    background-color: $lightGrey;
     @media screen and(min-width:1025px) {
       width: 40%;
       margin-right: 100px;

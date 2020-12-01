@@ -6,20 +6,34 @@ import { RouteComponentProps } from "react-router";
 import { parse, stringify } from "query-string";
 import Header from "../../components/Header";
 import { MoviesConnectProps } from "./index";
-import { IMoviesState } from "../../store/reducers/MoviesReducer";
+import InfiniteScroll from "react-infinite-scroll-component";
 
-type MoviesProps = MoviesConnectProps & RouteComponentProps;
+interface IHomePageState {
+  sortBy: string;
+}
 
-class HomePage extends Component<MoviesProps, IMoviesState> {
-  fetchData = () => {
+type HomePageProps = MoviesConnectProps & RouteComponentProps;
+
+class HomePage extends Component<HomePageProps, IHomePageState> {
+  state = {
+    sortBy: "release_date",
+  };
+
+  fetchData = (offset: number = 0, isLazyLoading: boolean = false) => {
     const queryUrl = parse(this.props.location.search) as {
       filterBy: string;
       searchTerm: string;
       sortBy: string;
     };
     const { searchTerm, filterBy, sortBy } = queryUrl;
-    const sortByType = sortBy ? sortBy : "release_date";
-    this.props.onRequestMovies(sortByType, filterBy, searchTerm);
+    const sortByType = sortBy ? sortBy : this.state.sortBy;
+    this.props.onRequestMovies(
+      sortByType,
+      filterBy,
+      searchTerm,
+      offset,
+      isLazyLoading
+    );
   };
 
   onSearchHandler = (searchTerm: string, filterBy: string): void => {
@@ -30,10 +44,10 @@ class HomePage extends Component<MoviesProps, IMoviesState> {
     };
     const { sortBy } = queryUrl;
     const query = stringify({ ...queryUrl, searchTerm, filterBy });
-    const sortByType = sortBy ? sortBy : "release_date";
+    const sortByType = sortBy ? sortBy : this.state.sortBy;
     this.props.onRequestMovies(sortByType, filterBy, searchTerm);
     this.props.history.push({
-      pathname: "/",
+      pathname: "/search/Search",
       search: query,
     });
   };
@@ -59,9 +73,10 @@ class HomePage extends Component<MoviesProps, IMoviesState> {
     const { filterBy, searchTerm } = queryUrl;
     const query = stringify({ ...queryUrl, sortBy: sortByType });
     this.props.history.push({
-      pathname: "/",
+      pathname: "/search/Search",
       search: query,
     });
+    this.setState({ sortBy: sortByType });
     this.props.onRequestMovies(sortByType, filterBy, searchTerm);
   };
 
@@ -73,13 +88,21 @@ class HomePage extends Component<MoviesProps, IMoviesState> {
         <SortPannel
           moviesCount={this.props.movies.length}
           onClickSortBy={this.onClickSortByHandler}
-          sortBy={this.props.sortBy}
+          sortBy={this.state.sortBy}
         />
-        <Movies
-          movies={this.props.movies}
-          isLoading={this.props.isLoading}
-          isError={this.props.isError}
-        />
+
+        <InfiniteScroll
+          dataLength={this.props.movies.length}
+          next={() => this.fetchData(this.props.movies.length + 9, true)}
+          hasMore={true}
+          loader={<h4 style={{ textAlign: "center" }}>Loading...</h4>}
+        >
+          <Movies
+            movies={this.props.movies}
+            isLoading={this.props.isLoading}
+            isError={this.props.isError}
+          />
+        </InfiniteScroll>
       </>
     );
   }

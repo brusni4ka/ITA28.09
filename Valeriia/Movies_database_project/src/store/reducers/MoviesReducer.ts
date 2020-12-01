@@ -5,15 +5,13 @@ import {IMovie} from '../../types';
 export interface IMoviesState{
   movies: IMovie[] | [];
   isLoading: boolean;
-  sortBy: string;
-  isError: boolean
+  isError: boolean;
 }
 
 const initialState: IMoviesState = {
     movies: [],
     isLoading: false,
-    sortBy: "release_date",
-    isError: false
+    isError: false,
 }
  
 const moviesReducer = (state = initialState, action: MoviesAction) => {
@@ -22,6 +20,14 @@ const moviesReducer = (state = initialState, action: MoviesAction) => {
             return {
                 ...state,
                movies: action.movies,
+               isLoading: false
+            }
+        }
+
+        case MoviesActionTypes.ON_REQUEST_MOVIES_WITH_LAZY_LOADING:{
+            return {
+                ...state,
+               movies: [...state.movies, ...action.movies],
                isLoading: false
             }
         }
@@ -37,8 +43,7 @@ const moviesReducer = (state = initialState, action: MoviesAction) => {
         case MoviesActionTypes.ON_REQUEST_MOVIES:{
             return {
                 ...state,
-                isLoading: true,
-                sortBy: action.sortByType
+                isLoading: true
             }
         }
 

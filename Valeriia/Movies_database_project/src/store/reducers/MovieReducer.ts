@@ -3,21 +3,20 @@ import { MovieAction} from "../actions/movieActions";
 import {MovieActionTypes} from '../actions/actionTypes';
 
 export interface IMovieDetailsState {
-  movie: IMovie | undefined;
+  movie: IMovie | null;
   isError: boolean
 }
 
 const initialState: IMovieDetailsState  = {
-    movie: undefined,
+    movie: null,
     isError: false
 }
 
-const movieReducer = (state = initialState, action: MovieAction) => {
+const movieReducer = (state: IMovieDetailsState = initialState, action: MovieAction) => {
     switch(action.type){
         case MovieActionTypes.ON_REQUEST_MOVIE:{
             return {
                 ...state,
-                id: action.id,
             }
         }
 
