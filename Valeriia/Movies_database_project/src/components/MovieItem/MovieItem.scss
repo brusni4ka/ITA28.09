@@ -9,9 +9,8 @@
   }
 
   &__poster {
-    background-color: $lightGrey;
     min-width: 100%;
-    min-height: 558px;
+    min-height: 591px;
     margin-bottom: 10px;
   }
 
@@ -26,6 +25,7 @@
 
   &__img {
     width: 100%;
+    min-height: 591px;
   }
 
   &__genre {

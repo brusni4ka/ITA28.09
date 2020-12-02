@@ -62,7 +62,7 @@ class MovieDetails extends Component<MovieProps, IMovieDetailsState> {
         </div>
         <InfiniteScroll
           dataLength={this.props.movies.length}
-          next={() => this.fetchData(this.props.movies.length + 9, true)}
+          next={() => this.fetchData(this.props.movies.length + 10, true)}
           hasMore={true}
           loader={<h4>Loading...</h4>}
         >

@@ -34,6 +34,7 @@ class HomePage extends Component<HomePageProps, IHomePageState> {
       offset,
       isLazyLoading
     );
+    this.setState({ sortBy: sortByType });
   };
 
   onSearchHandler = (searchTerm: string, filterBy: string): void => {
@@ -93,7 +94,7 @@ class HomePage extends Component<HomePageProps, IHomePageState> {
 
         <InfiniteScroll
           dataLength={this.props.movies.length}
-          next={() => this.fetchData(this.props.movies.length + 9, true)}
+          next={() => this.fetchData(this.props.movies.length + 10, true)}
           hasMore={true}
           loader={<h4 style={{ textAlign: "center" }}>Loading...</h4>}
         >
