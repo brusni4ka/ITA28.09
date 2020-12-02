@@ -8,8 +8,7 @@ import SearchPanel from "../SearchPanel";
 import "../../index.css";
 import IMovie from "../../Interfaces/IMovie";
 import { parse, stringify } from "query-string";
-import { MoviesRequested } from "../../redux/Actions/FetchActions";
-import { connect, ConnectedProps } from "react-redux";
+import { PropsFromRedux } from "./index";
 
 interface IMoviePageProps {
   movies: IMovie[];
@@ -33,9 +32,9 @@ class MoviePageMain extends React.Component<MovieDetailsMainProps> {
     };
     const { sortBy } = queryUrl;
     const query = stringify({ ...queryUrl, search, searchBy });
-    this.props.MoviesRequested(sortBy, searchBy, search);
+    this.props.MoviesRequested(sortBy, this.props.offset, searchBy, search);
     this.props.history.push({
-      pathname: "/",
+      pathname: "/search/",
       search: query,
     });
   };
@@ -47,9 +46,9 @@ class MoviePageMain extends React.Component<MovieDetailsMainProps> {
     };
     const { searchBy, search } = queryUrl;
     const query = stringify({ ...queryUrl, sortBy });
-    this.props.MoviesRequested(sortBy, searchBy, search);
+    this.props.MoviesRequested(sortBy, this.props.offset, searchBy, search);
     this.props.history.push({
-      pathname: "/",
+      pathname: "/search/",
       search: query,
     });
   };
@@ -61,23 +60,30 @@ class MoviePageMain extends React.Component<MovieDetailsMainProps> {
       sortBy: string;
     };
     const { sortBy, searchBy, search } = queryUrl;
-    this.props.MoviesRequested(sortBy, searchBy, search);
+    this.props.MoviesRequested(sortBy, this.props.offset, searchBy, search);
   }
 
-  componentDidUpdate = (prevProps: RouteComponentProps) => {
-    if (this.props.location !== prevProps.location) {
+  componentDidUpdate = (prevProps: MovieDetailsMainProps) => {
+    if (
+      this.props.location !== prevProps.location &&
+      this.props.history.action !== "PUSH"
+    ) {
       const queryUrl = parse(this.props.location.search) as {
         searchBy: string;
         search: string;
         sortBy: string;
       };
       const { sortBy, searchBy, search } = queryUrl;
-      this.props.MoviesRequested(sortBy, searchBy, search);
+      this.props.MoviesRequested(sortBy, this.props.offset, searchBy, search);
     }
   };
 
+  increaseOffset = () => { 
+    this.props.loadData( this.props.offset + 10,this.props.sortBy);
+  };
+
   render() {
-    const { movies } = this.props;
+    const { movies, loading, error } = this.props;
     const moviesCount = movies.length;
     return (
       <div className="movieapp">
@@ -94,7 +100,12 @@ class MoviePageMain extends React.Component<MovieDetailsMainProps> {
           handleSortChange={this.handleSortChange}
         />
         <div className="movies">
-          <Movies movies={movies} />
+          <Movies movies={movies} loading={loading} error={error} />
+        </div>
+        <div className="load">
+          <button className="load_more" onClick={() => this.increaseOffset()}>
+            Load More
+          </button>
         </div>
         <div className="footer">
           <Footer />
@@ -103,21 +114,5 @@ class MoviePageMain extends React.Component<MovieDetailsMainProps> {
     );
   }
 }
-interface IRootState {
-  movies: any;
-  sortBy: string;
-}
 
-const mapStateToProps = (state: IRootState) => ({
-  movies: state.movies.movies,
-  sortBy: state.movies.sortBy,
-});
-
-const mapDispatchToProps = {
-  MoviesRequested,
-};
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-export default connector(MoviePageMain);
+export default MoviePageMain;

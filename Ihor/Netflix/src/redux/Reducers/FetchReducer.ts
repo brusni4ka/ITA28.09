@@ -8,6 +8,8 @@ export enum FetchActionsTypes {
   SELECTED_MOVIE_REQUESTED = "SELECTED_MOVIE_REQUESTED",
   SELECTED_MOVIE_RECIEVED = "SELECTED_MOVIE_RECIEVED",
   SELECTED_MOVIE_FAILED = "SELECTED_MOVIE_FAILED",
+  LOAD_DATA = "LOAD_DATA",
+  MERGE_DATA = "MERGE_DATA",
 }
 
 interface IinitialState {
@@ -17,6 +19,7 @@ interface IinitialState {
   error: string;
   id: string;
   sortBy: string;
+  offset: number;
 }
 const initialState: IinitialState = {
   loading: false,
@@ -25,6 +28,7 @@ const initialState: IinitialState = {
   error: "",
   id: "",
   sortBy: "release_date",
+  offset: 0,
 };
 
 const fetchReducer = (
@@ -37,6 +41,7 @@ const fetchReducer = (
         ...state,
         loading: true,
         sortBy: action.sortBy,
+        offset: action.offset,
       };
     case "MOVIES_RECIEVED":
       return {
@@ -48,7 +53,7 @@ const fetchReducer = (
       return {
         ...state,
         loading: false,
-        error: "error",
+        error: "Something goes wrong...",
       };
     case "SELECTED_MOVIE_REQUESTED":
       return {
@@ -66,7 +71,18 @@ const fetchReducer = (
       return {
         ...state,
         loading: false,
-        error: "",
+        error: "Something goes wrong...",
+      };
+    case "LOAD_DATA":
+      return {
+        ...state,
+        offset: action.offset,
+      };
+    case "MERGE_DATA":
+      return {
+        ...state,
+        loading: false,
+        movies: [...state.movies, ...action.payload],
       };
     default:
       return state;

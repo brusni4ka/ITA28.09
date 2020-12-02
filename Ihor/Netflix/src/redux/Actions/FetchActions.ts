@@ -4,17 +4,21 @@ import IMovie from "../../Interfaces/IMovie";
 export interface IMoviesRequested {
   type: FetchActionsTypes.MOVIES_REQUESTED;
   sortBy: string;
+  offset: number;
   searchBy?: string;
   search?: string;
+  isLazy?: boolean;
 }
 
 export const MoviesRequested = (
   sortBy: string,
+  offset: number,
   searchBy?: string,
   search?: string
 ): IMoviesRequested => ({
   type: FetchActionsTypes.MOVIES_REQUESTED,
   sortBy,
+  offset,
   searchBy,
   search,
 });
@@ -69,10 +73,43 @@ export const selectedMovieFailed = (): ISelectedMovieFailed => ({
   type: FetchActionsTypes.SELECTED_MOVIE_FAILED,
 });
 
+export interface ILoadData {
+  type: FetchActionsTypes.LOAD_DATA;
+  offset: number;
+  sortBy?: string;
+  searchBy?: string;
+  search?: string;
+}
+
+export const loadData = (
+  offset: number,
+  sortBy?: string,
+  searchBy?: string,
+  search?: string
+): ILoadData => ({
+  type: FetchActionsTypes.LOAD_DATA,
+  offset,
+  sortBy,
+  searchBy,
+  search,
+});
+
+export interface ILoadedData {
+  type: FetchActionsTypes.MERGE_DATA;
+  payload: IMovie[];
+}
+
+export const mergeData = (movies: IMovie[]): ILoadedData => ({
+  type: FetchActionsTypes.MERGE_DATA,
+  payload: movies,
+});
+
 export type FetchActions =
   | IMoviesRequested
   | IMoviesRecieved
   | IMoviesFailed
   | ISelectedMovieRequested
   | ISelectedMovieRecieved
-  | ISelectedMovieFailed;
+  | ISelectedMovieFailed
+  | ILoadData
+  | ILoadedData;

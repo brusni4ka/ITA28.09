@@ -7,12 +7,7 @@ import Footer from "../../Shared/footer";
 import "./MovieDetailsMain.css";
 import IMovie from "../../Interfaces/IMovie";
 import Movie from "../../Shared/movie";
-import { parse } from "query-string";
-import {
-  selectedMovieRequested,
-  MoviesRequested,
-} from "../../redux/Actions/FetchActions";
-import { connect, ConnectedProps } from "react-redux";
+import { PropsFromRedux } from "./index";
 
 interface IMovies {
   movies: IMovie[];
@@ -28,60 +23,40 @@ class MovieDetailsMain extends React.Component<MovieDetailsMainProps> {
   }
 
   componentDidUpdate(prevProps: MovieDetailsMainProps) {
-    const UrlData = parse(this.props.location.search) as {
-      sortBy: string;
-      searchBy: string;
-      search: string;
-    };
-    const { sortBy } = UrlData;
-    const searchBy = "genre";
-    const search = this.props.movie.genres[0];
-    this.props.match.params.id !== prevProps.match.params.id &&
-      this.props.selectedMovieRequested(this.props.match.params.id) &&
-      this.props.MoviesRequested(sortBy, searchBy, search);
+    if (this.props.movie !== prevProps.movie) {
+      const search = this.props.movie.genres[0];
+      this.props.MoviesRequested("release_date", 2, "genre", search);
+    }
+    if (this.props.match.params.id !== prevProps.match.params.id) {
+      this.props.selectedMovieRequested(this.props.match.params.id);
+    }
   }
+  increaseOffset = () => {
+    this.props.loadData(this.props.offset + 10);
+  };
+
 
   render() {
-    const { movie, movies } = this.props;
+    const { movie, movies, loading, error } = this.props;
     const genre = movie && movie.genres[0];
+
     return (
       <>
         <div className="movie_heading">
           <MovieHeader />
-          {this.props.movie ? (
-            <MovieInfo movie={this.props.movie} />
-          ) : (
-            <div>null</div>
-          )}
+          {movie ? <MovieInfo movie={movie} /> : <div>null</div>}
         </div>
-        <SameGenrePanel genre={String(genre)} />
+        <SameGenrePanel genre={genre} />
         <div className="movies">
-          <Movie movies={movies} />
+          <Movie movies={movies} loading={loading} error={error} />
         </div>
+        <button className="load_more" onClick={() => this.increaseOffset()}>
+            Load More
+          </button>
         <Footer />
       </>
     );
   }
 }
 
-interface IRootState {
-  movie: IMovie;
-  id: string;
-  movies: any;
-}
-
-const mapStateToProps = (state: IRootState) => ({
-  movie: state.movies.movie,
-  id: state.id,
-  movies: state.movies.movies,
-});
-
-const mapDispatchToProps = {
-  selectedMovieRequested,
-  MoviesRequested,
-};
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-export default connector(MovieDetailsMain);
+export default MovieDetailsMain;

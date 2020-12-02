@@ -50,9 +50,30 @@ class SearchPanel extends React.Component<
 
     search && this.setState({ value: search });
   }
+  componentDidUpdate(prevProps:ISearchPanelProps){
+    if(this.props.location !== prevProps.location){
+      const query = parse(this.props.location.search) as {
+        searchBy: string;
+        search: string;
+      };
+      let { searchBy, search } = query;
+      if (searchBy) {
+        if (this.state.searchBy === IsearchBy.title) {
+          this.setState({ searchBy: IsearchBy.title,value: ''});
+        } else {
+          this.setState({ searchBy: IsearchBy.genre,value: ''});
+        }
+      } else {
+        this.setState({ searchBy: IsearchBy.title,value: '' });
+      }
+  
+      search && this.setState({ value: search });
+    }
+    
+  }
 
   handleSearchParams = (value: IsearchBy) => {
-    this.setState({ searchBy: value });
+    this.setState({ searchBy: value ,value: ''});
   };
 
   handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,7 +83,6 @@ class SearchPanel extends React.Component<
   };
 
   handleSubmit = () => {
-    this.setState({ value: "" });
     this.props.handleSearchChange({
       search: this.state.value,
       searchBy: this.state.searchBy,

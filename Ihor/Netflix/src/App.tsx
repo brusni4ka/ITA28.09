@@ -1,27 +1,33 @@
 import React from "react";
 import {
-  BrowserRouter as Router,
-  Route,
+  Route,Switch
 } from "react-router-dom";
 import MoviePageMain from "../src/HomePage/MoviePageMain";
 import MovieDetailsMain from "../src/MovieDetails/MovieDetailsMain";
-
+import NotFoundPage from "./NotFoundPage/NotFoundPage";
 
 const App = () => {
 
 return (
   <div className="App">
-    <Router>
+    <Switch>
       <Route
         exact
         path="/"
         component = {MoviePageMain}
       />
       <Route
-        path="/movieinfo/:id"
+        path="/search/"
+        component = {MoviePageMain}
+      />
+      <Route
+        path="/film/:id"
         component = {MovieDetailsMain}
       />
-    </Router>
+      <Route
+        component = {NotFoundPage}
+      />
+    </Switch>
   </div>
 );
 }

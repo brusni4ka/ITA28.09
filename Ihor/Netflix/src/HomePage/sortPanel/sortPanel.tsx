@@ -35,6 +35,23 @@ class SortPanel extends React.Component<ISortPanelProps, ISortPanelState> {
     }
   }
 
+  componentDidUpdate(prevProps:ISortPanelProps){
+    if(this.props.location !== prevProps.location){
+      const query = parse(this.props.location.search) as { sortBy: string };
+    let { sortBy } = query;
+    if (sortBy) {
+      if (sortBy === IsortBy.date) {
+        this.setState({ sortBy: IsortBy.date });
+      } else {
+        this.setState({ sortBy: IsortBy.rating });
+      }
+    } else {
+      this.setState({ sortBy: IsortBy.date });
+    }
+    }
+
+  }
+
   handleSortParams = (value: IsortBy) => {
     this.setState({ sortBy: value }, () => {
       this.props.handleSortChange(this.state.sortBy);

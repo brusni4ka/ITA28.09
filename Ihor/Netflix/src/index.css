@@ -46,3 +46,20 @@ code {
   max-width: 1500px;
   margin: 0 auto;
 }
+
+.load {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 10px;
+}
+
+.load_more{
+   background-color:#FE390C;
+   border: none;
+   outline: none;
+   padding: 10px 30px;
+   font-weight: bold;
+   font-family: sans-serif;
+   border-radius: 10px;
+}
