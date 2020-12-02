@@ -19,7 +19,7 @@ export interface ILoadData {
   offset?: number
 }
 
-export const LoadData = (
+export const loadData = (
   status: string,
   sortBy?: string,
   searchBy?: string,
@@ -42,7 +42,7 @@ export interface IReceivedData {
   offset?: number;
 }
 
-export const ReceivedData = (
+export const receivedData = (
   status: string,
   movies: IMovie[]
 ): IReceivedData => ({
@@ -51,22 +51,6 @@ export const ReceivedData = (
   movies: movies,
 });
 
-export interface IReceivedDataMore {
-  type: MoviesTypes;
-  status: string;
-  movies: IMovie[];
-  offset?: number;
-}
-
-export const ReceivedDataMore = (
-  status: string,
-  movies: IMovie[]
-): IReceivedDataMore => ({
-  type: MoviesTypes.ReceivedData,
-  status: status,
-  movies: movies,
-})
-
 export interface IError {
   type: MoviesTypes;
   movies: IMovie[];
@@ -74,7 +58,7 @@ export interface IError {
   offset?: number;
 }
 
-export const Error = (status: string): IError => ({
+export const error = (status: string): IError => ({
   type: MoviesTypes.Error,
   movies: [],
   status: status,
@@ -87,7 +71,7 @@ export interface IDataOffsetIncrement {
   offset?: number;
 }
 
-export const DataOffsetIncrement = (): IDataOffsetIncrement => ({
+export const dataOffsetIncrement = (): IDataOffsetIncrement => ({
   type: MoviesTypes.DataOffsetIncrement
 })
 
@@ -98,10 +82,10 @@ export interface IDataOffsetDecrement {
   offset?: number;
 }
 
-export const DataOffsetDecrement = (): IDataOffsetDecrement => ({
+export const dataOffsetDecrement = (): IDataOffsetDecrement => ({
   type: MoviesTypes.DataOffsetDecrement
 })
 
 
 
-export type IMoviesAction = ILoadData | IReceivedData | IError | IReceivedDataMore;
+export type IMoviesAction = ILoadData | IReceivedData | IError | IDataOffsetIncrement | IDataOffsetDecrement;

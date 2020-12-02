@@ -10,30 +10,16 @@ import { RouteComponentProps } from "react-router-dom";
 import { stringify, parse } from "query-string";
 import IMovies from "../../interfaces/IMovies";
 import {
-  LoadData,
-  DataOffsetIncrement,
-  DataOffsetDecrement,
-  ReceivedDataMore,
-  ReceivedData,
+  loadData,
+  dataOffsetIncrement,
+  dataOffsetDecrement,
+  receivedData,
   ILoadData,
 } from "../../redux/actions/moviesActions";
 import { connect, ConnectedProps } from "react-redux";
-import IMovie from "../../interfaces/IMovie"
+import IReduxState from "../../interfaces/IReduxState"
 
-interface IRootState {
-  movies: {
-    status: string,
-    movies: IMovie[],
-    offset: number
-  },
-  movie: {
-    status: string,
-    movie: IMovie,
-    id: string
-  }
-}
-
-const mapStateToProps = (state: IRootState) => {
+const mapStateToProps = (state: IReduxState) => {
   return {
     movies: state.movies.movies,
     offset: state.movies.offset
@@ -41,10 +27,9 @@ const mapStateToProps = (state: IRootState) => {
 };
 
 const mapDispatchToProps = {
-  LoadData,
-  DataOffsetIncrement,
-  DataOffsetDecrement,
-  ReceivedDataMore
+  loadData,
+  dataOffsetIncrement,
+  dataOffsetDecrement
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -58,7 +43,7 @@ class HomePage extends React.Component<PropsFromRedux, {}> {
       sortBy: string;
     };
     let { sortBy, searchBy, search } = queryUrl;
-    this.props.LoadData("movie is loading", sortBy, searchBy, search, this.props.offset);
+    this.props.loadData("movie is loading", sortBy, searchBy, search, this.props.offset);
   }
 
   componentDidUpdate = (prevProps: PropsFromRedux) => {
@@ -69,7 +54,7 @@ class HomePage extends React.Component<PropsFromRedux, {}> {
         sortBy: string;
       };
       const { sortBy, searchBy, search } = queryUrl;
-      this.props.LoadData("movie is loading", sortBy, searchBy, search, this.props.offset);
+      this.props.loadData("movie is loading", sortBy, searchBy, search, this.props.offset);
     }
   };
 
@@ -129,9 +114,9 @@ class HomePage extends React.Component<PropsFromRedux, {}> {
         <>
           <MoviesList movies={this.props.movies} />
           <div className="pagination">
-            <button onClick={this.props.DataOffsetDecrement}>Back</button>
+            <button onClick={this.props.dataOffsetDecrement}>Back</button>
               <span className="pages">{this.props.offset? this.props.offset / 9 + 1: 1}</span>
-            <button onClick={this.props.DataOffsetIncrement}>Next</button>
+            <button onClick={this.props.dataOffsetIncrement}>Next</button>
         </div>
         </>
         }

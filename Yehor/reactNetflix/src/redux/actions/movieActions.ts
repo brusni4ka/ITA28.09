@@ -13,7 +13,7 @@ export interface ICurrentMovieLoad {
   id: string;
 }
 
-export const CurrentMovieLoad = (
+export const currentMovieLoad = (
   status: string,
   id: string
 ): ICurrentMovieLoad => ({
@@ -30,7 +30,7 @@ export interface ICurrentMovieReceived {
   id: string;
 }
 
-export const CurrentMovieReceived = (
+export const currentMovieReceived = (
   status: string,
   movie: IMovie
 ): ICurrentMovieReceived => ({
@@ -47,7 +47,7 @@ export interface ICurrentMovieError {
   id: string;
 }
 
-export const CurrentMovieError = (status: string): ICurrentMovieError => ({
+export const currentMovieError = (status: string): ICurrentMovieError => ({
   type: MovieTypes.CurrentMovieError,
   status,
   movie: null,

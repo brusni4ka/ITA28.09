@@ -5,30 +5,16 @@ import DetailedMovie from "../../components/detailedMovie";
 import MoviesList from "../../components/moviesList";
 import SortByGenrePanel from "../../components/sortBygenre-panel";
 import { RouteComponentProps } from "react-router-dom";
-import IMovies from "../../interfaces/IMovies";
-import IMovie from "../../interfaces/IMovie";
 import {
-  LoadData,
+  loadData,
 } from "../../redux/actions/moviesActions";
 import {
-  CurrentMovieLoad,
+  currentMovieLoad,
 } from "../../redux/actions/movieActions";
 import { connect, ConnectedProps } from "react-redux";
+import IReduxState from "../../interfaces/IReduxState"
 
-interface IRootState {
-  movies: {
-    status: string,
-    movies: IMovie[],
-    offset: number
-  },
-  movie: {
-    status: string,
-    movie: IMovie,
-    id: string
-  }
-}
-
-const mapStateToProps = (state: IRootState) => {
+const mapStateToProps = (state: IReduxState) => {
   return {
     movie: state.movie.movie,
     id: state.movie.id,
@@ -38,8 +24,8 @@ const mapStateToProps = (state: IRootState) => {
 };
 
 const mapDispatchToProps = {
-  CurrentMovieLoad,
-  LoadData
+  currentMovieLoad,
+  loadData
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -51,18 +37,18 @@ class DetailedPage extends React.Component<DetailedPageProps, {}> {
   componentDidMount() {
     const filmId = this.props.match.params.id;
     console.log(filmId);
-    this.props.CurrentMovieLoad("movie is loading", filmId);
+    this.props.currentMovieLoad("movie is loading", filmId);
     
   }
 
   componentDidUpdate(prevProps: DetailedPageProps) {
     if (this.props.match.params.id !== prevProps.match.params.id) {
-      this.props.CurrentMovieLoad("movie is loading", this.props.match.params.id);
+      this.props.currentMovieLoad("movie is loading", this.props.match.params.id);
     }
     if(this.props.movie !== prevProps.movie) {
       const searchBy = "genres"
       const search = this.props.movie.genres[0]
-      this.props.LoadData("movies by genre is loading", "release_date", searchBy, search, this.props.offset)
+      this.props.loadData("movies by genre is loading", "release_date", searchBy, search, this.props.offset)
     }
   }
  

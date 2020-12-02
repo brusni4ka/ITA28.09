@@ -2,15 +2,14 @@ import { takeLatest, call, put, all } from "redux-saga/effects";
 import {
   MoviesTypes,
   ILoadData,
-  ReceivedData,
-  Error,
-  ReceivedDataMore
+  receivedData,
+  error
 } from "../actions/moviesActions";
 import {
   MovieTypes,
   ICurrentMovieLoad,
-  CurrentMovieReceived,
-  CurrentMovieError
+  currentMovieReceived,
+  currentMovieError
 } from "../actions/movieActions";
 import IMovie from "../../interfaces/IMovie";
 
@@ -45,9 +44,9 @@ function* requestMoviesSaga(action: ILoadData) {
       action.search,
       action.offset,
     );
-    yield put(ReceivedData("received", movies));
+    yield put(receivedData("received", movies));
   } catch {
-    yield put(Error("error"));
+    yield put(error("error"));
   }
 }
 
@@ -59,9 +58,9 @@ function* requestCurrentMovieSaga(action: ICurrentMovieLoad) {
   try {
     console.log(action);
     const movie = yield call(fetchCurrentMovieApi, action.id);
-    yield put(CurrentMovieReceived("received", movie));
+    yield put(currentMovieReceived("received", movie));
   } catch {
-    yield put(CurrentMovieError("error"));
+    yield put(currentMovieError("error"));
   }
 }
 //ReceivedDataMore
