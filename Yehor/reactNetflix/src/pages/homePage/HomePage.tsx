@@ -85,8 +85,6 @@ class HomePage extends React.Component<PropsFromRedux, {}> {
   };
 
   render() {
-    console.log(this.props.offset)
-    
     return (
       <>
         <div className="wrapper">
