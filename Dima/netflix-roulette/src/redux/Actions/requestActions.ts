@@ -3,9 +3,13 @@ import IFilm from '../../interfaces/IFilm'
 
 export interface IFilmsRequested {
   type: RequestActionsTypes.FILMS_REQUESTED,
-  sortBy: string,
-  searchBy?: string,
-  search?: string
+  payload: {
+    offset: number,
+    sortBy: string,
+    searchBy?: string,
+    search?: string,
+    pagination?: boolean,
+  }
 };
 interface IFilmsRecieved {
   type: RequestActionsTypes.FILMS_RECIEVED,
@@ -27,29 +31,47 @@ interface ICurrentFilmFailed {
   type: RequestActionsTypes.CURRENTFILM_FAILED
 }
 
-export const FilmsRequested = (sortBy: string, searchBy?: string, search?: string):IFilmsRequested => ({
+interface IPaginationRecieved {
+  type: RequestActionsTypes.PAGINATION_RECIEVED,
+  payload: IFilm[]
+};
+interface IPaginationFailed {
+  type: RequestActionsTypes.PAGINATION_FAILED
+}
+
+export const filmsRequested = (offset: number, sortBy: string, searchBy?: string, search?: string, pagination?: boolean,):IFilmsRequested => ({
   type: RequestActionsTypes.FILMS_REQUESTED,
-  sortBy, searchBy, search
+  payload: {
+    sortBy, searchBy, search, offset, pagination
+  }
 });
-export const FilmsRecieved = (films: IFilm[]):IFilmsRecieved => ({
+export const filmsRecieved = (films: IFilm[]):IFilmsRecieved => ({
   type: RequestActionsTypes.FILMS_RECIEVED,
   payload: films
 });
-export const FilmsFailed = ():IFilmsFailed => ({
+export const filmsFailed = ():IFilmsFailed => ({
   type: RequestActionsTypes.FILMS_FAILED
 });
 
-export const CurrentFilmRequested = (id: string): ICurrentFilmRequested => ({
+export const currentFilmRequested = (id: string): ICurrentFilmRequested => ({
   type: RequestActionsTypes.CURRENTFILM_REQUESTED,
   payload: id,
 });
-export const CurrentFilmRecieved = (currentFilm: IFilm): ICurrentFilmRecieved => ({
+export const currentFilmRecieved = (currentFilm: IFilm): ICurrentFilmRecieved => ({
   type: RequestActionsTypes.CURRENTFILM_RECIEVED,
   payload: currentFilm,
 });
-export const CurrentFilmFailed = (): ICurrentFilmFailed => ({
+export const currentFilmFailed = (): ICurrentFilmFailed => ({
   type: RequestActionsTypes.CURRENTFILM_FAILED
-})
+});
+
+export const paginationRecieved = (films: IFilm[]): IPaginationRecieved => ({
+  type: RequestActionsTypes.PAGINATION_RECIEVED,
+  payload: films
+});
+export const paginationFailed = (): IPaginationFailed => ({
+  type: RequestActionsTypes.PAGINATION_FAILED
+});
 
 export type RequestActions = IFilmsRequested 
   | IFilmsRecieved 
@@ -57,3 +79,5 @@ export type RequestActions = IFilmsRequested
   | ICurrentFilmRequested
   | ICurrentFilmRecieved
   | ICurrentFilmFailed
+  | IPaginationRecieved
+  | IPaginationFailed

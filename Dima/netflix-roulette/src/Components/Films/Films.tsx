@@ -2,7 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import FilmCard from './FilmCard'
 import IFilmProps from '../../interfaces/IFIlmProps'
-import Button from 'Shared/Buttons/Button';
 
 export default function Films({ films }: IFilmProps) {
   return(
@@ -15,16 +14,9 @@ export default function Films({ films }: IFilmProps) {
                 film = { film }
               />
             </Link>
-          );
+          )
           })
-        };
-      </div>
-      <div className="films-wrapp__pagination">
-        <Button 
-          isActive
-          buttonContent = { 'See more' }
-          // buttonHandler = { () => this.props }
-        />
+        }
       </div>
     </div>
   );

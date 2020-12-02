@@ -17,7 +17,7 @@ export default class Search extends React.Component<ISearchProps> {
 
   state = {
     searchInput: '',
-    searchBy: 'title',
+    searchBy: IsearchParams.Title,
   };
 
   componentDidMount() {
@@ -36,8 +36,26 @@ export default class Search extends React.Component<ISearchProps> {
     };
   };
 
+  componentDidUpdate(prevProps: ISearchProps) {
+    if(this.props.location !== prevProps.location) {
+      const URLData = parse(this.props.location.search) as {
+        searchBy: string;
+        search: string
+      };
+      let { searchBy, search } = URLData;
+      if(searchBy) {
+        searchBy === IsearchParams.Title
+          ? this.setState({ searchBy: IsearchParams.Title, searchInput: search }) 
+            : this.setState({ searchBy: IsearchParams.Genre, searchInput: search })
+      } else {
+        this.setState({ searchBy: IsearchParams.Title })
+        search && this.setState({ searchInput: search })
+      };
+    }
+  }
+
   setSearchByState = (value: string) => {
-    this.setState({ searchBy: value});
+    this.setState({ searchBy: value, searchInput: ''});
   };
 
   setSearchInputState = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,11 +63,12 @@ export default class Search extends React.Component<ISearchProps> {
   };
 
   searchHandler = () => {
-    return this.props.handleSearchChange({
-      search: this.state.searchInput,
-      searchBy: this.state.searchBy,
-    }),
-    this.setState({ searchInput: '' });
+    return (
+      this.props.handleSearchChange({
+        search: this.state.searchInput,
+        searchBy: this.state.searchBy,
+      })
+    );
   };
 
   keyPressHandler = (e:React.KeyboardEvent) => {
@@ -70,8 +89,8 @@ export default class Search extends React.Component<ISearchProps> {
           <div className="search__menu__params">
             <p>SEARCH BY</p>
             <Button 
-              isActive = { this.state.searchBy === 'title' }
-              buttonHandler = { () => this.setSearchByState('title') }
+              isActive = { this.state.searchBy === IsearchParams.Title }
+              buttonHandler = { () => this.setSearchByState(IsearchParams.Title) }
               buttonContent = { 'Title' }
             />
             <Button

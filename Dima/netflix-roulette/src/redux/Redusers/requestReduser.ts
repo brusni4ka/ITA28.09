@@ -7,7 +7,9 @@ export enum RequestActionsTypes {
   FILMS_FAILED = 'FILMS_FAILED',
   CURRENTFILM_REQUESTED = 'CURRENTFILM_REQUESTED',
   CURRENTFILM_RECIEVED = 'CURRENTFILM_RECIEVED',
-  CURRENTFILM_FAILED = 'CURRENTFILM_FAILED'
+  CURRENTFILM_FAILED = 'CURRENTFILM_FAILED',
+  PAGINATION_RECIEVED = 'PAGINATION_RECIEVED',
+  PAGINATION_FAILED = 'PAGINATION_FAILED'
 }
 
 interface IInitialState {
@@ -15,15 +17,15 @@ interface IInitialState {
   films: IFilm[] | [],
   currentFilm: IFilm | null,
   error: string,
-  sortBy: string
+  sortBy: string,
 }
 
 const initialState: IInitialState = {
   loading: false,
   films: [],
-  currentFilm: null, // help!!!!! pleaseeeeeeee
+  currentFilm: null,
   error: '',
-  sortBy: 'release_date'
+  sortBy: 'release_date',
 }
 
 const requestReduser = (state = initialState, action: RequestActions) => {
@@ -32,7 +34,7 @@ const requestReduser = (state = initialState, action: RequestActions) => {
       return {
         ...state,
         loading: true,
-        sortBy: action.sortBy
+        sortBy: action.payload.sortBy
       };
     case 'FILMS_RECIEVED':
       return {
@@ -62,6 +64,16 @@ const requestReduser = (state = initialState, action: RequestActions) => {
         ...state,
         loading: false,
       }
+    case 'PAGINATION_RECIEVED':
+      return {
+        ...state,
+        loading: false,
+        films: [...state.films, ...action.payload],
+      }
+    case 'PAGINATION_FAILED': 
+    return {
+      ...state
+    }
     default: return state;
   };
 };

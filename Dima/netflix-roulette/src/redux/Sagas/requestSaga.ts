@@ -1,12 +1,12 @@
-import { CurrentFilmRecieved, CurrentFilmFailed } from './../Actions/requestActions';
+import { currentFilmRecieved, currentFilmFailed, paginationRecieved } from './../Actions/requestActions';
 import { RequestActionsTypes } from '../Redusers/requestReduser';
 import { takeLatest, call, put, all } from 'redux-saga/effects';
-import { IFilmsRequested, FilmsRecieved, FilmsFailed, ICurrentFilmRequested } from '../Actions/requestActions';
+import { IFilmsRequested, filmsRecieved, filmsFailed, ICurrentFilmRequested } from '../Actions/requestActions';
 import IFilm from 'interfaces/IFilm';
 
-export const getFIlms = async(sortBy: string, searchBy?: string, search?: string): Promise<IFilm[]> => {
-  const url = searchBy && search ? `https://reactjs-cdp.herokuapp.com/movies/?${searchBy === "title" ? `search=${search}` : `filter=${search}`}&searchBy=${searchBy}&sortBy=${sortBy}&sortOrder=desc&limit=9`
-  : `https://reactjs-cdp.herokuapp.com/movies?sortBy=${sortBy}&sortOrder=desc&limit=9` 
+export const getFilms = async(offset: number, sortBy: string, searchBy?: string, search?: string): Promise<IFilm[]> => {
+  const url = searchBy && search ? `https://reactjs-cdp.herokuapp.com/movies/?${searchBy === "title" ? `search=${search}` : `filter=${search}`}&searchBy=${searchBy}&sortBy=${sortBy}&sortOrder=desc&offset=${offset}&limit=9`
+  : `https://reactjs-cdp.herokuapp.com/movies?sortBy=${sortBy}&sortOrder=desc&offset=${offset}&limit=9`
   const films = await(await fetch(url)).json();
   return films.data
 };
@@ -18,23 +18,34 @@ export const getCurrentFilm = async(id: string): Promise<IFilm> => {
 
 function* requestFilmSaga(action: IFilmsRequested) {
   try {
-    const films = yield call(getFIlms, action.sortBy, action.searchBy, action.search);
-    yield put(FilmsRecieved(films));
+    const films = yield call(getFilms, 
+      action.payload.offset,
+      action.payload.sortBy, 
+      action.payload.searchBy, 
+      action.payload.search,
+    );
+    if(action.payload.pagination) {
+      yield put(paginationRecieved(films));
+    } else {
+      yield put(filmsRecieved(films));
+    }
   }
   catch {
-    yield put(FilmsFailed());
+    yield put(filmsFailed());
   };
 };
 
 function* requestCurrentFilmSaga(action: ICurrentFilmRequested) {
   try {
     const currentFilm = yield call(getCurrentFilm, action.payload);
-    yield put(CurrentFilmRecieved(currentFilm));
+    yield put(currentFilmRecieved(currentFilm));
   }
   catch {
-    yield put(CurrentFilmFailed());
+    yield put(currentFilmFailed());
   }
 };
+
+
 
 export const requestFilmsSub = () => {
   return takeLatest(RequestActionsTypes.FILMS_REQUESTED, requestFilmSaga);

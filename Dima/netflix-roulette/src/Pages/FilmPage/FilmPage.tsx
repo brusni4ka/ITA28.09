@@ -7,24 +7,20 @@ import Films from '../../Components/Films/Films'
 import Footer from '../../Components/Footer/Footer'
 // import IFilmProps from '../../interfaces/IFIlmProps'
 import { Link, RouteComponentProps } from 'react-router-dom'
-import { CurrentFilmRequested, FilmsRequested } from 'redux/Actions/requestActions'
+import { currentFilmRequested, filmsRequested } from 'redux/Actions/requestActions'
 import { connect, ConnectedProps } from 'react-redux'
-import IFilm from 'interfaces/IFilm'
 import { parse } from 'query-string'
+import InfiniteScroll from 'react-infinite-scroller'
+import { IRootState } from 'interfaces/IRootState'
 
-interface IRootState {
-  films: any, //and here too((((
-  currentFilm: IFilm,
-  id: string
-};
 const mapStateToProps = (state: IRootState) => ({
   films: state.films.films,
   currentFilm: state.films.currentFilm,
   id: state.id
 });
 const mapDispatchToProps = {
-  CurrentFilmRequested,
-  FilmsRequested,
+  currentFilmRequested,
+  filmsRequested,
 }
 
 const connector = connect(mapStateToProps, mapDispatchToProps)
@@ -33,32 +29,33 @@ type PropsFromRouteAndRedux = ConnectedProps<typeof connector> & RouteComponentP
 
 
 class FilmPage extends React.Component<PropsFromRouteAndRedux> {
-  requestsChain = async() => {
-    await this.props.CurrentFilmRequested(this.props.match.params.id) 
-    const sortBy = 'vote_average'
-    const searchBy = 'genre'
-    const search = this.props.currentFilm.genres[0]
-    await this.props.FilmsRequested(sortBy, searchBy, search)
-    await console.log(sortBy, searchBy, search)
-  }
 
   componentDidMount() {
-    this.requestsChain()
+    this.props.currentFilmRequested(this.props.match.params.id) 
   };
   
   componentDidUpdate(prevProps: PropsFromRouteAndRedux) {
-    const URLData = parse(this.props.location.search) as { 
-      sortBy: string,
-      searchBy: string,
-      search: string
-    };
-    const { sortBy } = URLData
-    const searchBy = 'genre'
-    const search = this.props.currentFilm.genres[0]
-    this.props.match.params.id !== prevProps.match.params.id 
-      && this.props.CurrentFilmRequested(this.props.match.params.id) 
-        && this.props.FilmsRequested(sortBy, searchBy, search)
+    if(this.props.currentFilm !== prevProps.currentFilm) {
+      const search = this.props.currentFilm.genres[0]
+      console.log(search)
+      this.props.filmsRequested(0, 'vote_average', 'genre', search)
+    }
+    if(this.props.match.params.id !== prevProps.match.params.id) {
+      this.props.currentFilmRequested(this.props.match.params.id) 
+    }
   }
+
+  handlePagination = (offset: number, pagination: boolean = false) => {
+    const URLData = parse(this.props.location.search) as { 
+      sortBy: string, 
+      searchBy: string, 
+      search: string 
+    };
+    const { sortBy, searchBy, search } = URLData 
+    this.props.filmsRequested(offset, sortBy, searchBy, search, pagination)
+  }
+
+  
   render() {
     const { currentFilm, films } = this.props;
     const genre = currentFilm && currentFilm.genres[0]
@@ -69,8 +66,9 @@ class FilmPage extends React.Component<PropsFromRouteAndRedux> {
             <Header />
             <Link to="/">
               <Button 
-              isActive = { true }
-              buttonContent = "Search" />
+                isActive = { true }
+                buttonContent = "Search" 
+              />
             </Link>
           </div>
           {currentFilm && <FilmInfo film = { currentFilm } />}
@@ -78,9 +76,16 @@ class FilmPage extends React.Component<PropsFromRouteAndRedux> {
         <AdditionalPanel 
           genre = { String(genre) }
         />
-        <Films 
-          films = { films }
-        />
+        <InfiniteScroll
+          pageStart={ films.length }
+          loadMore={ () => this.handlePagination(films.length + 10, true) }
+          hasMore={ true }
+          loader={ <div className="loader" key={0}>Loading ...</div> }
+        >
+          <Films 
+            films = { films }
+          />
+        </InfiniteScroll>
         <Footer />
       </div>
     );

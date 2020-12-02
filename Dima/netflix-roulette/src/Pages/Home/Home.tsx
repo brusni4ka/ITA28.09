@@ -1,24 +1,29 @@
-import React from 'react'
-import Films from '../../Components/Films/Films'
-import Header from '../../Components/Header/Header'
-import Search from '../../Components/Search/Search'
-import Sort from '../../Components/Sort/Sort'
-import Footer from '../../Components/Footer/Footer'
-import { RouteComponentProps } from 'react-router-dom'
-import { parse, stringify } from 'query-string'
-// import IFilmProps from '../../interfaces/IFIlmProps'
-import { FilmsRequested, IFilmsRequested } from 'redux/Actions/requestActions'
-import { connect, ConnectedProps } from 'react-redux'
-import IFilm from 'interfaces/IFilm'
+import React from 'react';
+
+import Films from '../../Components/Films/Films';
+import Header from '../../Components/Header/Header';
+import Search from '../../Components/Search/Search';
+import Sort from '../../Components/Sort/Sort';
+import Footer from '../../Components/Footer/Footer';
+
+import { RouteComponentProps } from 'react-router-dom';
+import { parse, stringify } from 'query-string';
+import { filmsRequested } from 'redux/Actions/requestActions';
+import { connect, ConnectedProps }from 'react-redux';
+
+import InfiniteScroll from 'react-infinite-scroller';
+import IFilm from 'interfaces/IFilm';
 
 interface IRootState {
-  films: any //i need help here((((
+  films: {
+    films: IFilm[]
+  }
 };
 const mapStateToProps = (state: IRootState) => ({
   films: state.films.films
 });
 const mapDispatchToProps = {
-  FilmsRequested
+  filmsRequested
 }
 
 const connector = connect(mapStateToProps, mapDispatchToProps)
@@ -28,19 +33,20 @@ type PropsFromRouteAndRedux = ConnectedProps<typeof connector> & RouteComponentP
 class Home extends React.Component<PropsFromRouteAndRedux> {
 
   componentDidMount() {
-    const URLData = parse(this.props.location.search) as { search: string, searchBy: string, sortBy: string };
-    const { search, searchBy, sortBy } = URLData
-    this.props.FilmsRequested(sortBy, searchBy, search);
+    const URLData = parse(this.props.location.search) as { search: string, searchBy: string };
+    const { searchBy, search, } = URLData
+    this.props.filmsRequested(0, 'release_date', searchBy, search, false);
   };
   componentDidUpdate(prevProps: PropsFromRouteAndRedux) {
-    if(this.props.location !== prevProps.location) {
+    if(this.props.location !== prevProps.location && this.props.history.action !== 'PUSH') {
       const URLData = parse(this.props.location.search) as { 
           search: string, 
           searchBy: string, 
           sortBy: string 
         };
         const { search, searchBy, sortBy } = URLData
-        this.props.FilmsRequested(sortBy, searchBy, search);
+        console.log(sortBy)
+        this.props.filmsRequested(0, sortBy, searchBy, search, false);
     };
   };
 
@@ -48,9 +54,9 @@ class Home extends React.Component<PropsFromRouteAndRedux> {
     const URLData = parse(this.props.location.search) as { sortBy: string, search: string, searchBy: string };
     const { sortBy } = URLData
     let requestData = stringify({ ...URLData, search, searchBy })
-    this.props.FilmsRequested(sortBy, searchBy, search)
+    this.props.filmsRequested(0, sortBy, searchBy, search)
     this.props.history.push({
-      pathname: "/",
+      pathname: '/search/',
       search: requestData
     });
 
@@ -59,18 +65,24 @@ class Home extends React.Component<PropsFromRouteAndRedux> {
   handleSearchChangeForSort = ({ sortBy }: { sortBy: string }) => {
     const URLData = parse(this.props.location.search) as { search: string, searchBy: string };
     const { searchBy, search } = URLData
-    let requestData = stringify({ ...URLData, sortBy } );
-    this.props.FilmsRequested(sortBy, searchBy, search)
+    let requestData = stringify({ ...URLData, sortBy } )
+    console.log(requestData)
+    this.props.filmsRequested(0, sortBy, searchBy, search)
     this.props.history.push( {
-      pathname: "/",
+      pathname: '/search/',
       search: requestData
     });
-    this.props.FilmsRequested(requestData);
   };
 
-  // handlePgination = ( offset: number ) => {
-  //   const requestData = `offset=${offset}`
-  // }
+  handlePagination = (offset: number, pagination: boolean = false) => {
+    const URLData = parse(this.props.location.search) as { 
+      sortBy: string, 
+      searchBy: string, 
+      search: string 
+    };
+    const { sortBy, searchBy, search } = URLData 
+    this.props.filmsRequested(offset, sortBy, searchBy, search, pagination)
+  }
 
   render() {
     const { films } = this.props;
@@ -87,13 +99,20 @@ class Home extends React.Component<PropsFromRouteAndRedux> {
         </div>
         <Sort
           location = { this.props.location }
+          history = {this.props.history}
           handleSearchChange = { this.handleSearchChangeForSort }
           numberOfFilms = { films.length }
         />
-        <Films 
-          films = { films }
-          // handlePagination = { this.handlePgination }
-        />
+        <InfiniteScroll
+          pageStart={ films.length }
+          loadMore={ () => this.handlePagination(films.length + 10, true) }
+          hasMore={ true }
+          loader={ <div className="loader" key={0}>Loading ...</div> }
+        >
+          <Films 
+            films = { films }
+          />
+        </InfiniteScroll>
         <Footer />
       </div>
     );
