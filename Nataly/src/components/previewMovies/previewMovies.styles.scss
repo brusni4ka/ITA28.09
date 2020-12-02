@@ -1,0 +1,25 @@
+
+.preview__movies-card-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-top: 27px;
+}
+
+.preview__movies-loadMore-btn-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.preview__movies-loadMore-btn {
+   
+    margin-top: 20px 
+} 
+
+.preview__movies-loadMore-btn:hover {
+    cursor: pointer;
+    color: indianred;
+    // font-size: 24px;
+}
+
+
