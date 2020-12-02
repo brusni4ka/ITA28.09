@@ -4,9 +4,9 @@ export enum MoviesTypes {
   LoadData = "LoadData",
   ReceivedData = "ReceivedData",
   Error = "Error",
-  CurrentMovieLoad = "CurrentMovieLoad",
-  CurrentMovieReceived = "CurrentMovieReceived",
-  CurrentMovieError = "CurrentMovieError",
+  DataOffsetIncrement = "DataOffsetIncrement",
+  ReceivedDataMore = "ReceivedDataMore",
+  DataOffsetDecrement = "DataOffsetDecrement"
 }
 
 export interface ILoadData {
@@ -16,13 +16,15 @@ export interface ILoadData {
   sortBy?: string;
   searchBy?: string;
   search?: string;
+  offset?: number
 }
 
 export const LoadData = (
   status: string,
   sortBy?: string,
   searchBy?: string,
-  search?: string
+  search?: string,
+  offset?: number
 ): ILoadData => ({
   type: MoviesTypes.LoadData,
   movies: [],
@@ -30,12 +32,14 @@ export const LoadData = (
   sortBy,
   searchBy,
   search,
+  offset
 });
 
 export interface IReceivedData {
   type: MoviesTypes;
   status: string;
   movies: IMovie[];
+  offset?: number;
 }
 
 export const ReceivedData = (
@@ -47,10 +51,27 @@ export const ReceivedData = (
   movies: movies,
 });
 
+export interface IReceivedDataMore {
+  type: MoviesTypes;
+  status: string;
+  movies: IMovie[];
+  offset?: number;
+}
+
+export const ReceivedDataMore = (
+  status: string,
+  movies: IMovie[]
+): IReceivedDataMore => ({
+  type: MoviesTypes.ReceivedData,
+  status: status,
+  movies: movies,
+})
+
 export interface IError {
   type: MoviesTypes;
   movies: IMovie[];
   status: string;
+  offset?: number;
 }
 
 export const Error = (status: string): IError => ({
@@ -59,4 +80,28 @@ export const Error = (status: string): IError => ({
   status: status,
 });
 
-export type IMoviesAction = ILoadData | IReceivedData | IError;
+export interface IDataOffsetIncrement {
+  type: MoviesTypes;
+  movies?: IMovie[];
+  status?: string;
+  offset?: number;
+}
+
+export const DataOffsetIncrement = (): IDataOffsetIncrement => ({
+  type: MoviesTypes.DataOffsetIncrement
+})
+
+export interface IDataOffsetDecrement {
+  type: MoviesTypes;
+  movies?: IMovie[];
+  status?: string;
+  offset?: number;
+}
+
+export const DataOffsetDecrement = (): IDataOffsetDecrement => ({
+  type: MoviesTypes.DataOffsetDecrement
+})
+
+
+
+export type IMoviesAction = ILoadData | IReceivedData | IError | IReceivedDataMore;

@@ -8,28 +8,38 @@ import { RouteComponentProps } from "react-router-dom";
 import IMovies from "../../interfaces/IMovies";
 import IMovie from "../../interfaces/IMovie";
 import {
+  LoadData,
+} from "../../redux/actions/moviesActions";
+import {
   CurrentMovieLoad,
-  CurrentMovieReceived,
 } from "../../redux/actions/movieActions";
 import { connect, ConnectedProps } from "react-redux";
 
 interface IRootState {
-  movie: { movie: IMovie };
-  id: string;
-  movies: any;
+  movies: {
+    status: string,
+    movies: IMovie[],
+    offset: number
+  },
+  movie: {
+    status: string,
+    movie: IMovie,
+    id: string
+  }
 }
 
 const mapStateToProps = (state: IRootState) => {
   return {
     movie: state.movie.movie,
-    id: state.id,
+    id: state.movie.id,
     movies: state.movies.movies,
+    offset: state.movies.offset
   };
 };
 
 const mapDispatchToProps = {
   CurrentMovieLoad,
-  CurrentMovieReceived,
+  LoadData
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -42,10 +52,23 @@ class DetailedPage extends React.Component<DetailedPageProps, {}> {
     const filmId = this.props.match.params.id;
     console.log(filmId);
     this.props.CurrentMovieLoad("movie is loading", filmId);
+    
   }
 
+  componentDidUpdate(prevProps: DetailedPageProps) {
+    if (this.props.match.params.id !== prevProps.match.params.id) {
+      this.props.CurrentMovieLoad("movie is loading", this.props.match.params.id);
+    }
+    if(this.props.movie !== prevProps.movie) {
+      const searchBy = "genres"
+      const search = this.props.movie.genres[0]
+      this.props.LoadData("movies by genre is loading", "release_date", searchBy, search, this.props.offset)
+    }
+  }
+ 
+
   render() {
-    const { movie } = this.props;
+    const { movie, movies } = this.props;
     console.log(movie);
 
     return (
@@ -63,11 +86,11 @@ class DetailedPage extends React.Component<DetailedPageProps, {}> {
           </div>
         </div>
         <div className="main-container">
-          <SortByGenrePanel />
+          {movie ? <SortByGenrePanel genre={movie.genres[0]}/>: <SortByGenrePanel genre={"genre"}/>}
         </div>
-        {/* <div className="main-container">
+        <div className="main-container">
         <MoviesList movies={movies} />
-      </div> */}
+      </div>
         <div className="wrapper-footer">
           <div className="main-container">
             <Footer />

@@ -44,8 +44,26 @@ class SortPanel extends React.Component<ISortPanelProps, ISortPanelState> {
       } else {
         this.setState({ sortBy: SortBy.Rating });
       }
+    } else {
+      this.setState({ sortBy: SortBy.Date });
     }
   }
+  componentDidUpdate(prevProps: ISortPanelProps) {
+    if (this.props.location !== prevProps.location) {
+      const querySrch = parse(this.props.location.search) as { sortBy: string };
+
+    const { sortBy } = querySrch;
+    if (sortBy) {
+      if (sortBy === SortBy.Date) {
+        this.setState({ sortBy: SortBy.Date });
+      } else {
+        this.setState({ sortBy: SortBy.Rating });
+      }
+    } else {
+      this.setState({ sortBy: SortBy.Date });
+    }
+      }
+    }
 
   render() {
     const { moviesLength } = this.props;

@@ -1,6 +1,7 @@
 import React from "react";
 import "./DetailedMovie.css";
 import IMovie from "../../interfaces/IMovie";
+import ReactImageFallback from "react-image-fallback";
 
 interface IMovieProps {
   movie: IMovie;
@@ -9,7 +10,11 @@ interface IMovieProps {
 function DetailedMovie({ movie }: IMovieProps) {
   return (
     <div className="dmovie">
-      <img className="dmovie_img" src={movie.poster_path} alt={movie.title} />
+      <ReactImageFallback
+                    src={movie.poster_path}
+                    fallbackImage="https://media.comicbook.com/files/img/default-movie.png"
+                    alt={movie.title}
+                    className="dmovie_img" />
       <div className="dmovie_movieInfo">
         <div className="dmovie_title-rating">
           <h1 className="dmovie_title">{movie.title}</h1>
