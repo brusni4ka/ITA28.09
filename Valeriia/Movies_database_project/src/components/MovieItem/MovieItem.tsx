@@ -1,6 +1,7 @@
 import React from "react";
 import "./MovieItem.scss";
-import placeholder from "../../assets/images/placeholder.jpg";
+import Image from "../../components/Image";
+import { IMovie } from "../../types";
 
 interface IMovieItemProps {
   poster_path: string;
@@ -15,20 +16,10 @@ const MovieItem = ({
   release_date,
   genres,
 }: IMovieItemProps) => {
-  const handlerImage = (e: React.SyntheticEvent<HTMLImageElement>) => {
-    const target = e.target as HTMLImageElement;
-    target.src = placeholder;
-  };
-
   return (
     <div className="item">
       <div className="item__poster">
-        <img
-          src={poster_path}
-          onError={(e) => handlerImage(e)}
-          alt="movie"
-          className="item__img"
-        />
+        <Image poster_path={poster_path} title={title} />
       </div>
       <div className="item__info">
         <span>{title}</span>

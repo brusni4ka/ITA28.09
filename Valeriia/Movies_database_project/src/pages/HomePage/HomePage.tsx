@@ -10,6 +10,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 interface IHomePageState {
   sortBy: string;
+  hasMore: boolean;
 }
 
 type HomePageProps = MoviesConnectProps & RouteComponentProps;
@@ -17,6 +18,7 @@ type HomePageProps = MoviesConnectProps & RouteComponentProps;
 class HomePage extends Component<HomePageProps, IHomePageState> {
   state = {
     sortBy: "release_date",
+    hasMore: false,
   };
 
   fetchData = (offset: number = 0, isLazyLoading: boolean = false) => {
@@ -57,7 +59,12 @@ class HomePage extends Component<HomePageProps, IHomePageState> {
     this.fetchData();
   };
 
-  componentDidUpdate = (prevProps: RouteComponentProps) => {
+  componentDidUpdate = (prevProps: HomePageProps) => {
+    if (this.props.movies.length !== prevProps.movies.length) {
+      this.setState({
+        hasMore: this.props.movies.length > prevProps.movies.length,
+      });
+    }
     if (
       this.props.location !== prevProps.location &&
       this.props.history.action === "POP"
@@ -95,8 +102,13 @@ class HomePage extends Component<HomePageProps, IHomePageState> {
         <InfiniteScroll
           dataLength={this.props.movies.length}
           next={() => this.fetchData(this.props.movies.length + 10, true)}
-          hasMore={true}
-          loader={<h4 style={{ textAlign: "center" }}>Loading...</h4>}
+          hasMore={this.state.hasMore}
+          loader={<h4>Loading...</h4>}
+          endMessage={
+            <p style={{ textAlign: "center" }}>
+              <b>Yay! You have seen it all</b>
+            </p>
+          }
         >
           <Movies
             movies={this.props.movies}

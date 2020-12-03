@@ -1,8 +1,8 @@
 import React from "react";
 import { IMovie } from "../../types";
 import Loader from "../Loader";
+import Image from "../../components/Image";
 import "./Movie.scss";
-import placeholder from "../../assets/images/placeholder.jpg";
 
 interface IMovieProps {
   movie: IMovie;
@@ -10,11 +10,6 @@ interface IMovieProps {
 }
 
 const Movie = ({ movie, isLoading }: IMovieProps) => {
-  const handlerImage = (e: React.SyntheticEvent<HTMLImageElement>) => {
-    const target = e.target as HTMLImageElement;
-    target.src = placeholder;
-  };
-
   if (isLoading) {
     return <Loader isLoading={isLoading} />;
   } else {
@@ -22,12 +17,7 @@ const Movie = ({ movie, isLoading }: IMovieProps) => {
       <div className="movie">
         <div className="movie__description">
           <div className="movie__poster">
-            <img
-              src={movie.poster_path}
-              onError={(e) => handlerImage(e)}
-              alt={movie.title}
-              className="movie__img"
-            ></img>
+            <Image poster_path={movie.poster_path} title={movie.title} />
           </div>
           <div className="movie__info">
             <div className="movie__heading">

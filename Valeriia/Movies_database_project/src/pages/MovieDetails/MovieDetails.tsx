@@ -7,7 +7,7 @@ import Header from "../../components/Header";
 import { IMovieDetailsState } from "../../store/reducers/MovieReducer";
 import { MovieConnectProps } from "./index";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { parse } from "query-string";
+import { IMovie } from "../../types";
 
 interface IRouteInfo {
   id: string;
@@ -16,18 +16,15 @@ interface IRouteInfo {
 type MovieProps = MovieConnectProps & RouteComponentProps<IRouteInfo>;
 
 class MovieDetails extends Component<MovieProps, IMovieDetailsState> {
-  fetchData = (offset: number = 0, isLazyLoading: boolean = false) => {
-    const queryUrl = parse(this.props.location.search) as {
-      filterBy: string;
-      searchTerm: string;
-      sortBy: string;
-    };
-    const { searchTerm, filterBy, sortBy } = queryUrl;
-    const sortByType = sortBy ? sortBy : "release_date";
+  fetchData = (
+    offset: number = 0,
+    isLazyLoading: boolean = false,
+    movie: IMovie
+  ) => {
     this.props.onRequestMovies(
-      sortByType,
-      filterBy,
-      searchTerm,
+      "genres",
+      "release_date",
+      movie.genres.join(","),
       offset,
       isLazyLoading
     );
@@ -62,7 +59,13 @@ class MovieDetails extends Component<MovieProps, IMovieDetailsState> {
         </div>
         <InfiniteScroll
           dataLength={this.props.movies.length}
-          next={() => this.fetchData(this.props.movies.length + 10, true)}
+          next={() =>
+            this.fetchData(
+              this.props.movies.length + 10,
+              true,
+              this.props.movie!
+            )
+          }
           hasMore={true}
           loader={<h4>Loading...</h4>}
         >
