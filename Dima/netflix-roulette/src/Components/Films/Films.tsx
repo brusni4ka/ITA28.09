@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import FilmCard from './FilmCard'
 import IFilmProps from '../../interfaces/IFIlmProps'
 
-export default function Films({ films }: IFilmProps) {
+function Films({ films }: IFilmProps) {
   return(
     <div className="films-wrapp">
       <div className="films-wrapp__content">
@@ -21,3 +21,5 @@ export default function Films({ films }: IFilmProps) {
     </div>
   );
 }
+
+export default Films

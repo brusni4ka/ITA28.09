@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Header from '../../Components/Header/Header'
 import Button from '../../Shared/Buttons/Button'
 import FilmInfo from '../../Components/FilmInformation/FilmInformation'
@@ -28,37 +28,33 @@ const connector = connect(mapStateToProps, mapDispatchToProps)
 type PropsFromRouteAndRedux = ConnectedProps<typeof connector> & RouteComponentProps<{ id: string }>
 
 
-class FilmPage extends React.Component<PropsFromRouteAndRedux> {
+function FilmPage (props: PropsFromRouteAndRedux) {
 
-  componentDidMount() {
-    this.props.currentFilmRequested(this.props.match.params.id) 
-  };
-  
-  componentDidUpdate(prevProps: PropsFromRouteAndRedux) {
-    if(this.props.currentFilm !== prevProps.currentFilm) {
-      const search = this.props.currentFilm.genres[0]
-      console.log(search)
-      this.props.filmsRequested(0, 'vote_average', 'genre', search)
-    }
-    if(this.props.match.params.id !== prevProps.match.params.id) {
-      this.props.currentFilmRequested(this.props.match.params.id) 
-    }
-  }
+  useEffect(() => {
+    props.currentFilmRequested(props.match.params.id)
+  }, []);
 
-  handlePagination = (offset: number, pagination: boolean = false) => {
-    const URLData = parse(this.props.location.search) as { 
+  useEffect(() => {
+    props.currentFilmRequested(props.match.params.id)
+  }, [props.match.params.id]);
+
+  useEffect(() => {
+    const search = currentFilm ? props.currentFilm.genres[0] : ''
+    props.filmsRequested(0, 'vote_average', 'genre', search)
+  }, [props.currentFilm])
+
+
+  const handlePagination = (offset: number, pagination: boolean = false) => {
+    const URLData = parse(props.location.search) as { 
       sortBy: string, 
       searchBy: string, 
       search: string 
     };
     const { sortBy, searchBy, search } = URLData 
-    this.props.filmsRequested(offset, sortBy, searchBy, search, pagination)
+    props.filmsRequested(offset, sortBy, searchBy, search, pagination)
   }
-
-  
-  render() {
-    const { currentFilm, films } = this.props;
-    const genre = currentFilm && currentFilm.genres[0]
+  const { currentFilm, films } = props;
+  const genre = currentFilm && currentFilm.genres[0]
     return(
       <div>
         <div className="first-screen">
@@ -78,7 +74,7 @@ class FilmPage extends React.Component<PropsFromRouteAndRedux> {
         />
         <InfiniteScroll
           pageStart={ films.length }
-          loadMore={ () => this.handlePagination(films.length + 10, true) }
+          loadMore={ () => handlePagination(films.length + 10, true) }
           hasMore={ true }
           loader={ <div className="loader" key={0}>Loading ...</div> }
         >
@@ -90,6 +86,5 @@ class FilmPage extends React.Component<PropsFromRouteAndRedux> {
       </div>
     );
   };
-};
 
 export default connector(FilmPage)

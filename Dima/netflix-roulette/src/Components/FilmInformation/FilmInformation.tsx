@@ -1,5 +1,6 @@
 import React from 'react'
 import IFilm from '../../interfaces/IFilm'
+import Image from '../../Shared/Images/Image'
 interface IFilmInfo {
   film: IFilm
 };
@@ -7,7 +8,10 @@ interface IFilmInfo {
 const FilmInfo = ({ film }: IFilmInfo) => {
   return(
     <div className="first-screen__film-information" >
-      <img src={ film.poster_path } alt={ film.title }/>
+      <Image 
+        filmImage = { film.poster_path }
+        filmAlt = { film.title }
+      />
       <div className="first-screen__film-information__details" >
         <h2>{ film.title }</h2>
         <p>{ film.tagline }</p>

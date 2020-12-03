@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import Films from '../../Components/Films/Films';
 import Header from '../../Components/Header/Header';
@@ -30,84 +30,77 @@ const connector = connect(mapStateToProps, mapDispatchToProps)
 
 type PropsFromRouteAndRedux = ConnectedProps<typeof connector> & RouteComponentProps
 
-class Home extends React.Component<PropsFromRouteAndRedux> {
+function Home(props: PropsFromRouteAndRedux) {
 
-  componentDidMount() {
-    const URLData = parse(this.props.location.search) as { search: string, searchBy: string };
+  useEffect(() => {
+    const URLData = parse(props.location.search) as { search: string, searchBy: string };
     const { searchBy, search, } = URLData
-    this.props.filmsRequested(0, 'release_date', searchBy, search, false);
-  };
-  componentDidUpdate(prevProps: PropsFromRouteAndRedux) {
-    if(this.props.location !== prevProps.location && this.props.history.action !== 'PUSH') {
-      const URLData = parse(this.props.location.search) as { 
-          search: string, 
-          searchBy: string, 
-          sortBy: string 
-        };
-        const { search, searchBy, sortBy } = URLData
-        console.log(sortBy)
-        this.props.filmsRequested(0, sortBy, searchBy, search, false);
+    props.filmsRequested(0, 'release_date', searchBy, search, false);
+  }, []);
+  useEffect(() => {
+    const URLData = parse(props.location.search) as { 
+      search: string, 
+      searchBy: string, 
+      sortBy: string 
     };
-  };
+    const { search, searchBy, sortBy } = URLData
+    props.filmsRequested(0, sortBy, searchBy, search, false);
+  }, [props.location, props.history.action]);
 
-  handleSearchChangeForSearch = ( { search, searchBy }: { search: string, searchBy: string } ) => {
-    const URLData = parse(this.props.location.search) as { sortBy: string, search: string, searchBy: string };
+  const handleSearchChangeForSearch = ( { search, searchBy }: { search: string, searchBy: string } ) => {
+    const URLData = parse(props.location.search) as { sortBy: string, search: string, searchBy: string };
     const { sortBy } = URLData
     let requestData = stringify({ ...URLData, search, searchBy })
-    this.props.filmsRequested(0, sortBy, searchBy, search)
-    this.props.history.push({
-      pathname: '/search/',
+    props.filmsRequested(0, sortBy, searchBy, search)
+    props.history.push({
+      pathname: '/search',
       search: requestData
     });
 
   };
 
-  handleSearchChangeForSort = ({ sortBy }: { sortBy: string }) => {
-    const URLData = parse(this.props.location.search) as { search: string, searchBy: string };
+  const handleSearchChangeForSort = ({ sortBy }: { sortBy: string }) => {
+    const URLData = parse(props.location.search) as { search: string, searchBy: string };
     const { searchBy, search } = URLData
     let requestData = stringify({ ...URLData, sortBy } )
     console.log(requestData)
-    this.props.filmsRequested(0, sortBy, searchBy, search)
-    this.props.history.push( {
-      pathname: '/search/',
+    props.filmsRequested(0, sortBy, searchBy, search)
+    props.history.push( {
+      pathname: '/search',
       search: requestData
     });
   };
 
-  handlePagination = (offset: number, pagination: boolean = false) => {
-    const URLData = parse(this.props.location.search) as { 
+  const handlePagination = (offset: number, pagination: boolean = false) => {
+    const URLData = parse(props.location.search) as { 
       sortBy: string, 
       searchBy: string, 
       search: string 
     };
     const { sortBy, searchBy, search } = URLData 
-    this.props.filmsRequested(offset, sortBy, searchBy, search, pagination)
+    props.filmsRequested(offset, sortBy, searchBy, search, pagination)
   }
 
-  render() {
-    const { films } = this.props;
+  const { films } = props;
     return (
       <div className="main-wrapp">
         <div className="top">
           <div className="top__wrapp">
             <Header />
             <Search 
-              location = { this.props.location }
-              handleSearchChange = { this.handleSearchChangeForSearch }
+              handleSearchChange = { handleSearchChangeForSearch }
             />
           </div>
         </div>
         <Sort
-          location = { this.props.location }
-          history = {this.props.history}
-          handleSearchChange = { this.handleSearchChangeForSort }
+          handleSearchChange = { handleSearchChangeForSort }
           numberOfFilms = { films.length }
         />
         <InfiniteScroll
-          pageStart={ films.length }
-          loadMore={ () => this.handlePagination(films.length + 10, true) }
-          hasMore={ true }
-          loader={ <div className="loader" key={0}>Loading ...</div> }
+          pageStart = { films.length }
+          loadMore = { () => handlePagination(films.length + 10, true) }
+          hasMore = { true || false }
+          loader = { <div className="loader" key={0}>Loading ...</div> }
         >
           <Films 
             films = { films }
@@ -117,6 +110,5 @@ class Home extends React.Component<PropsFromRouteAndRedux> {
       </div>
     );
   };
-};
 
 export default connector(Home);

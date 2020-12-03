@@ -1,6 +1,6 @@
 import FilmPage from 'Pages/FilmPage/FilmPage';
 import React from 'react';
-import { Switch, Route, } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import Home from './Pages/Home/Home';
 
 class App extends React.Component {
