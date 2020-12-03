@@ -1,10 +1,9 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import Movie from "../../components/Movie";
 import { RouteComponentProps } from "react-router";
 import Movies from "../../components/Movies";
 import "./MovieDetails.scss";
 import Header from "../../components/Header";
-import { IMovieDetailsState } from "../../store/reducers/MovieReducer";
 import { MovieConnectProps } from "./index";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { IMovie } from "../../types";
@@ -15,13 +14,13 @@ interface IRouteInfo {
 
 type MovieProps = MovieConnectProps & RouteComponentProps<IRouteInfo>;
 
-class MovieDetails extends Component<MovieProps, IMovieDetailsState> {
-  fetchData = (
+const MovieDetails = (props: MovieProps) => {
+  const fetchData = (
     offset: number = 0,
     isLazyLoading: boolean = false,
     movie: IMovie
   ) => {
-    this.props.onRequestMovies(
+    props.onRequestMovies(
       "genres",
       "release_date",
       movie.genres.join(","),
@@ -30,54 +29,38 @@ class MovieDetails extends Component<MovieProps, IMovieDetailsState> {
     );
   };
 
-  componentDidMount = () => {
-    const filmId = Number(this.props.match.params.id);
-    this.props.onRequestMovie(filmId);
+  useEffect(() => {
+    const filmId = Number(props.match.params.id);
+    props.onRequestMovie(filmId);
     window.scrollTo(0, 0);
-  };
+  }, [props.match.params.id]);
 
-  componentDidUpdate = (prevProps: MovieProps) => {
-    if (this.props.match.params.id !== prevProps.match.params.id) {
-      const filmId = Number(this.props.match.params.id);
-      this.props.onRequestMovie(filmId);
-      window.scrollTo(0, 0);
-    }
-  };
-
-  render() {
-    return (
-      <>
-        <Header isLinkToShow={true} />
-        <div className="movieDetails">
-          {this.props.movie ? (
-            <Movie movie={this.props.movie!} isLoading={this.props.isLoading} />
-          ) : (
-            <div>
-              <p>The film by this id is not exist</p>
-            </div>
-          )}
-        </div>
-        <InfiniteScroll
-          dataLength={this.props.movies.length}
-          next={() =>
-            this.fetchData(
-              this.props.movies.length + 10,
-              true,
-              this.props.movie!
-            )
-          }
-          hasMore={true}
-          loader={<h4>Loading...</h4>}
-        >
-          <Movies
-            movies={this.props.movies}
-            isLoading={this.props.isLoading}
-            isError={this.props.isError}
-          />
-        </InfiniteScroll>
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <Header isLinkToShow={true} />
+      <div className="movieDetails">
+        {props.movie ? (
+          <Movie movie={props.movie!} isLoading={props.isLoading} />
+        ) : (
+          <div>
+            <p>The film by this id is not exist</p>
+          </div>
+        )}
+      </div>
+      <InfiniteScroll
+        dataLength={props.movies.length}
+        next={() => fetchData(props.movies.length + 10, true, props.movie!)}
+        hasMore={true}
+        loader={<h4>Loading...</h4>}
+      >
+        <Movies
+          movies={props.movies}
+          isLoading={props.isLoading}
+          isError={props.isError}
+        />
+      </InfiniteScroll>
+    </>
+  );
+};
 
 export default MovieDetails;
