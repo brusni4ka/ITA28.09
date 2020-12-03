@@ -1,17 +1,17 @@
 import {MoviesActionTypes} from './actionTypes';
 import { IMovie } from '../../types';
 
-interface IRequestMoviesSuccessAction{
-    type: MoviesActionTypes.ON_REQUEST_MOVIES_SUCCESS;
-    movies:IMovie[];
-}
+// export interface IRequestMoviesSuccessAction{
+//     type: MoviesActionTypes.ON_REQUEST_MOVIES_SUCCESS;
+//     movies:IMovie[];
+// }
 
 interface IRequestMoviesErrorAction{
     type: MoviesActionTypes.ON_REQUEST_MOVIES_ERROR;
     error: string
 }
 
-interface IRequestMoviesWithLazyLoadingAction{
+export interface IRequestMoviesWithLazyLoadingAction{
     type: MoviesActionTypes.ON_REQUEST_MOVIES_WITH_LAZY_LOADING;
     movies: IMovie[]
 }
@@ -25,11 +25,11 @@ export interface IRequestMoviesAction{
     isLazyLoading?: boolean
 }
 
-export const onRequestSuccessMovies = (movies: IMovie[]): IRequestMoviesSuccessAction => (
-    {
-    type: MoviesActionTypes.ON_REQUEST_MOVIES_SUCCESS,
-    movies
-});
+// export const onRequestSuccessMovies = (movies: IMovie[]): IRequestMoviesSuccessAction => (
+//     {
+//     type: MoviesActionTypes.ON_REQUEST_MOVIES_SUCCESS,
+//     movies
+// });
 
 export const onRequestErrorMovies = (error: string): IRequestMoviesErrorAction => (
     {
@@ -56,5 +56,5 @@ export const onRequestMovies = (sortByType: string, searchBy?: string, searchVal
 
 
 export type MoviesAction = 
-IRequestMoviesSuccessAction |
+// IRequestMoviesSuccessAction |
 IRequestMoviesErrorAction | IRequestMoviesAction | IRequestMoviesWithLazyLoadingAction;

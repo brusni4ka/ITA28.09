@@ -1,14 +1,14 @@
-import React, { Component, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import SearchForm from "../../components/SearchForm";
 import SortPannel from "../../components/SortPannel";
 import Movies from "../../components/Movies";
 import { RouteComponentProps } from "react-router";
 import { parse, stringify } from "query-string";
 import Header from "../../components/Header";
-import { MoviesConnectProps } from "./index";
 import InfiniteScroll from "react-infinite-scroll-component";
-
-type HomePageProps = MoviesConnectProps & RouteComponentProps;
+import { IRootState } from "../../index";
+import { onRequestMovies } from "../../store/actions/moviesAction";
 
 const usePrevious = (value: any) => {
   const ref = useRef();
@@ -18,10 +18,14 @@ const usePrevious = (value: any) => {
   return ref.current;
 };
 
-const HomePage = (props: HomePageProps) => {
+const HomePage = (props: any) => {
   const [sortType, setSortType] = useState("release_date");
   const [hasMore, setHasMore] = useState(false);
   const prevMoviesLength = usePrevious(props.movies.length);
+  const movies = useSelector((state: IRootState) => state.movies.movies);
+  const isLoading = useSelector((state: IRootState) => state.movies.isLoading);
+  const isError = useSelector((state: IRootState) => state.movies.isError);
+  const dispatch = useDispatch();
   useEffect(() => {
     if (props.movies.length > prevMoviesLength!) {
       setHasMore(props.movies.length > prevMoviesLength!);
@@ -38,12 +42,8 @@ const HomePage = (props: HomePageProps) => {
     };
     const { searchTerm, filterBy, sortBy } = queryUrl;
     const sortByType = sortBy ? sortBy : sortType;
-    props.onRequestMovies(
-      sortByType,
-      filterBy,
-      searchTerm,
-      offset,
-      isLazyLoading
+    dispatch(
+      onRequestMovies(sortByType, filterBy, searchTerm, offset, isLazyLoading)
     );
     setSortType(sortByType);
   };
@@ -57,7 +57,7 @@ const HomePage = (props: HomePageProps) => {
     const { sortBy } = queryUrl;
     const query = stringify({ ...queryUrl, searchTerm, filterBy });
     const sortByType = sortBy ? sortBy : sortType;
-    props.onRequestMovies(sortByType, filterBy, searchTerm);
+    onRequestMovies(sortByType, filterBy, searchTerm);
     props.history.push({
       pathname: "/search/Search",
       search: query,
@@ -76,7 +76,7 @@ const HomePage = (props: HomePageProps) => {
       search: query,
     });
     setSortType(sortByType);
-    props.onRequestMovies(sortByType, filterBy, searchTerm);
+    onRequestMovies(sortByType, filterBy, searchTerm);
   };
 
   return (
@@ -84,7 +84,7 @@ const HomePage = (props: HomePageProps) => {
       <Header isLinkToShow={false} />
       <SearchForm onSearchClick={onSearchHandler} />
       <SortPannel
-        moviesCount={props.movies.length}
+        moviesCount={movies.length}
         onClickSortBy={onClickSortByHandler}
         sortBy={sortType}
       />
@@ -95,11 +95,7 @@ const HomePage = (props: HomePageProps) => {
         hasMore={hasMore}
         loader={<h4 style={{ textAlign: "center" }}>Loading...</h4>}
       >
-        <Movies
-          movies={props.movies}
-          isLoading={props.isLoading}
-          isError={props.isError}
-        />
+        <Movies movies={movies} isLoading={isLoading} isError={isError} />
       </InfiniteScroll>
     </>
   );

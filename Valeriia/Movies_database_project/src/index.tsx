@@ -1,12 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
-import { combineReducers, createStore, applyMiddleware } from "redux";
+import { combineReducers, applyMiddleware } from "redux";
+import { configureStore } from "@reduxjs/toolkit";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { Provider } from "react-redux";
 import createSagaMiddleware from "redux-saga";
-import { IMoviesState } from "./store/reducers/MoviesReducer";
-import moviesReducer from "./store/reducers/MoviesReducer";
+//import { IMoviesState } from "./store/reducers/MoviesReducer";
+import { reducer, IMoviesState } from "./store/reducers/MoviesReducer";
 import movieReducer from "./store/reducers/MovieReducer";
 import "./index.css";
 import App from "./App";
@@ -17,9 +18,11 @@ import rootSaga from "./store/sagas/rootSaga";
 import { IMovie } from "./types";
 
 const rootReducer = combineReducers({
-  movies: moviesReducer,
+  movies: reducer,
   movie: movieReducer,
 });
+
+export type RootState = ReturnType<typeof rootReducer>;
 
 export interface IRootState {
   movies: IMoviesState;
@@ -38,7 +41,7 @@ const composeEnhancers = composeWithDevTools({ trace: true });
 
 const sagaMiddleware = createSagaMiddleware();
 
-const store = createStore(
+const store = configureStore(
   rootReducer,
   composeEnhancers(applyMiddleware(sagaMiddleware))
 );

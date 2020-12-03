@@ -1,10 +1,10 @@
 import {MoviesActionTypes} from '../actions/actionTypes';
 import {all, call, put, takeLatest} from 'redux-saga/effects';
 import {
-    IRequestMoviesAction,
-    onRequestErrorMovies, onRequestSuccessMovies, onRequestMoviesWithLazyLoading
-} from '../actions/moviesAction';
+    IRequestMoviesAction, onRequestErrorMovies, onRequestMoviesWithLazyLoading} from '../actions/moviesAction';
+    
 import {fetchListOfMovies} from './services';
+import { onRequestSuccessMovies } from '../reducers/MoviesReducer';
 
 function* requestMoviesSaga(action: IRequestMoviesAction){
     try{

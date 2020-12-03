@@ -4,34 +4,45 @@ import { RouteComponentProps } from "react-router";
 import Movies from "../../components/Movies";
 import "./MovieDetails.scss";
 import Header from "../../components/Header";
-import { MovieConnectProps } from "./index";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { IMovie } from "../../types";
+import { onRequestMovies } from "../../store/actions/moviesAction";
+import { useDispatch, useSelector } from "react-redux";
+import { IRootMovieState } from "../..";
+import { onRequestMovie } from "../../store/actions/movieActions";
 
 interface IRouteInfo {
   id: string;
 }
 
-type MovieProps = MovieConnectProps & RouteComponentProps<IRouteInfo>;
+const MovieDetails = (props: RouteComponentProps<IRouteInfo>) => {
+  const movie = useSelector((state: IRootMovieState) => state.movie.movie);
+  const movies = useSelector((state: IRootMovieState) => state.movies.movies);
+  const isLoading = useSelector(
+    (state: IRootMovieState) => state.movies.isLoading
+  );
+  const isError = useSelector((state: IRootMovieState) => state.movies.isError);
+  const dispatch = useDispatch();
 
-const MovieDetails = (props: MovieProps) => {
   const fetchData = (
     offset: number = 0,
     isLazyLoading: boolean = false,
     movie: IMovie
   ) => {
-    props.onRequestMovies(
-      "genres",
-      "release_date",
-      movie.genres.join(","),
-      offset,
-      isLazyLoading
+    dispatch(
+      onRequestMovies(
+        "genres",
+        "release_date",
+        movie.genres.join(","),
+        offset,
+        isLazyLoading
+      )
     );
   };
 
   useEffect(() => {
     const filmId = Number(props.match.params.id);
-    props.onRequestMovie(filmId);
+    dispatch(onRequestMovie(filmId));
     window.scrollTo(0, 0);
   }, [props.match.params.id]);
 
@@ -39,8 +50,8 @@ const MovieDetails = (props: MovieProps) => {
     <>
       <Header isLinkToShow={true} />
       <div className="movieDetails">
-        {props.movie ? (
-          <Movie movie={props.movie!} isLoading={props.isLoading} />
+        {movie ? (
+          <Movie movie={movie!} isLoading={isLoading} />
         ) : (
           <div>
             <p>The film by this id is not exist</p>
@@ -48,16 +59,12 @@ const MovieDetails = (props: MovieProps) => {
         )}
       </div>
       <InfiniteScroll
-        dataLength={props.movies.length}
-        next={() => fetchData(props.movies.length + 10, true, props.movie!)}
+        dataLength={movies.length}
+        next={() => fetchData(movies.length + 10, true, movie!)}
         hasMore={true}
         loader={<h4>Loading...</h4>}
       >
-        <Movies
-          movies={props.movies}
-          isLoading={props.isLoading}
-          isError={props.isError}
-        />
+        <Movies movies={movies} isLoading={isLoading} isError={isError} />
       </InfiniteScroll>
     </>
   );
