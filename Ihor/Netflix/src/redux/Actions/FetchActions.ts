@@ -10,7 +10,7 @@ export interface IMoviesRequested {
   isLazy?: boolean;
 }
 
-export const MoviesRequested = (
+export const moviesRequested = (
   sortBy: string,
   offset: number,
   searchBy?: string,
@@ -28,7 +28,7 @@ export interface IMoviesRecieved {
   payload: IMovie[];
 }
 
-export const MoviesRecieved = (movies: IMovie[]): IMoviesRecieved => ({
+export const moviesRecieved = (movies: IMovie[]): IMoviesRecieved => ({
   type: FetchActionsTypes.MOVIES_RECIEVED,
   payload: movies,
 });
@@ -37,7 +37,7 @@ export interface IMoviesFailed {
   type: FetchActionsTypes.MOVIES_FAILED;
 }
 
-export const MoviesFailed = (): IMoviesFailed => ({
+export const moviesFailed = (): IMoviesFailed => ({
   type: FetchActionsTypes.MOVIES_FAILED,
 });
 

@@ -25,14 +25,17 @@ class MovieDetailsMain extends React.Component<MovieDetailsMainProps> {
   componentDidUpdate(prevProps: MovieDetailsMainProps) {
     if (this.props.movie !== prevProps.movie) {
       const search = this.props.movie.genres[0];
-      this.props.MoviesRequested("release_date", 2, "genre", search);
+      this.props.moviesRequested("release_date", 2, "genre", search);
     }
     if (this.props.match.params.id !== prevProps.match.params.id) {
       this.props.selectedMovieRequested(this.props.match.params.id);
     }
   }
+
   increaseOffset = () => {
-    this.props.loadData(this.props.offset + 10);
+    const search = this.props.movie.genres[0];
+    console.log(search)
+    this.props.loadData(this.props.offset + 10,"release_date","genre",search);
   };
 
 
@@ -50,9 +53,11 @@ class MovieDetailsMain extends React.Component<MovieDetailsMainProps> {
         <div className="movies">
           <Movie movies={movies} loading={loading} error={error} />
         </div>
-        <button className="load_more" onClick={() => this.increaseOffset()}>
+        <div className="load">
+          <button className="load_more" onClick={this.increaseOffset}>
             Load More
           </button>
+        </div>
         <Footer />
       </>
     );

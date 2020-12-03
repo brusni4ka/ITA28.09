@@ -17,7 +17,7 @@ return (
         component = {MoviePageMain}
       />
       <Route
-        path="/search/"
+        path="/search"
         component = {MoviePageMain}
       />
       <Route

@@ -1,18 +1,10 @@
 import MoviePageMain from "./MoviePageMain";
 import { connect, ConnectedProps } from "react-redux";
-import { MoviesRequested, loadData } from "../../redux/Actions/FetchActions";
-import IMovie from '../../Interfaces/IMovie';
+import { moviesRequested, loadData } from "../../redux/Actions/FetchActions";
+import IRootState from '../../Interfaces/IRootState';
 
 
-interface IRootState {
-  movies: {
-    movies:IMovie[]
-    sortBy: string;
-    loading: boolean;
-    error: string;
-    offset: number;
-  };
-}
+
 
 const mapStateToProps = (state: IRootState) => ({
   movies: state.movies.movies,
@@ -23,7 +15,7 @@ const mapStateToProps = (state: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  MoviesRequested,
+  moviesRequested,
   loadData,
 };
 

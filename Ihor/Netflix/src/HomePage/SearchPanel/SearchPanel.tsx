@@ -12,6 +12,7 @@ interface ISearchPanelProps {
     searchBy: string;
   }): void;
   location: H.Location;
+  history: H.History;
 }
 
 interface ISearchPanelState {
@@ -38,38 +39,29 @@ class SearchPanel extends React.Component<
       search: string;
     };
     let { searchBy, search } = query;
-    if (searchBy) {
-      if (this.state.searchBy === IsearchBy.title) {
-        this.setState({ searchBy: IsearchBy.title });
-      } else {
-        this.setState({ searchBy: IsearchBy.genre });
-      }
-    } else {
-      this.setState({ searchBy: IsearchBy.title });
+    if(searchBy){
+      this.setState({
+        searchBy: searchBy === IsearchBy.title ? 
+           IsearchBy.title : IsearchBy.genre,
+        value: search
+      });
     }
-
-    search && this.setState({ value: search });
   }
   componentDidUpdate(prevProps:ISearchPanelProps){
-    if(this.props.location !== prevProps.location){
+    if(this.props.location !== prevProps.location && this.props.history.action !== "PUSH"){
       const query = parse(this.props.location.search) as {
         searchBy: string;
         search: string;
       };
       let { searchBy, search } = query;
-      if (searchBy) {
-        if (this.state.searchBy === IsearchBy.title) {
-          this.setState({ searchBy: IsearchBy.title,value: ''});
-        } else {
-          this.setState({ searchBy: IsearchBy.genre,value: ''});
-        }
-      } else {
-        this.setState({ searchBy: IsearchBy.title,value: '' });
+      if(searchBy){
+        this.setState({
+          searchBy: searchBy === IsearchBy.title ? 
+             IsearchBy.title : IsearchBy.genre,
+          value: search
+        });
       }
-  
-      search && this.setState({ value: search });
     }
-    
   }
 
   handleSearchParams = (value: IsearchBy) => {

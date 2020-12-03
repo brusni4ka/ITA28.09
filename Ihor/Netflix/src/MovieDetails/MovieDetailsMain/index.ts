@@ -1,19 +1,8 @@
 import MovieDetailsMain from './MovieDetailsMain';
-import { selectedMovieRequested,MoviesRequested,loadData} from "../../redux/Actions/FetchActions";
+import { selectedMovieRequested,moviesRequested,loadData} from "../../redux/Actions/FetchActions";
 import { connect, ConnectedProps } from "react-redux";
-import IMovie from '../../Interfaces/IMovie';
+import IRootState from '../../Interfaces/IRootState';
 
-interface IRootState {
-    movies: {
-      movies: IMovie[];
-      movie: IMovie;
-      error: string;
-      loading: boolean;
-      offset: number;
-    };
-    id: string;
-    
-}
   
   const mapStateToProps = (state: IRootState) => ({
     movie: state.movies.movie,
@@ -26,7 +15,7 @@ interface IRootState {
   
   const mapDispatchToProps = {
     selectedMovieRequested,
-    MoviesRequested,
+    moviesRequested,
     loadData
   };
   

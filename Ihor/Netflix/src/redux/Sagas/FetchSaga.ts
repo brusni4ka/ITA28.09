@@ -2,8 +2,8 @@ import { FetchActionsTypes } from "../Reducers/FetchReducer";
 import { takeLatest, call, put, all } from "redux-saga/effects";
 import {
   IMoviesRequested,
-  MoviesFailed,
-  MoviesRecieved,
+  moviesFailed,
+  moviesRecieved,
   ISelectedMovieRequested,
   selectedMovieRecieved,
   selectedMovieFailed,
@@ -44,9 +44,9 @@ function* requestMoviesSaga(action: IMoviesRequested) {
       action.searchBy,
       action.search
     );
-    yield put(MoviesRecieved(movies));
+    yield put(moviesRecieved(movies));
   } catch {
-    yield put(MoviesFailed());
+    yield put(moviesFailed());
   }
 }
 export const fetchMoviesSub = () => {
@@ -79,7 +79,7 @@ function* requestMoviesMoreSaga(action: ILoadData) {
     );
     yield put(mergeData(movies));
   } catch {
-    yield put(MoviesFailed());
+    yield put(moviesFailed());
   }
 }
 export const fetchMoviesMoreSub = () => {

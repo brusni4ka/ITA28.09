@@ -32,9 +32,9 @@ class MoviePageMain extends React.Component<MovieDetailsMainProps> {
     };
     const { sortBy } = queryUrl;
     const query = stringify({ ...queryUrl, search, searchBy });
-    this.props.MoviesRequested(sortBy, this.props.offset, searchBy, search);
+    this.props.moviesRequested(sortBy, this.props.offset, searchBy, search);
     this.props.history.push({
-      pathname: "/search/",
+      pathname: "/search",
       search: query,
     });
   };
@@ -46,9 +46,9 @@ class MoviePageMain extends React.Component<MovieDetailsMainProps> {
     };
     const { searchBy, search } = queryUrl;
     const query = stringify({ ...queryUrl, sortBy });
-    this.props.MoviesRequested(sortBy, this.props.offset, searchBy, search);
+    this.props.moviesRequested(sortBy, this.props.offset, searchBy, search);
     this.props.history.push({
-      pathname: "/search/",
+      pathname: "/search",
       search: query,
     });
   };
@@ -60,7 +60,7 @@ class MoviePageMain extends React.Component<MovieDetailsMainProps> {
       sortBy: string;
     };
     const { sortBy, searchBy, search } = queryUrl;
-    this.props.MoviesRequested(sortBy, this.props.offset, searchBy, search);
+    this.props.moviesRequested(sortBy, this.props.offset, searchBy, search);
   }
 
   componentDidUpdate = (prevProps: MovieDetailsMainProps) => {
@@ -74,12 +74,12 @@ class MoviePageMain extends React.Component<MovieDetailsMainProps> {
         sortBy: string;
       };
       const { sortBy, searchBy, search } = queryUrl;
-      this.props.MoviesRequested(sortBy, this.props.offset, searchBy, search);
+      this.props.moviesRequested(sortBy, this.props.offset, searchBy, search);
     }
   };
 
   increaseOffset = () => { 
-    this.props.loadData( this.props.offset + 10,this.props.sortBy);
+    this.props.loadData(this.props.offset + 10,this.props.sortBy);
   };
 
   render() {
@@ -91,11 +91,13 @@ class MoviePageMain extends React.Component<MovieDetailsMainProps> {
           <Header />
           <SearchPanel
             location={this.props.location}
+            history={this.props.history}
             handleSearchChange={this.handleSearchChange}
           />
         </div>
         <SortPanel
           location={this.props.location}
+          history={this.props.history}
           moviesCount={moviesCount}
           handleSortChange={this.handleSortChange}
         />
@@ -103,7 +105,7 @@ class MoviePageMain extends React.Component<MovieDetailsMainProps> {
           <Movies movies={movies} loading={loading} error={error} />
         </div>
         <div className="load">
-          <button className="load_more" onClick={() => this.increaseOffset()}>
+          <button className="load_more" onClick={this.increaseOffset}>
             Load More
           </button>
         </div>
