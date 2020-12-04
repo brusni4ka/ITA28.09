@@ -7,15 +7,20 @@ interface IMovieProps {
 }
 
 function Movie({ movie }: IMovieProps) {
+
+  const defimg = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const target = e.target as HTMLImageElement;
+    target.src = "https://media.comicbook.com/files/img/default-movie.png";
+  }
   return (
     <div className="movie">
-      <img src={movie.poster_path} alt={movie.title} />
+      <img src={movie.poster_path} alt={movie.title} onError={defimg}/>
       <div className="info">
         <div className="title-genres">
           <div className="title">{movie.title}</div>
           <div className="genres">
-            {movie.genres.map((genre) => (
-              <span key={movie.genres.indexOf(genre)}>{genre}</span>
+            {movie.genres.map((genre, index) => (
+              <span key={index}>{genre}</span>
             ))}
           </div>
         </div>

@@ -2,43 +2,25 @@ import React from "react";
 import {
   BrowserRouter as Router,
   Route,
+  Switch,
   RouteComponentProps,
 } from "react-router-dom";
 import "./App.css";
 import HomePage from "./pages/homePage";
 import DetailedPage from "./pages/detailedPage";
+import NotFoundErrorBlock from "./components/notFoundErrorBlock"
 import { moveEmitHelpers } from "typescript";
 import IMovies from "./interfaces/IMovies";
 
-class App extends React.Component<{}, IMovies> {
-  state: IMovies = {
-    movies: [],
-  };
-
-  componentDidMount() {
-    fetch("https://reactjs-cdp.herokuapp.com/movies")
-      .then((response) => response.json())
-      .then((receivedData) => {
-        this.setState({ movies: receivedData.data });
-      });
-  }
-
+class App extends React.Component<{}, {}> {
   render() {
-    const { movies } = this.state;
     return (
-      <Router>
-        <Route
-          path="/"
-          exact
-          render={(props) => (
-            <HomePage movies={movies} {...(props as RouteComponentProps)} />
-          )}
-        />
-        <Route
-          path="/DetailedPage/:id"
-          render={(props) => <DetailedPage movies={movies} {...props} />}
-        />
-      </Router>
+      <Switch>
+        <Route path="/" exact component={HomePage} />
+        <Route path="/search/" exact component={HomePage} />
+        <Route path="/film/:id" component={DetailedPage} />
+        <Route component={NotFoundErrorBlock} />
+      </Switch>
     );
   }
 }
