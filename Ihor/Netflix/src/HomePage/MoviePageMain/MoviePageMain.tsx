@@ -1,6 +1,8 @@
+
 import React, { useEffect } from "react";
 import Header from "../header";
 import { RouteComponentProps, useHistory, useLocation } from "react-router-dom";
+
 import Movies from "../../Shared/movie";
 import SortPanel from "../sortPanel/sortPanel";
 import Footer from "../../Shared/footer";
@@ -18,6 +20,7 @@ type MovieDetailsMainProps = IMoviePageProps &
   RouteComponentProps &
   PropsFromRedux;
 
+
 const MoviePageMain = (props: MovieDetailsMainProps) => {
   let history = useHistory();
   let location = useLocation();
@@ -29,13 +32,16 @@ const MoviePageMain = (props: MovieDetailsMainProps) => {
     search: string;
     searchBy: string;
   }) => {
+
     const queryUrl = parse(location.search) as {
+
       sortBy: string;
       search: string;
       searchBy: string;
     };
     const { sortBy } = queryUrl;
     const query = stringify({ ...queryUrl, search, searchBy });
+
     props.moviesRequested({
       offset: props.offset,
       sortBy: sortBy,
@@ -43,18 +49,22 @@ const MoviePageMain = (props: MovieDetailsMainProps) => {
       search: search,
     });
     history.push({
+
       pathname: "/search",
       search: query,
     });
   };
 
+
   const handleSortChange = (sortBy: string) => {
     const queryUrl = parse(location.search) as {
+
       searchBy: string;
       search: string;
     };
     const { searchBy, search } = queryUrl;
     const query = stringify({ ...queryUrl, sortBy });
+
     props.moviesRequested({
       offset: props.offset,
       sortBy: sortBy,
@@ -62,18 +72,22 @@ const MoviePageMain = (props: MovieDetailsMainProps) => {
       search: search,
     });
     history.push({
+
       pathname: "/search",
       search: query,
     });
   };
+
   useEffect(() => {
     if (history.action !== "PUSH") {
       const queryUrl = parse(location.search) as {
+
         searchBy: string;
         search: string;
         sortBy: string;
       };
       const { sortBy, searchBy, search } = queryUrl;
+
       props.moviesRequested({
         offset: props.offset,
         sortBy: sortBy,
@@ -124,5 +138,6 @@ const MoviePageMain = (props: MovieDetailsMainProps) => {
     </div>
   );
 };
+
 
 export default MoviePageMain;

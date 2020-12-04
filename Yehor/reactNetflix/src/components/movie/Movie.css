@@ -1,0 +1,42 @@
+main a {
+    margin-right: 60px;
+}
+.movie {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+.movie:nth-child(3n+3) {
+    margin-right: 0px;
+}
+.movie img {
+    margin-bottom: 10px;
+    width: 300px;
+}
+.info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.title-genres {
+    display: flex;
+    flex-direction: column;
+}
+.title {
+    font-weight: 600;
+    max-width: 200px;
+    padding-bottom: 10px;
+}
+.genres {
+    color: lightslategray;
+    max-width: 100px;
+}
+.genres span {
+    margin-right: 5px;
+}
+.date {
+    padding: 3px 5px;
+    margin-right: 10px;
+    align-self: flex-start;
+    border: 1px solid black;
+}

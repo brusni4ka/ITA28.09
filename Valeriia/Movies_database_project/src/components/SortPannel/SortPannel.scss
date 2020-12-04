@@ -1,0 +1,24 @@
+@import "../../assets/scss/main.scss";
+
+.sortPannel {
+  background-color: $grey;
+  margin-bottom: 20px;
+  height: 50px;
+  font-weight: 500;
+  @media screen and(min-width:1025px) {
+    height: 80px;
+    margin-bottom: 50px;
+  }
+  &__wrapper {
+    padding: $paddingPrimary;
+    align-items: center;
+    @include flexSpaceBetween;
+    @media screen and(min-width:1025px) {
+      padding: 20px 150px;
+    }
+  }
+
+  &__sortBy {
+    margin-right: 5px;
+  }
+}

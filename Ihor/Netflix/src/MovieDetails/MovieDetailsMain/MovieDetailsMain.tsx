@@ -1,4 +1,6 @@
+
 import React, { useEffect } from "react";
+
 import { RouteComponentProps } from "react-router-dom";
 import MovieHeader from "../MovieHeader";
 import MovieInfo from "../MovieInfo";
@@ -16,6 +18,7 @@ interface IMovies {
 type MovieDetailsMainProps = IMovies &
   RouteComponentProps<{ id: string }> &
   PropsFromRedux;
+
 
 const MovieDetailsMain = (props: MovieDetailsMainProps) => {
   useEffect(() => {
@@ -68,5 +71,6 @@ const MovieDetailsMain = (props: MovieDetailsMainProps) => {
     </>
   );
 };
+
 
 export default MovieDetailsMain;

@@ -1,0 +1,15 @@
+@import "../../assets/scss/main.scss";
+
+.input {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid $red;
+  color: $white;
+  background-color: $tertiary;
+  margin-bottom: 15px;
+  padding: 7px 0px;
+  outline: none;
+  @media screen and(min-width:1025px) {
+    padding: 12px 0px;
+  }
+}

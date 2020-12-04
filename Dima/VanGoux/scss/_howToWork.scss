@@ -1,0 +1,57 @@
+.how-to-work {
+  display: flex;
+  height: 450px;
+  padding: 80px;
+  color: $white;
+  background-color: $primary;
+  background-image: url(../assets/illustration-whiteglove.png);
+  background-repeat: no-repeat;
+  background-position: 95% -20%;
+  &__wrap{
+    width: 1120px;
+    margin: 0px auto;
+  }
+  h2{
+    font-size: 3rem;
+    font-weight: 600;
+    color: $white;
+    margin-bottom: 60px;
+    position: relative;
+  }
+  h2:before{
+    content: "";
+    position: absolute;
+    width: 80px;
+    height: 2px;
+    bottom: -25px;
+    left: 0;
+    background-color: $white;
+    box-shadow: 0 2px 0 0 #d1e1fe;
+    @media (min-width: 1440px) {
+      left: -40px;
+    }
+  }
+  p{ 
+    font-family: $font-secondary;
+    line-height: 40px;
+    color: $white;
+    font-weight: 200;
+    letter-spacing: 0.1rem;
+    margin-bottom: 40px;
+    width: 60%;
+    @media (max-width: 680px) {
+      width: 100%;
+    }
+  }
+  button{
+    color: $secondary;
+    background-color: $white;
+    box-shadow: 4px 4px 20px 0 rgba(255, 255, 255, 0.4);
+    padding: 15px 60px;
+    font-weight: 600;
+  }
+  @media (max-width: 680px) {
+    background-image: none;
+    align-items: center;
+  }
+}

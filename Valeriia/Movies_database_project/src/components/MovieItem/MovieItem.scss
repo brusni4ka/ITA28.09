@@ -1,0 +1,43 @@
+@import "../../assets/scss/main.scss";
+
+.item {
+  margin-bottom: 20px;
+  width: 100%;
+  cursor: pointer;
+  @media screen and(min-width:1025px) {
+    margin-bottom: 40px;
+  }
+
+  &__poster {
+    min-width: 100%;
+    min-height: 591px;
+    margin-bottom: 10px;
+  }
+
+  &__info {
+    @include flexSpaceBetween;
+    align-items: center;
+    font-weight: 500;
+    @media screen and(min-width:1025px) {
+      font-size: 18px;
+    }
+  }
+
+  &__img {
+    width: 100%;
+    min-height: 591px;
+  }
+
+  &__genre {
+    font-size: 12px;
+    @media screen and(min-width:1025px) {
+      font-size: 14px;
+    }
+  }
+
+  &__date {
+    border: 1px solid $lightGrey;
+    border-radius: $borderRadius;
+    padding: 1px 5px;
+  }
+}

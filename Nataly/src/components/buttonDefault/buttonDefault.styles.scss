@@ -1,0 +1,34 @@
+
+.button__default {
+    font-size: 14px;
+    font-weight: bold;
+    background-color: gray;
+    padding: 0 30px;
+    text-transform: uppercase;
+
+    &-sm {
+        margin: 0 15px;
+    }
+
+    &-search {
+        padding: 0 50px;
+        background-color: indianred;
+    }
+}
+
+
+.button__default:hover {
+    background-color: white;
+    color: indianred;
+}
+
+
+.button__default-active {
+    background-color: indianred;
+}
+
+// .button__default-inactive {
+//     background-color: gray;
+// }
+
+

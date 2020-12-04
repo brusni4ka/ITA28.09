@@ -1,0 +1,85 @@
+.container {
+  margin: 0 2rem;
+  @media (min-width: 768px) {
+    margin: 0 5rem;
+  }
+  @media (min-width: 1024px) {
+    margin: 0 14.4rem;
+  }
+}
+
+.gamburger {
+  @media (min-width: 768px) {
+    display: none;
+  }
+  &__item {
+    border-bottom: 2px solid $primary;
+    width: 20px;
+    display: block;
+    height: 7px;
+  }
+}
+
+.active {
+  font-family: "Helvetica", sans-serif;
+  font-weight: 400;
+}
+
+.center {
+  text-align: center;
+}
+
+.heading-1 {
+  font-family: $font-secondary;
+  font-size: 3.5rem;
+  line-height: 40px;
+  padding-bottom: 1rem;
+  font-weight: 600;
+  @media (min-width: 768px) {
+    line-height: 50px;
+  }
+  @media (min-width: 1024px) {
+    line-height: 58px;
+    font-size: 4rem;
+  }
+  @media (min-width: 1440px) {
+    line-height: 68px;
+    font-size: 5.6rem;
+    padding-bottom: 2.5rem;
+  }
+}
+
+.heading-2 {
+  line-height: 40px;
+  padding-bottom: 0.5rem;
+  font-size: 2.4rem;
+  font-family: $font-secondary;
+  @media (min-width: 768px) {
+    font-size: 3rem;
+  }
+  @media (min-width: 1024px) {
+    padding-bottom: 1rem;
+  }
+  @media (min-width: 1440px) {
+    line-height: 52px;
+    padding-bottom: 1.5rem;
+    font-size: 4rem;
+    font-weight: 600;
+  }
+}
+
+.heading-4 {
+  font-weight: 400;
+  padding-bottom: 0.5rem;
+  color: $light-grey;
+  @media (min-width: 768px) {
+    font-size: 1.6rem;
+  }
+  @media (min-width: 1440px) {
+    padding-bottom: 1.8rem;
+  }
+}
+
+.text-white {
+  color: $white;
+}

@@ -1,0 +1,26 @@
+.first-screen{
+  background-image: url(../assets/header-title.jpg);
+  background-repeat: no-repeat;
+  height: 550px;
+  padding: 4rem 6rem;
+  &__wrapp{
+    padding: 0 4rem;
+    margin-bottom: 4rem;
+    min-width: 75%;
+    display: flex;
+    justify-content: space-between;
+    height: 4rem;
+  }
+  &__film-information{
+    display: flex;
+    align-items: center;
+    color: #FFF;
+    img{
+      height: 400px;
+      margin-right: 4rem;
+    }
+    &__details{
+      width: 30%;
+    }
+  }
+}

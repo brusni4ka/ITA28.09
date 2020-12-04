@@ -1,3 +1,4 @@
+
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import IMovie from "../../Interfaces/IMovie";
 
@@ -30,6 +31,7 @@ export interface ILoadData {
 
 export interface ILoadedData {
   movies: IMovie[];
+
 }
 
 interface IinitialState {
@@ -50,6 +52,7 @@ const initialState: IinitialState = {
   sortBy: "release_date",
   offset: 0,
 };
+
 
 const moviesSlice = createSlice({
   name: "movies",
@@ -105,3 +108,4 @@ export const {
   mergeData,
 } = moviesSlice.actions;
 export const { reducer } = moviesSlice;
+
