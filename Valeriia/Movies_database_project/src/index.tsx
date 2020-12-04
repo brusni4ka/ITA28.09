@@ -1,12 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
-import { combineReducers, applyMiddleware } from "redux";
+import { combineReducers } from "redux";
 import { configureStore } from "@reduxjs/toolkit";
-import { composeWithDevTools } from "redux-devtools-extension";
 import { Provider } from "react-redux";
 import createSagaMiddleware from "redux-saga";
-//import { IMoviesState } from "./store/reducers/MoviesReducer";
 import moviesReducer, { IMoviesState } from "./store/reducers/MoviesReducer";
 import movieReducer from "./store/reducers/MovieReducer";
 import "./index.css";
