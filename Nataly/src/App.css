@@ -1,0 +1,12 @@
+.App {
+  max-width: 90%;
+  padding: 0 15px;
+  margin: 0 auto;
+}
+
+body {
+  color: white;
+  background-color: black;
+  font-size: 18px;
+  
+}

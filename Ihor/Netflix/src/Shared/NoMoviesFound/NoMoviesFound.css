@@ -1,0 +1,10 @@
+.noMoviesFound {
+    text-align: center;
+    min-height: 100vh;
+    width: 100%;
+}
+.noMoviesFound h2 {
+    padding-top: 100px;
+    font-weight: bold;
+    font-size: 35px;
+}

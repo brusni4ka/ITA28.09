@@ -1,0 +1,15 @@
+.error {
+    margin: 0 auto;
+    width: 150px;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.error_return {
+    font-size: 20px;
+    font-weight: 600;
+    color: rgb(243, 75, 103);
+    width: 150px;
+    margin: 0 auto;
+}

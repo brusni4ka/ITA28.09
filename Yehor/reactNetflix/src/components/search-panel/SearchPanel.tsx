@@ -20,7 +20,7 @@ interface IhandleSearchChangeProps {
 }
 enum SearchBy {
   Title = "title",
-  Genre = "genre",
+  Genre = "genres",
 }
 
 class SearchPanel extends React.Component<IhandleSearchChangeProps, ISearchPanelState> {
@@ -81,6 +81,33 @@ class SearchPanel extends React.Component<IhandleSearchChangeProps, ISearchPanel
       this.setState({ value: "" });
     }
   }
+
+  componentDidUpdate(prevProps: IhandleSearchChangeProps) {
+    if (this.props.location !== prevProps.location) {
+      const querySrch = parse(this.props.location.search) as {
+        searchBy: string;
+        search: string;
+      };
+      const { searchBy, search } = querySrch;
+      // verify searchBy
+      if (searchBy) {
+        if (searchBy === "title") {
+          this.setState({ searchBy: SearchBy.Title });
+        } else {
+          this.setState({ searchBy: SearchBy.Genre });
+        }
+      } else {
+        this.setState({ searchBy: SearchBy.Title });
+      }
+      // verify search
+      if (search) {
+        this.setState({ value: search });
+      } else {
+        this.setState({ value: "" });
+      }
+    }
+  }
+  
 
   render() {
     return (

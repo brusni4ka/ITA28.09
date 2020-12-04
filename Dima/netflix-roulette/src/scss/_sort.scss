@@ -1,0 +1,19 @@
+.sort__wrapp{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  background: rgb(202, 202, 202);
+  &__content{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 85%;
+    &__params{
+      display: flex;
+      width: 25%;
+      justify-content: space-between;
+      flex-direction: row;
+    }
+  }
+}
