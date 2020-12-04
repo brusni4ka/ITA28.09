@@ -1,13 +1,8 @@
 import { takeLatest, call, put, all } from "redux-saga/effects";
-// import {
-//   MoviesTypes,
-//   ILoadData,
-//   receivedData,
-//   error
-// } from "../actions/moviesActions";
 import {moviesReceived, error, loadData} from "../reducers/reducerMovies"
 import IMovie from "../../interfaces/IMovie";
 import { currentMovieLoad, currentMovieReceived, currentMovieError } from "../reducers/reducerMovie";
+
 
 export const fetchMoviesApi = async (sortBy?: string, searchBy?: string, search?: string, offset?: number): Promise<IMovie[]> => {
   const limit = 'limit=9'

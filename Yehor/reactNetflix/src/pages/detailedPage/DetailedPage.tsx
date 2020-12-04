@@ -11,6 +11,7 @@ import {
 import {
   loadData, dataOffsetIncrement, dataOffsetDecrement
 } from "../../redux/reducers/reducerMovies";
+
 import { connect, ConnectedProps } from "react-redux";
 import IReduxState from "../../interfaces/IReduxState"
 
@@ -50,6 +51,7 @@ useEffect(() => {
 }, [props.movie, props.offset])
 
     const { movie, movies } = props;
+
     return (
       <div className="allpageWrapper">
         <div className="wrapper">

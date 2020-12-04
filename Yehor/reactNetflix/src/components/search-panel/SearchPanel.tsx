@@ -99,6 +99,7 @@ const SearchPanel = (props: IhandleSearchChangeProps, ) => {
       searchBy: searchBy,
     });
   };
+
     return (
       <div className="search-panel">
         <h1 className="search-title">Find your film</h1>

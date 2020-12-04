@@ -1,0 +1,35 @@
+.search {
+  padding-bottom: 2rem;
+  h2{
+    font-size: 4rem;
+    font-family: 'Bebas Neue';
+    color: $white;
+  }
+  input{
+    font-family: 'Bebas Neue';
+    margin-bottom: 2rem;
+
+  }
+  &__menu{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    &__params{
+      display: flex;
+      justify-content: space-between;
+      width: 300px;
+      p{
+        color: $white;
+      }
+    }
+    .search-button{
+      padding: 5px 50px;
+      background-color: $button-active;
+    }
+    .search-button:hover{
+      color: $black;
+      background-color: $white;
+      transition: all 0.3s ease-in-out;
+    }
+  }
+}

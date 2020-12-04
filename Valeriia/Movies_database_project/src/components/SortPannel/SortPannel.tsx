@@ -23,9 +23,9 @@ const SortPannel = ({
           <div className="sortPannel__buttons">
             <span className="sortPannel__sortBy">Sort by </span>
             <Button
-              onClick={() => onClickSortBy("date")}
+              onClick={() => onClickSortBy("release_date")}
               buttonName="release date"
-              className={sortBy === "date" ? "active" : "sortButton"}
+              className={sortBy === "release_date" ? "active" : "sortButton"}
             />
             <Button
               onClick={() => onClickSortBy("vote_average")}

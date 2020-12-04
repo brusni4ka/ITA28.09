@@ -1,0 +1,11 @@
+.films-wrapp{
+  display: flex;
+  justify-content: center;
+  &__content {
+    display: flex;
+    justify-content: space-between;
+    flex-flow: row wrap;
+    width: 85%;
+    margin-bottom: 5rem;
+  }
+}

@@ -1,48 +1,46 @@
 import React, { Component } from "react";
-import { IMovie } from "../../types";
 import Movie from "../../components/Movie";
 import { RouteComponentProps } from "react-router";
-import movies from "../../movies.json";
 import Movies from "../../components/Movies";
 import "./MovieDetails.scss";
 import Header from "../../components/Header";
+import { IMovieDetailsState } from "../../store/reducers/MovieReducer";
+import { MovieConnectProps } from "./index";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { IMovie } from "../../types";
 
 interface IRouteInfo {
   id: string;
 }
 
-interface IMovieDetailsProps extends RouteComponentProps<IRouteInfo> {}
+type MovieProps = MovieConnectProps & RouteComponentProps<IRouteInfo>;
 
-interface IMovieDetailsState {
-  movie: IMovie | undefined;
-  moviesBySameGenre: IMovie[];
-}
-
-class MovieDetails extends Component<IMovieDetailsProps, IMovieDetailsState> {
-  state = {
-    movie: undefined,
-    moviesBySameGenre: [],
+class MovieDetails extends Component<MovieProps, IMovieDetailsState> {
+  fetchData = (
+    offset: number = 0,
+    isLazyLoading: boolean = false,
+    movie: IMovie
+  ) => {
+    this.props.onRequestMovies(
+      "genres",
+      "release_date",
+      movie.genres.join(","),
+      offset,
+      isLazyLoading
+    );
   };
 
   componentDidMount = () => {
-    const filmId = this.props.match.params.id;
-    let moviesData = movies;
-    const movie = moviesData.find((movie) => {
-      return movie.id === Number(filmId);
-    });
-    const moviesBySameGenre = moviesData.filter((movieByGenre) => {
-      return movie?.genre === movieByGenre.genre;
-    });
-    this.setState({ movie, moviesBySameGenre });
+    const filmId = Number(this.props.match.params.id);
+    this.props.onRequestMovie(filmId);
+    window.scrollTo(0, 0);
   };
 
-  componentDidUpdate = (prevProps: IMovieDetailsProps) => {
+  componentDidUpdate = (prevProps: MovieProps) => {
     if (this.props.match.params.id !== prevProps.match.params.id) {
-      let moviesData = movies;
-      const movie = moviesData.find((movie) => {
-        return movie.id === +this.props.match.params.id;
-      });
-      this.setState({ movie });
+      const filmId = Number(this.props.match.params.id);
+      this.props.onRequestMovie(filmId);
+      window.scrollTo(0, 0);
     }
   };
 
@@ -51,15 +49,32 @@ class MovieDetails extends Component<IMovieDetailsProps, IMovieDetailsState> {
       <>
         <Header isLinkToShow={true} />
         <div className="movieDetails">
-          {this.state.movie ? (
-            <Movie movie={this.state.movie!} />
+          {this.props.movie ? (
+            <Movie movie={this.props.movie!} isLoading={this.props.isLoading} />
           ) : (
             <div>
               <p>The film by this id is not exist</p>
             </div>
           )}
         </div>
-        <Movies movies={this.state.moviesBySameGenre} />
+        <InfiniteScroll
+          dataLength={this.props.movies.length}
+          next={() =>
+            this.fetchData(
+              this.props.movies.length + 10,
+              true,
+              this.props.movie!
+            )
+          }
+          hasMore={true}
+          loader={<h4>Loading...</h4>}
+        >
+          <Movies
+            movies={this.props.movies}
+            isLoading={this.props.isLoading}
+            isError={this.props.isError}
+          />
+        </InfiniteScroll>
       </>
     );
   }
