@@ -8,6 +8,12 @@
     margin-bottom: 40px;
   }
 
+  &__poster {
+    min-width: 100%;
+    min-height: 591px;
+    margin-bottom: 10px;
+  }
+
   &__info {
     @include flexSpaceBetween;
     align-items: center;
@@ -19,7 +25,7 @@
 
   &__img {
     width: 100%;
-    margin-bottom: 10px;
+    min-height: 591px;
   }
 
   &__genre {

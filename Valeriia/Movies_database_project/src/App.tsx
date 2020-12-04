@@ -13,6 +13,7 @@ class App extends Component {
         <Switch>
           <Route path="/" exact component={HomePage} />
           <Route path="/film/:id" component={MovieDetails} />
+          <Route path="/search/Search" component={HomePage} />
           <Route component={NotFoundPage} />
         </Switch>
       </Layout>
