@@ -1,17 +1,13 @@
 import { takeLatest, call, put, all } from "redux-saga/effects";
-import {
-  MoviesTypes,
-  ILoadData,
-  receivedData,
-  error
-} from "../actions/moviesActions";
-import {
-  MovieTypes,
-  ICurrentMovieLoad,
-  currentMovieReceived,
-  currentMovieError
-} from "../actions/movieActions";
+// import {
+//   MoviesTypes,
+//   ILoadData,
+//   receivedData,
+//   error
+// } from "../actions/moviesActions";
+import {moviesReceived, error, loadData} from "../reducers/reducerMovies"
 import IMovie from "../../interfaces/IMovie";
+import { currentMovieLoad, currentMovieReceived, currentMovieError } from "../reducers/reducerMovie";
 
 export const fetchMoviesApi = async (sortBy?: string, searchBy?: string, search?: string, offset?: number): Promise<IMovie[]> => {
   const limit = 'limit=9'
@@ -26,67 +22,61 @@ export const fetchMoviesApi = async (sortBy?: string, searchBy?: string, search?
   return movies.data;
 };
 
+interface ILoadDataAction {
+  payload:{
+    offset: number,
+    search: string,
+    searchBy: string,
+    sortBy: string,}
+  type: string
+}
+
+function* requestMoviesSaga(action: ILoadDataAction) {
+  try {
+    const movies = yield call(
+      fetchMoviesApi,
+      action.payload.sortBy,
+      action.payload.searchBy,
+      action.payload.search,
+      action.payload.offset,
+    );
+    yield put(moviesReceived({status: "received", movies}));
+  } catch {
+    yield put(error({status: "error"}));
+  }
+}
+
+export const fetchMoviesSub = () => {
+  return takeLatest(loadData, requestMoviesSaga);
+};
+
 export const fetchCurrentMovieApi = async (id: string): Promise<void> => {
   const getMovies = await fetch(
     `http://reactjs-cdp.herokuapp.com/movies/${id}`
   );
   const movie = await getMovies.json();
-  console.log(movie);
   return movie;
 };
 
-function* requestMoviesSaga(action: ILoadData) {
-  try {
-    const movies = yield call(
-      fetchMoviesApi,
-      action.sortBy,
-      action.searchBy,
-      action.search,
-      action.offset,
-    );
-    yield put(receivedData("received", movies));
-  } catch {
-    yield put(error("error"));
+interface IcurrentMovieLoad {
+  type: string;
+  payload: {
+    status: string;
+    id: string;
   }
 }
 
-export const fetchMoviesSub = () => {
-  return takeLatest(MoviesTypes.LoadData, requestMoviesSaga);
-};
-
-function* requestCurrentMovieSaga(action: ICurrentMovieLoad) {
+function* requestCurrentMovieSaga(action: IcurrentMovieLoad) {
   try {
-    console.log(action);
-    const movie = yield call(fetchCurrentMovieApi, action.id);
-    yield put(currentMovieReceived("received", movie));
+    const movie = yield call(fetchCurrentMovieApi, action.payload.id);
+    yield put(currentMovieReceived({status: "received", movie}));
   } catch {
-    yield put(currentMovieError("error"));
+    yield put(currentMovieError({status: "error"}));
   }
 }
-//ReceivedDataMore
 
-// function* requestReceivedDataMoreSaga(action: ILoadData) {
-//   try {
-//     const movies = yield call(
-//       fetchMoviesApi,
-//       action.sortBy,
-//       action.searchBy,
-//       action.search,
-//       action.offset,
-//     );
-//     yield put(ReceivedDataMore("received", movies));
-//   } catch {
-//     yield put(Error("error"));
-//   }
-// }
-
-// export const receivedDataMoreSub = () => {
-//   return takeLatest(MoviesTypes.ReceivedDataMore, requestReceivedDataMoreSaga);
-// };
-
-// ReceivedDataMore
 export const fetchCurrentMovieSub = () => {
-  return takeLatest(MovieTypes.CurrentMovieLoad, requestCurrentMovieSaga);
+  return takeLatest(currentMovieLoad, requestCurrentMovieSaga);
 };
 
 

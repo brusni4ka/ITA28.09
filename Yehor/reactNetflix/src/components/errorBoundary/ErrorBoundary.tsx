@@ -1,31 +1,35 @@
-import React from 'react';
+import React, { useState } from "react";
 
 interface IErrorBoundaryState {
-  hasError: boolean,
-  errorInfo: Error
+  hasError: boolean;
+  errorInfo: Error;
 }
 
-class ErrorBoundary extends React.Component<{}, IErrorBoundaryState> {
-    
-    state: IErrorBoundaryState = { 
-      hasError: false,
-      errorInfo: new Error()
-    };
-  
-    componentDidCatch = (error: Error) => {
-      this.setState({ hasError: true, errorInfo: error });
-    }
-  
-    render() {
-      if (this.state.hasError) {
-        return (
-          <>
-        <h1>Что-то пошло не так.</h1>;
-        <p>{this.state.errorInfo}</p>
-        </>
-        )
-      }
-      return this.props.children
-    }
+type IErrorBoundaryProps = {
+  // children: JSX.Element; ???????
+  children: any;
+}
+
+const ErrorBoundary = (props: IErrorBoundaryProps) => {
+  const [hasError, setHasError] = useState(false);
+  const [errorInfo, setErrorInfo] = useState(Error);
+
+  // componentDidCatch = (error: Error) => {
+  //   this.setState({ hasError: true, errorInfo: error });
+  // }
+  try {
+    return props.children;
+  } catch (error) {
+    setHasError(true);
+    setErrorInfo(error);
   }
-  export default ErrorBoundary;
+
+  if (hasError) {
+    return (
+      <>
+        <h1>Что-то пошло не так.</h1>;<p>{errorInfo}</p>
+      </>
+    );
+  }
+};
+export default ErrorBoundary;

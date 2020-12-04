@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
 import DetailedMovie from "../../components/detailedMovie";
@@ -6,11 +6,11 @@ import MoviesList from "../../components/moviesList";
 import SortByGenrePanel from "../../components/sortBygenre-panel";
 import { RouteComponentProps } from "react-router-dom";
 import {
-  loadData,
-} from "../../redux/actions/moviesActions";
+  currentMovieLoad
+} from "../../redux/reducers/reducerMovie";
 import {
-  currentMovieLoad,
-} from "../../redux/actions/movieActions";
+  loadData, dataOffsetIncrement, dataOffsetDecrement
+} from "../../redux/reducers/reducerMovies";
 import { connect, ConnectedProps } from "react-redux";
 import IReduxState from "../../interfaces/IReduxState"
 
@@ -24,8 +24,10 @@ const mapStateToProps = (state: IReduxState) => {
 };
 
 const mapDispatchToProps = {
-  currentMovieLoad,
-  loadData
+  loadData,
+  dataOffsetIncrement,
+  dataOffsetDecrement,
+  currentMovieLoad
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -33,30 +35,21 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 type DetailedPageProps = PropsFromRedux & RouteComponentProps<{ id: string }>;
 
-class DetailedPage extends React.Component<DetailedPageProps, {}> {
-  componentDidMount() {
-    const filmId = this.props.match.params.id;
-    console.log(filmId);
-    this.props.currentMovieLoad("movie is loading", filmId);
-    
+const DetailedPage = (props: DetailedPageProps) => {
+
+useEffect(() => {
+      props.currentMovieLoad({status: "movie is loading", id: props.match.params.id});
+}, [props.match.params.id])
+
+useEffect(() => {
+  if (props.movie) {
+    const searchBy = "genres"
+    const search = props.movie.genres[0]
+    props.loadData({sortBy: "release_date", searchBy: searchBy, search: search, offset: props.offset})
   }
+}, [props.movie, props.offset])
 
-  componentDidUpdate(prevProps: DetailedPageProps) {
-    if (this.props.match.params.id !== prevProps.match.params.id) {
-      this.props.currentMovieLoad("movie is loading", this.props.match.params.id);
-    }
-    if(this.props.movie !== prevProps.movie) {
-      const searchBy = "genres"
-      const search = this.props.movie.genres[0]
-      this.props.loadData("movies by genre is loading", "release_date", searchBy, search, this.props.offset)
-    }
-  }
- 
-
-  render() {
-    const { movie, movies } = this.props;
-    console.log(movie);
-
+    const { movie, movies } = props;
     return (
       <div className="allpageWrapper">
         <div className="wrapper">
@@ -76,6 +69,11 @@ class DetailedPage extends React.Component<DetailedPageProps, {}> {
         </div>
         <div className="main-container">
         <MoviesList movies={movies} />
+        <div className="pagination">
+            <button onClick={props.dataOffsetDecrement}>Back</button>
+              <span className="pages">{props.offset? props.offset / 9 + 1: 1}</span>
+            <button onClick={props.dataOffsetIncrement}>Next</button>
+        </div>
       </div>
         <div className="wrapper-footer">
           <div className="main-container">
@@ -84,7 +82,6 @@ class DetailedPage extends React.Component<DetailedPageProps, {}> {
         </div>
       </div>
     );
-  }
 }
 
 export default connector(DetailedPage);

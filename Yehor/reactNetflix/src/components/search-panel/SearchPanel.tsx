@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./SearchPanel.css";
 import Button from "../button";
 import { parse } from "query-string";
@@ -23,68 +23,37 @@ enum SearchBy {
   Genre = "genres",
 }
 
-class SearchPanel extends React.Component<IhandleSearchChangeProps, ISearchPanelState> {
-  state: ISearchPanelState = {
-    value: "",
-    searchBy: SearchBy.Title,
-  };
+const SearchPanel = (props: IhandleSearchChangeProps, ) => {
 
-  searchByTitle = () => {
-    if (this.state.searchBy === SearchBy.Genre) {
-      this.setState({
-        value: "",
-        searchBy: SearchBy.Title,
-      });
-    }
-  };
-  searchByGenre = () => {
-    if (this.state.searchBy === SearchBy.Title) {
-      this.setState({
-        value: "",
-        searchBy: SearchBy.Genre,
-      });
-    }
-  };
-  handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      value: e.target.value,
-    });
-  };
-  handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    this.props.handleSearchChange({
-      search: this.state.value,
-      searchBy: this.state.searchBy,
-    });
-  };
+  const [value, setValue] = useState("")
+  const [searchBy, setSearchBy] = useState(SearchBy.Title)
 
-  componentDidMount() {
-    const querySrch = parse(this.props.location.search) as {
+  useEffect(() => {
+    const querySrch = parse(props.location.search) as {
       searchBy: string;
       search: string;
     };
     const { searchBy, search } = querySrch;
     // verify searchBy
     if (searchBy) {
-      if (searchBy === "title") {
-        this.setState({ searchBy: SearchBy.Title });
+      if (searchBy === SearchBy.Title) {
+        setSearchBy(SearchBy.Title);
       } else {
-        this.setState({ searchBy: SearchBy.Genre });
+        setSearchBy(SearchBy.Genre);
       }
     } else {
-      this.setState({ searchBy: SearchBy.Title });
+      setSearchBy(SearchBy.Title);
     }
     // verify search
     if (search) {
-      this.setState({ value: search });
+      setValue(search)
     } else {
-      this.setState({ value: "" });
+      setValue("")
     }
-  }
+  }, [])
 
-  componentDidUpdate(prevProps: IhandleSearchChangeProps) {
-    if (this.props.location !== prevProps.location) {
-      const querySrch = parse(this.props.location.search) as {
+  useEffect(() => {
+      const querySrch = parse(props.location.search) as {
         searchBy: string;
         search: string;
       };
@@ -92,34 +61,54 @@ class SearchPanel extends React.Component<IhandleSearchChangeProps, ISearchPanel
       // verify searchBy
       if (searchBy) {
         if (searchBy === "title") {
-          this.setState({ searchBy: SearchBy.Title });
+          setSearchBy(SearchBy.Title)
         } else {
-          this.setState({ searchBy: SearchBy.Genre });
+          setSearchBy(SearchBy.Genre)
         }
       } else {
-        this.setState({ searchBy: SearchBy.Title });
+        setSearchBy(SearchBy.Title)
       }
       // verify search
       if (search) {
-        this.setState({ value: search });
+        setValue(search)
       } else {
-        this.setState({ value: "" });
+        setValue("")
       }
-    }
-  }
-  
+  }, [props.location])
 
-  render() {
+
+  const searchByTitle = () => {
+    if (searchBy === SearchBy.Genre) {
+      setValue("");
+      setSearchBy(SearchBy.Title)
+    }
+  };
+  const searchByGenre = () => {
+    if (searchBy === SearchBy.Title) {
+      setValue("");
+      setSearchBy(SearchBy.Genre)
+    }
+  };
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+  };
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    props.handleSearchChange({
+      search: value,
+      searchBy: searchBy,
+    });
+  };
     return (
       <div className="search-panel">
         <h1 className="search-title">Find your film</h1>
         <div className="search">
-          <form onSubmit={this.handleSubmit}>
+          <form onSubmit={handleSubmit}>
             <input
               type="text"
-              value={this.state.value}
+              value={value}
               placeholder=" type to search"
-              onChange={this.handleChangeInput}
+              onChange={handleChangeInput}
             />
             <Button content={"Search"} styleClass={"on"} />
           </form>
@@ -129,19 +118,18 @@ class SearchPanel extends React.Component<IhandleSearchChangeProps, ISearchPanel
             <p>Search by</p>
             <Button
               content={"title"}
-              styleClass={this.state.searchBy === SearchBy.Title ? "on" : "off"}
-              handler={this.searchByTitle}
+              styleClass={searchBy === SearchBy.Title ? "on" : "off"}
+              handler={searchByTitle}
             />
             <Button
               content={"genre"}
-              styleClass={this.state.searchBy === SearchBy.Genre ? "on" : "off"}
-              handler={this.searchByGenre}
+              styleClass={searchBy === SearchBy.Genre ? "on" : "off"}
+              handler={searchByGenre}
             />
           </div>
         </div>
       </div>
     );
-  }
 }
 
 export default SearchPanel;
