@@ -1,0 +1,45 @@
+.m_info {
+    justify-content: start;
+    margin-bottom: 60px;
+}
+.m_img {
+    margin-right: 120px;
+}
+.m_name{
+    font-size: 40px;
+    color: #FE390C;
+    margin-bottom: 10px;
+    margin-right: 30px;
+}
+.main_info{
+    display: flex;
+    align-items: center;
+}
+.m_rating{
+    padding: 7px;
+    font-weight: bold;
+    color:white;
+    border-radius: 100px;
+    border: 3px solid white;
+}
+.m_genre {
+    color:white;
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+.m_year{
+    margin-right: 50px;
+    color:white;
+    font-size: 25px;
+}
+.m_time{
+    color:white;
+    font-size: 25px;
+}
+.m_overview {
+    color:white;
+    font-size: 25px;
+}
+.m_year_time {
+    margin-bottom: 40px;
+}
