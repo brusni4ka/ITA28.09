@@ -1,0 +1,65 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.heading {
+  padding: 20px 150px 50px 150px;
+  background-image: url(img/2.jpg);
+}
+
+.filter {
+  display: flex;
+  justify-content: space-between;
+}
+.filter_btns {
+  display: flex;
+}
+
+.info_heading{
+  padding: 20px 150px 50px 150px;
+  background-color: #826C67;
+  
+}
+
+.film_info {
+  display: flex;
+}
+
+.same_movies {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.movies {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+.load {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 10px;
+}
+
+.load_more{
+   background-color:#FE390C;
+   border: none;
+   outline: none;
+   padding: 10px 30px;
+   font-weight: bold;
+   font-family: sans-serif;
+   border-radius: 10px;
+}

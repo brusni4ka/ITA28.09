@@ -1,0 +1,9 @@
+@import "../../assets/scss/main.scss";
+
+.loader {
+  padding: $paddingPrimary;
+  @media screen and(min-width:1025px) {
+    padding: 40px 150px;
+    font-size: 25px;
+  }
+}

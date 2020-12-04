@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react'
 import Header from '../../Components/Header/Header'
 import Button from '../../Shared/Buttons/Button'
@@ -26,7 +27,6 @@ const mapDispatchToProps = {
 const connector = connect(mapStateToProps, mapDispatchToProps)
 
 type PropsFromRouteAndRedux = ConnectedProps<typeof connector> & RouteComponentProps<{ id: string }>
-
 
 function FilmPage (props: PropsFromRouteAndRedux) {
 

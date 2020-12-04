@@ -33,7 +33,6 @@ type PropsFromRouteAndRedux = ConnectedProps<typeof connector> & RouteComponentP
 function Home(props: PropsFromRouteAndRedux) {
 
   useEffect(() => {
-    console.log('componentDidMount')
     const URLData = parse(props.location.search) as { search: string, searchBy: string };
     const { searchBy, search, } = URLData
     props.filmsRequested({offset: 0, sortBy: 'release_date', searchBy, search, pagination: false});

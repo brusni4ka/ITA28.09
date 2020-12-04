@@ -1,0 +1,39 @@
+.dmovie {
+    display: flex;
+    padding-bottom: 40px;
+}
+.dmovie_img {
+    width: 300px;
+    margin-right: 70px;
+}
+.dmovie_movieInfo {
+    padding-top: 30px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+}
+.dmovie_title-rating {
+    display: flex;
+    margin-bottom: 5px;
+}
+.dmovie_title {
+    margin-right: 40px;
+    color: rgb(243, 75, 103);
+}
+.dmovie_rating {
+    color: rgb(204, 238, 137);
+    font-size: 20px;
+    padding: 7px;
+    border: 2px solid rgb(204, 238, 137);
+    border-radius: 50%;
+}
+.dmovie_tagline {
+    color: rgb(156, 156, 156);
+    margin-bottom: 20px;
+}
+.dmovie_date-runtime {
+    margin-bottom: 20px;
+}
+.dmovie_date {
+    margin-right: 30px;
+}
