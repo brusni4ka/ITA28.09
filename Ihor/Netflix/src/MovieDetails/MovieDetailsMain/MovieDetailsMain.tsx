@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import MovieHeader from "../MovieHeader";
 import MovieInfo from "../MovieInfo";
@@ -17,51 +17,56 @@ type MovieDetailsMainProps = IMovies &
   RouteComponentProps<{ id: string }> &
   PropsFromRedux;
 
-class MovieDetailsMain extends React.Component<MovieDetailsMainProps> {
-  componentDidMount() {
-    this.props.selectedMovieRequested(this.props.match.params.id);
-  }
+const MovieDetailsMain = (props: MovieDetailsMainProps) => {
+  useEffect(() => {
+    props.selectedMovieRequested({ id: props.match.params.id });
+  }, []);
 
-  componentDidUpdate(prevProps: MovieDetailsMainProps) {
-    if (this.props.movie !== prevProps.movie) {
-      const search = this.props.movie.genres[0];
-      this.props.moviesRequested("release_date", 2, "genre", search);
-    }
-    if (this.props.match.params.id !== prevProps.match.params.id) {
-      this.props.selectedMovieRequested(this.props.match.params.id);
-    }
-  }
+  useEffect(() => {
+    props.selectedMovieRequested({ id: props.match.params.id });
+  }, [props.match.params.id]);
 
-  increaseOffset = () => {
-    const search = this.props.movie.genres[0];
-    console.log(search)
-    this.props.loadData(this.props.offset + 10,"release_date","genre",search);
+  useEffect(() => {
+    const search = movie ? props.movie.genres[0] : "";
+    props.moviesRequested({
+      sortBy: "release_date",
+      offset: 0,
+      searchBy: "genre",
+      search,
+    });
+  }, [props.movie]);
+
+  const increaseOffset = () => {
+    const search = props.movie.genres[0];
+    props.loadData({
+      offset: props.offset + 10,
+      sortBy: "release_date",
+      searchBy: "genre",
+      search,
+    });
   };
 
+  const { movie, movies, loading, error } = props;
+  const genre = movie && movie.genres[0];
 
-  render() {
-    const { movie, movies, loading, error } = this.props;
-    const genre = movie && movie.genres[0];
-
-    return (
-      <>
-        <div className="movie_heading">
-          <MovieHeader />
-          {movie ? <MovieInfo movie={movie} /> : <div>null</div>}
-        </div>
-        <SameGenrePanel genre={genre} />
-        <div className="movies">
-          <Movie movies={movies} loading={loading} error={error} />
-        </div>
-        <div className="load">
-          <button className="load_more" onClick={this.increaseOffset}>
-            Load More
-          </button>
-        </div>
-        <Footer />
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <div className="movie_heading">
+        <MovieHeader />
+        {movie ? <MovieInfo movie={movie} /> : <div>null</div>}
+      </div>
+      <SameGenrePanel genre={genre} />
+      <div className="movies">
+        <Movie movies={movies} loading={loading} error={error} />
+      </div>
+      <div className="load">
+        <button className="load_more" onClick={increaseOffset}>
+          Load More
+        </button>
+      </div>
+      <Footer />
+    </>
+  );
+};
 
 export default MovieDetailsMain;

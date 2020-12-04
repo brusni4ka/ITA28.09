@@ -1,94 +1,70 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import "./sortPanel.css";
 import { parse } from "query-string";
-import * as H from "history";
+import { useLocation } from 'react-router-dom';
 
 interface ISortPanelProps {
   handleSortChange(sortBy: string): void;
   moviesCount: number;
-  location: H.Location;
-  history: H.History;
 }
 
-interface ISortPanelState {
-  sortBy: IsortBy;
-}
 enum IsortBy {
   date = "release_date",
   rating = "vote_average",
 }
-class SortPanel extends React.Component<ISortPanelProps, ISortPanelState> {
-  state: ISortPanelState = {
-    sortBy: IsortBy.date,
+const SortPanel = (props:ISortPanelProps) => {
+
+  const [sortBy,setSortBy] = useState(IsortBy.date);
+  let location = useLocation();
+  
+  useEffect(()=>{
+    const query = parse(location.search) as { sortBy: string };
+    let { sortBy } = query;
+    if(sortBy){
+      setSortBy(sortBy === IsortBy.date ? IsortBy.date : IsortBy.rating)
+    }
+  },[location.search]);
+
+
+  const handleSortParams = (value: IsortBy) => {
+    setSortBy(value)
+    props.handleSortChange(value)
   };
 
-  componentDidMount() {
-    const query = parse(this.props.location.search) as { sortBy: string };
-    let { sortBy } = query;
-    if (sortBy) {
-      if (sortBy) {
-        this.setState({
-          sortBy:sortBy === IsortBy.date ? 
-          IsortBy.date : IsortBy.rating,
-        });
-      }
-    }
-  }
-
-  componentDidUpdate(prevProps:ISortPanelProps){
-    if(this.props.location !== prevProps.location && this.props.history.action !== "PUSH"){
-      const query = parse(this.props.location.search) as { sortBy: string };
-    let { sortBy } = query;
-    if (sortBy) {
-      this.setState({
-        sortBy:sortBy === IsortBy.date ? 
-        IsortBy.date : IsortBy.rating,
-      });
-    }
-  }
-}
-
-  handleSortParams = (value: IsortBy) => {
-    this.setState({ sortBy: value }, () => {
-      this.props.handleSortChange(this.state.sortBy);
-    });
-  };
-
-  render() {
-    const { moviesCount } = this.props;
     return (
       <div className="sort_panel">
         <p className="movies_found">
-          <span>{moviesCount}</span> movies found
+          <span>{props.moviesCount}</span> movies found
         </p>
         <div className="sort">
           <span className="sort_by">Sort by</span>
           <button
             name="datesort"
             className={
-              this.state.sortBy === IsortBy.date
+              sortBy === IsortBy.date
                 ? "sort_date_active"
                 : "sort_date"
             }
-            onClick={() => this.handleSortParams(IsortBy.date)}
+            onClick={() => handleSortParams(IsortBy.date)}
           >
             release date
           </button>
           <button
             name="ratingsort"
             className={
-              this.state.sortBy === IsortBy.rating
+              sortBy === IsortBy.rating
                 ? "sort_rating_active"
                 : "sort_rating"
             }
-            onClick={() => this.handleSortParams(IsortBy.rating)}
+            onClick={() => handleSortParams(IsortBy.rating)}
           >
             rating
           </button>
         </div>
       </div>
     );
-  }
+  
 }
+
 
 export default SortPanel;

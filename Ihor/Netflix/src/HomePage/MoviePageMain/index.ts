@@ -1,6 +1,6 @@
 import MoviePageMain from "./MoviePageMain";
 import { connect, ConnectedProps } from "react-redux";
-import { moviesRequested, loadData } from "../../redux/Actions/FetchActions";
+import { moviesRequested, loadData } from "../../redux/Reducers/FetchReducer";
 import IRootState from '../../Interfaces/IRootState';
 
 
