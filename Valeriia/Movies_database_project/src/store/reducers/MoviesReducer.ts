@@ -1,9 +1,28 @@
-import { createSlice,PayloadAction} from '@reduxjs/toolkit'
-//import {IRequestMoviesSuccessAction, IRequestMoviesWithLazyLoadingAction} from '../actions/moviesAction';
-
-import {MoviesActionTypes} from '../../store/actions/actionTypes';
+import { createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {IMovie} from '../../types';
 
+export interface IRequestMoviesSuccessAction{
+  movies:IMovie[] | [] ;
+}
+
+interface IRequestMoviesErrorAction{
+  error: boolean
+}
+
+export interface IRequestMoviesWithLazyLoadingAction{
+  movies: IMovie[] | []
+}
+
+export interface IRequestMoviesAction{
+  type: string,
+  payload: {
+    sortByType: string;
+    searchBy?: string;
+    searchValue?: string;
+    offset?: number;
+    isLazyLoading?: boolean
+  }
+}
 
 export interface IMoviesState{
   movies: IMovie[] | [];
@@ -11,8 +30,7 @@ export interface IMoviesState{
   isError: boolean;
 }
 
-
-const counterSlice = createSlice({
+export const moviesSlice = createSlice({
     name: 'movies',
     initialState: {
         movies: [],
@@ -20,64 +38,23 @@ const counterSlice = createSlice({
         isError: false,
     },
     reducers: {
-        onRequestSuccessMovies: (state: IMoviesState, action: any) => {
-         state.movies= action.movies,
-         state.isLoading = false
+      onRequestMovies(movies){
+        movies.isLoading = true
       },
-    //   onRequestMoviesWithLazyLoading: (state: IMoviesState, action: IRequestMoviesWithLazyLoadingAction) => {
-    //     state.movies = [...state.movies, ...action.movies],
-    //     state.isLoading = false
-    //   },
-    //   onRequestErrorMovies: state => {
-    //     state.isLoading = false,
-    //     state.isError
-    //   },
-    //   onRequestMovies: state => {
-    //     state.isLoading = true
-    //   }
+      onRequestSuccessMovies(movies: IMoviesState, action: PayloadAction<IRequestMoviesSuccessAction>){
+        movies.movies = action.payload.movies
+      },
+      onRequestMoviesWithLazyLoading(movies: IMoviesState, action: PayloadAction<IRequestMoviesWithLazyLoadingAction>){
+        movies.movies = [...movies.movies, ...action.payload.movies]
+        movies.isLoading = false
+      },
+      onRequestErrorMovies(movies: IMoviesState,action: PayloadAction<IRequestMoviesErrorAction>){
+        movies.isLoading = false
+        movies.isError = action.payload.error;
+      },
+     
     }
   })
-  
-  export const reducer = counterSlice.reducer;
 
-export const {onRequestSuccessMovies} = counterSlice.actions;
- 
-// const moviesReducer = (state = initialState, action: MoviesAction) => {
-//     switch(action.type){
-//         case MoviesActionTypes.ON_REQUEST_MOVIES_SUCCESS:{
-//             return {
-//                 ...state,
-//                movies: action.movies,
-//                isLoading: false
-//             }
-//         }
-
-//         case MoviesActionTypes.ON_REQUEST_MOVIES_WITH_LAZY_LOADING:{
-//             return {
-//                 ...state,
-//                movies: [...state.movies, ...action.movies],
-//                isLoading: false
-//             }
-//         }
-
-//         case MoviesActionTypes.ON_REQUEST_MOVIES_ERROR:{
-//             return {
-//                 ...state,
-//                 isLoading: false,
-//                 isError: action.error
-//             }
-//         }
-
-//         case MoviesActionTypes.ON_REQUEST_MOVIES:{
-//             return {
-//                 ...state,
-//                 isLoading: true
-//             }
-//         }
-
-//         default: return state;
-//     }
-   
-// }
-
-//export default moviesReducer;
+  export const {onRequestSuccessMovies, onRequestMovies,onRequestMoviesWithLazyLoading,onRequestErrorMovies} = moviesSlice.actions;
+  export default moviesSlice.reducer;

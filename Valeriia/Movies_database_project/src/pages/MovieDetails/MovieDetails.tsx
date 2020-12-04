@@ -6,10 +6,10 @@ import "./MovieDetails.scss";
 import Header from "../../components/Header";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { IMovie } from "../../types";
-import { onRequestMovies } from "../../store/actions/moviesAction";
+import { ON_REQUEST_MOVIES } from "../../store/actions/moviesAction";
 import { useDispatch, useSelector } from "react-redux";
 import { IRootMovieState } from "../..";
-import { onRequestMovie } from "../../store/actions/movieActions";
+import { ON_REQUEST_MOVIE } from "../../store/actions/movieActions";
 
 interface IRouteInfo {
   id: string;
@@ -18,9 +18,15 @@ interface IRouteInfo {
 const MovieDetails = (props: RouteComponentProps<IRouteInfo>) => {
   const movie = useSelector((state: IRootMovieState) => state.movie.movie);
   const movies = useSelector((state: IRootMovieState) => state.movies.movies);
-  const isLoading = useSelector(
+
+  const isMoviesLoading = useSelector(
     (state: IRootMovieState) => state.movies.isLoading
   );
+
+  const isMovieLoading = useSelector(
+    (state: IRootMovieState) => state.movie.isLoading
+  );
+
   const isError = useSelector((state: IRootMovieState) => state.movies.isError);
   const dispatch = useDispatch();
 
@@ -29,29 +35,30 @@ const MovieDetails = (props: RouteComponentProps<IRouteInfo>) => {
     isLazyLoading: boolean = false,
     movie: IMovie
   ) => {
-    dispatch(
-      onRequestMovies(
-        "genres",
-        "release_date",
-        movie.genres.join(","),
+    dispatch({
+      type: ON_REQUEST_MOVIES,
+      payload: {
+        sortByType: "genres",
+        searchBy: "release_date",
+        searchValue: movie.genres.join(","),
         offset,
-        isLazyLoading
-      )
-    );
+        isLazyLoading,
+      },
+    });
   };
 
   useEffect(() => {
     const filmId = Number(props.match.params.id);
-    dispatch(onRequestMovie(filmId));
+    dispatch({ type: ON_REQUEST_MOVIE, payload: { id: filmId } });
     window.scrollTo(0, 0);
-  }, [props.match.params.id]);
+  }, [props.match.params.id, dispatch]);
 
   return (
     <>
       <Header isLinkToShow={true} />
       <div className="movieDetails">
         {movie ? (
-          <Movie movie={movie!} isLoading={isLoading} />
+          <Movie movie={movie} isLoading={isMovieLoading} />
         ) : (
           <div>
             <p>The film by this id is not exist</p>
@@ -61,10 +68,10 @@ const MovieDetails = (props: RouteComponentProps<IRouteInfo>) => {
       <InfiniteScroll
         dataLength={movies.length}
         next={() => fetchData(movies.length + 10, true, movie!)}
-        hasMore={true}
+        hasMore={movies.length >= 9 ? true : false}
         loader={<h4>Loading...</h4>}
       >
-        <Movies movies={movies} isLoading={isLoading} isError={isError} />
+        <Movies movies={movies} isLoading={isMoviesLoading} isError={isError} />
       </InfiniteScroll>
     </>
   );

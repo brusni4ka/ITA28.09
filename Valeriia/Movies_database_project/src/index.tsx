@@ -7,7 +7,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { Provider } from "react-redux";
 import createSagaMiddleware from "redux-saga";
 //import { IMoviesState } from "./store/reducers/MoviesReducer";
-import { reducer, IMoviesState } from "./store/reducers/MoviesReducer";
+import moviesReducer, { IMoviesState } from "./store/reducers/MoviesReducer";
 import movieReducer from "./store/reducers/MovieReducer";
 import "./index.css";
 import App from "./App";
@@ -16,13 +16,12 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { IMovieDetailsState } from "./store/reducers/MovieReducer";
 import rootSaga from "./store/sagas/rootSaga";
 import { IMovie } from "./types";
+import { getDefaultMiddleware } from "@reduxjs/toolkit";
 
 const rootReducer = combineReducers({
-  movies: reducer,
+  movies: moviesReducer,
   movie: movieReducer,
 });
-
-export type RootState = ReturnType<typeof rootReducer>;
 
 export interface IRootState {
   movies: IMoviesState;
@@ -37,14 +36,12 @@ export interface IRootMovieState {
   };
 }
 
-const composeEnhancers = composeWithDevTools({ trace: true });
-
 const sagaMiddleware = createSagaMiddleware();
 
-const store = configureStore(
-  rootReducer,
-  composeEnhancers(applyMiddleware(sagaMiddleware))
-);
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: [...getDefaultMiddleware(), sagaMiddleware],
+});
 
 sagaMiddleware.run(rootSaga);
 

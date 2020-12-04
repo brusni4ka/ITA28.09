@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SearchForm from "../../components/SearchForm";
 import SortPannel from "../../components/SortPannel";
@@ -8,31 +8,14 @@ import { parse, stringify } from "query-string";
 import Header from "../../components/Header";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { IRootState } from "../../index";
-import { onRequestMovies } from "../../store/actions/moviesAction";
+import { ON_REQUEST_MOVIES } from "../../store/actions/moviesAction";
 
-const usePrevious = (value: any) => {
-  const ref = useRef();
-  useEffect(() => {
-    ref.current = value;
-  });
-  return ref.current;
-};
-
-const HomePage = (props: any) => {
+const HomePage = (props: RouteComponentProps) => {
   const [sortType, setSortType] = useState("release_date");
-  const [hasMore, setHasMore] = useState(false);
-  const prevMoviesLength = usePrevious(props.movies.length);
   const movies = useSelector((state: IRootState) => state.movies.movies);
   const isLoading = useSelector((state: IRootState) => state.movies.isLoading);
   const isError = useSelector((state: IRootState) => state.movies.isError);
   const dispatch = useDispatch();
-  useEffect(() => {
-    if (props.movies.length > prevMoviesLength!) {
-      setHasMore(props.movies.length > prevMoviesLength!);
-    }
-
-    fetchData();
-  }, [props.location, props.movies]);
 
   const fetchData = (offset: number = 0, isLazyLoading: boolean = false) => {
     const queryUrl = parse(props.location.search) as {
@@ -42,9 +25,16 @@ const HomePage = (props: any) => {
     };
     const { searchTerm, filterBy, sortBy } = queryUrl;
     const sortByType = sortBy ? sortBy : sortType;
-    dispatch(
-      onRequestMovies(sortByType, filterBy, searchTerm, offset, isLazyLoading)
-    );
+    dispatch({
+      type: ON_REQUEST_MOVIES,
+      payload: {
+        sortByType,
+        searchBy: filterBy,
+        searchValue: searchTerm,
+        offset,
+        isLazyLoading,
+      },
+    });
     setSortType(sortByType);
   };
 
@@ -57,7 +47,14 @@ const HomePage = (props: any) => {
     const { sortBy } = queryUrl;
     const query = stringify({ ...queryUrl, searchTerm, filterBy });
     const sortByType = sortBy ? sortBy : sortType;
-    onRequestMovies(sortByType, filterBy, searchTerm);
+    dispatch({
+      type: ON_REQUEST_MOVIES,
+      payload: {
+        sortByType,
+        searchBy: filterBy,
+        searchValue: searchTerm,
+      },
+    });
     props.history.push({
       pathname: "/search/Search",
       search: query,
@@ -76,26 +73,37 @@ const HomePage = (props: any) => {
       search: query,
     });
     setSortType(sortByType);
-    onRequestMovies(sortByType, filterBy, searchTerm);
+    dispatch({
+      type: ON_REQUEST_MOVIES,
+      payload: {
+        sortByType,
+        searchBy: filterBy,
+        searchValue: searchTerm,
+      },
+    });
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <>
       <Header isLinkToShow={false} />
       <SearchForm onSearchClick={onSearchHandler} />
       <SortPannel
-        moviesCount={movies.length}
+        moviesCount={movies?.length}
         onClickSortBy={onClickSortByHandler}
         sortBy={sortType}
       />
 
       <InfiniteScroll
-        dataLength={props.movies.length}
-        next={() => fetchData(props.movies.length + 10, true)}
-        hasMore={hasMore}
+        dataLength={movies?.length}
+        next={() => fetchData(movies?.length + 10, true)}
+        hasMore={movies.length >= 9 ? true : false}
         loader={<h4 style={{ textAlign: "center" }}>Loading...</h4>}
       >
-        <Movies movies={movies} isLoading={isLoading} isError={isError} />
+        <Movies movies={movies!!} isLoading={isLoading} isError={isError} />
       </InfiniteScroll>
     </>
   );

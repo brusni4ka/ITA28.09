@@ -17,7 +17,7 @@ export const fetchListOfMovies = async(sortByType: string, searchBy?: string, se
     return result.data.data;
 }
 
-export const fetchMovieById = async(id: number): Promise<IMovie> => {
+export const fetchMovieById = async(id: string): Promise<IMovie> => {
     const result = await axios(`https://reactjs-cdp.herokuapp.com/movies/${id}`); 
     return result.data;
 }

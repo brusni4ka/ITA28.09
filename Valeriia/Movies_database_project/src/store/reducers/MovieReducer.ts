@@ -1,41 +1,50 @@
-import { IMovie } from "../../types";
-import { MovieAction} from "../actions/movieActions";
-import {MovieActionTypes} from '../actions/actionTypes';
+import { createSlice, PayloadAction} from '@reduxjs/toolkit'
 
+import { IMovie } from "../../types";
+
+export interface IRequestMovieAction{
+  type: string,
+  payload: {
+    id: string;
+  }
+}
+
+export interface IRequestMovieSuccessAction{
+    movie:IMovie;
+}
+
+interface IRequestMovieErrorAction{
+    error: boolean
+}
+  
 export interface IMovieDetailsState {
   movie: IMovie | null;
-  isError: boolean
+  isError: boolean;
+  isLoading: boolean;
 }
 
-const initialState: IMovieDetailsState  = {
-    movie: null,
-    isError: false
-}
+export const movieSlice = createSlice({
+    name: 'movie',
+    initialState: {
+        movie: null,
+        isError: false,
+        isLoading: false
+    },
+    reducers: {
+      onRequestMovie(state){
+          state.isLoading = true
+      },
+      onRequestSuccessMovie(state: IMovieDetailsState, action: PayloadAction<IRequestMovieSuccessAction>){
+        state.movie = action.payload.movie
+        state.isLoading = false
+      },
 
-const movieReducer = (state: IMovieDetailsState = initialState, action: MovieAction) => {
-    switch(action.type){
-        case MovieActionTypes.ON_REQUEST_MOVIE:{
-            return {
-                ...state,
-            }
-        }
-
-        case MovieActionTypes.ON_REQUEST_MOVIE_SUCCESS:{
-            return {
-                ...state,
-               movie: action.movie,
-            }
-        }
-
-        case MovieActionTypes.ON_REQUEST_MOVIE_ERROR:{
-            return {
-                ...state,
-                isError: action.error
-            }
-        }
-
-        default: return state;
+      onRequestErrorMovie(state: IMovieDetailsState,action: PayloadAction<IRequestMovieErrorAction>){
+        state.isLoading = false
+        state.isError = action.payload.error;
+      },
+     
     }
-}
-
-export default movieReducer;
+  })
+  export const {onRequestSuccessMovie, onRequestMovie,onRequestErrorMovie} = movieSlice.actions;
+  export default movieSlice.reducer;
