@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
-import requestReduser from './redux/Redusers/requestReduser';
+import { reducer } from './redux/Redusers/requestReduser';
 
 
 export const rootReducer = combineReducers({
-  films: requestReduser
+  films: reducer
 });

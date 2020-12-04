@@ -6,8 +6,8 @@ import AdditionalPanel from '../../Components/AdditionalPanel/AdditionalPanel'
 import Films from '../../Components/Films/Films'
 import Footer from '../../Components/Footer/Footer'
 // import IFilmProps from '../../interfaces/IFIlmProps'
-import { Link, RouteComponentProps } from 'react-router-dom'
-import { currentFilmRequested, filmsRequested } from 'redux/Actions/requestActions'
+import { Link, RouteComponentProps, useHistory } from 'react-router-dom'
+import { currentFilmRequested, filmsRequested } from 'redux/Redusers/requestReduser'
 import { connect, ConnectedProps } from 'react-redux'
 import { parse } from 'query-string'
 import InfiniteScroll from 'react-infinite-scroller'
@@ -30,28 +30,28 @@ type PropsFromRouteAndRedux = ConnectedProps<typeof connector> & RouteComponentP
 
 function FilmPage (props: PropsFromRouteAndRedux) {
 
+  const history = useHistory()
+
   useEffect(() => {
-    props.currentFilmRequested(props.match.params.id)
+    props.currentFilmRequested({id: props.match.params.id})
   }, []);
 
   useEffect(() => {
-    props.currentFilmRequested(props.match.params.id)
+    if(history.action === 'PUSH') {
+      props.currentFilmRequested({id: props.match.params.id})
+    }
   }, [props.match.params.id]);
 
   useEffect(() => {
     const search = currentFilm ? props.currentFilm.genres[0] : ''
-    props.filmsRequested(0, 'vote_average', 'genre', search)
+    props.filmsRequested({offset: 0, sortBy: 'vote_average', searchBy: 'genre', search})
   }, [props.currentFilm])
 
 
   const handlePagination = (offset: number, pagination: boolean = false) => {
-    const URLData = parse(props.location.search) as { 
-      sortBy: string, 
-      searchBy: string, 
-      search: string 
-    };
-    const { sortBy, searchBy, search } = URLData 
-    props.filmsRequested(offset, sortBy, searchBy, search, pagination)
+    console.log('Pagination')
+    const search = currentFilm ? currentFilm.genres[0] : ''
+    props.filmsRequested({offset, sortBy: 'vote_average', searchBy: 'genre', search, pagination})
   }
   const { currentFilm, films } = props;
   const genre = currentFilm && currentFilm.genres[0]
@@ -73,10 +73,11 @@ function FilmPage (props: PropsFromRouteAndRedux) {
           genre = { String(genre) }
         />
         <InfiniteScroll
-          pageStart={ films.length }
+          pageStart={ 1 }
           loadMore={ () => handlePagination(films.length + 10, true) }
           hasMore={ true }
           loader={ <div className="loader" key={0}>Loading ...</div> }
+          initialLoad = { false }
         >
           <Films 
             films = { films }

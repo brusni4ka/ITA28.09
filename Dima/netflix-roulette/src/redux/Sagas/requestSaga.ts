@@ -1,7 +1,13 @@
-import { currentFilmRecieved, currentFilmFailed, paginationRecieved } from './../Actions/requestActions';
-import { RequestActionsTypes } from '../Redusers/requestReduser';
+import { 
+  filmsRequested, 
+  currentFilmRequested,
+  currentFilmRecieved, 
+  currentFilmFailed, 
+  paginationRecieved,
+  filmsRecieved,
+  filmsFailed,
+ } from './../Redusers/requestReduser';
 import { takeLatest, call, put, all } from 'redux-saga/effects';
-import { IFilmsRequested, filmsRecieved, filmsFailed, ICurrentFilmRequested } from '../Actions/requestActions';
 import IFilm from 'interfaces/IFilm';
 
 export const getFilms = async(offset: number, sortBy: string, searchBy?: string, search?: string): Promise<IFilm[]> => {
@@ -16,7 +22,25 @@ export const getCurrentFilm = async(id: string): Promise<IFilm> => {
   return currentFilm;
 }
 
-function* requestFilmSaga(action: IFilmsRequested) {
+interface IFilmAction {
+  type: string,
+  payload: {
+    offset: number
+    sortBy: string
+    searchBy: string
+    search: string
+    pagination: boolean
+  }
+};
+interface ICurrentFilmAction {
+  type: string,
+  payload: {
+    id: string,
+    currentFilm: IFilm
+  }
+}
+
+function* requestFilmSaga(action: IFilmAction) {
   try {
     const films = yield call(getFilms, 
       action.payload.offset,
@@ -35,9 +59,9 @@ function* requestFilmSaga(action: IFilmsRequested) {
   };
 };
 
-function* requestCurrentFilmSaga(action: ICurrentFilmRequested) {
+function* requestCurrentFilmSaga(action: ICurrentFilmAction) {
   try {
-    const currentFilm = yield call(getCurrentFilm, action.payload);
+    const currentFilm = yield call(getCurrentFilm, action.payload.id);
     yield put(currentFilmRecieved(currentFilm));
   }
   catch {
@@ -45,16 +69,12 @@ function* requestCurrentFilmSaga(action: ICurrentFilmRequested) {
   }
 };
 
-
-
 export const requestFilmsSub = () => {
-  return takeLatest(RequestActionsTypes.FILMS_REQUESTED, requestFilmSaga);
+  return takeLatest(filmsRequested, requestFilmSaga);
 };
 export const requestCurrentFilmSub = () => {
-  return takeLatest(RequestActionsTypes.CURRENTFILM_REQUESTED, requestCurrentFilmSaga)
+  return takeLatest(currentFilmRequested, requestCurrentFilmSaga)
 };
-
-
 
 export function* requestSagas() {
   yield all([

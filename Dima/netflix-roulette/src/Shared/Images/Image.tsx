@@ -5,7 +5,6 @@ import IImage from '../../interfaces/IImage'
 export default function Image ({ filmImage, filmAlt }: IImage) {
 
   const handleImgError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    console.log('Error')
     const target = e.target as HTMLImageElement
     target.src = defaultImg
   } 
