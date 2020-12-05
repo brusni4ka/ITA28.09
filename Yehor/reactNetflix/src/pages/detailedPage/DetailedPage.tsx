@@ -14,6 +14,7 @@ import {
   dataOffsetIncrement,
   dataOffsetDecrement,
 } from "../../redux/reducers/reducerMovies";
+
 import { connect, ConnectedProps } from "react-redux";
 import IReduxState from "../../interfaces/IReduxState";
 

@@ -49,6 +49,7 @@ const HomePage = (props: PropsFromRedux) => {
   }, [props.location, props.offset]);
 
   const handleSearchChange = ({
+
     search,
     searchBy,
   }: {

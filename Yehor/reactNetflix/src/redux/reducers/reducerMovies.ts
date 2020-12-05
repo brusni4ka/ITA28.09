@@ -7,6 +7,7 @@ interface IState {
   offset: number;
 }
 const moviesDefaultState: IState = {
+
   status: "",
   movies: [],
   offset: 0,
