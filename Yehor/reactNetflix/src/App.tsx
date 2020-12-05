@@ -17,7 +17,7 @@ class App extends React.Component<{}, {}> {
     return (
       <Switch>
         <Route path="/" exact component={HomePage} />
-        <Route path="/search/" exact component={HomePage} />
+        <Route path="/search" exact component={HomePage} />
         <Route path="/film/:id" component={DetailedPage} />
         <Route component={NotFoundErrorBlock} />
       </Switch>

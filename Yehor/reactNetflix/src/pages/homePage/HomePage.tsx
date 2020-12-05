@@ -9,13 +9,6 @@ import ErrorBlock from "../../components/errorBlock";
 import { RouteComponentProps } from "react-router-dom";
 import { stringify, parse } from "query-string";
 import IMovies from "../../interfaces/IMovies";
-// import {
-//   loadData,
-//   dataOffsetIncrement,
-//   dataOffsetDecrement,
-//   receivedData,
-//   ILoadData,
-// } from "../../redux/actions/moviesActions";
 import {
   loadData,
   dataOffsetIncrement,
