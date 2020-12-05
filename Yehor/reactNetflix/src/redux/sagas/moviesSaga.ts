@@ -1,34 +1,38 @@
 import { takeLatest, call, put, all } from "redux-saga/effects";
-// import {
-//   MoviesTypes,
-//   ILoadData,
-//   receivedData,
-//   error
-// } from "../actions/moviesActions";
-import {moviesReceived, error, loadData} from "../reducers/reducerMovies"
+import { moviesReceived, error, loadData } from "../reducers/reducerMovies";
 import IMovie from "../../interfaces/IMovie";
-import { currentMovieLoad, currentMovieReceived, currentMovieError } from "../reducers/reducerMovie";
+import {
+  currentMovieLoad,
+  currentMovieReceived,
+  currentMovieError,
+} from "../reducers/reducerMovie";
 
-export const fetchMoviesApi = async (sortBy?: string, searchBy?: string, search?: string, offset?: number): Promise<IMovie[]> => {
-  const limit = 'limit=9'
-  
-  let url = 
-  searchBy && search && sortBy ? `https://reactjs-cdp.herokuapp.com/movies?sortBy=${sortBy}&sortOrder=desc&search=${search}&searchBy=${searchBy}&offset=${offset}&${limit}`:
-  searchBy && search ? `https://reactjs-cdp.herokuapp.com/movies?search=${search}&searchBy=${searchBy}&offset=${offset}&${limit}`:
-  sortBy ? `https://reactjs-cdp.herokuapp.com/movies?sortBy=${sortBy}&sortOrder=desc&offset=${offset}&${limit}`:
-  `https://reactjs-cdp.herokuapp.com/movies?sortBy=release_data&sortOrder=desc&offset=${offset}&${limit}`
+export const fetchMoviesApi = async (
+  sortBy?: string,
+  searchBy?: string,
+  search?: string,
+  offset?: number
+): Promise<IMovie[]> => {
+  const limit = 9;
+  const url =
+    searchBy && search
+      ? `https://reactjs-cdp.herokuapp.com/movies?sortBy=
+  ${sortBy ? sortBy : "release_data"}
+  &search=${search}&searchBy=${searchBy}&offset=${offset}&limit=${limit}`
+      : `https://reactjs-cdp.herokuapp.com/movies?sortBy=release_data&sortOrder=desc&offset=${offset}&limit=${limit}`;
   const getMovies = await fetch(url);
   const movies = await getMovies.json();
   return movies.data;
 };
 
 interface ILoadDataAction {
-  payload:{
-    offset: number,
-    search: string,
-    searchBy: string,
-    sortBy: string,}
-  type: string
+  payload: {
+    offset: number;
+    search: string;
+    searchBy: string;
+    sortBy: string;
+  };
+  type: string;
 }
 
 function* requestMoviesSaga(action: ILoadDataAction) {
@@ -38,11 +42,11 @@ function* requestMoviesSaga(action: ILoadDataAction) {
       action.payload.sortBy,
       action.payload.searchBy,
       action.payload.search,
-      action.payload.offset,
+      action.payload.offset
     );
-    yield put(moviesReceived({status: "received", movies}));
+    yield put(moviesReceived({ status: "received", movies }));
   } catch {
-    yield put(error({status: "error"}));
+    yield put(error({ status: "error" }));
   }
 }
 
@@ -63,22 +67,21 @@ interface IcurrentMovieLoad {
   payload: {
     status: string;
     id: string;
-  }
+  };
 }
 
 function* requestCurrentMovieSaga(action: IcurrentMovieLoad) {
   try {
     const movie = yield call(fetchCurrentMovieApi, action.payload.id);
-    yield put(currentMovieReceived({status: "received", movie}));
+    yield put(currentMovieReceived({ status: "received", movie }));
   } catch {
-    yield put(currentMovieError({status: "error"}));
+    yield put(currentMovieError({ status: "error" }));
   }
 }
 
 export const fetchCurrentMovieSub = () => {
   return takeLatest(currentMovieLoad, requestCurrentMovieSaga);
 };
-
 
 export function* fetchSagas() {
   yield all([fetchMoviesSub(), fetchCurrentMovieSub()]);

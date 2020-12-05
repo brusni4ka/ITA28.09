@@ -18,66 +18,50 @@ enum SortBy {
 }
 
 const SortPanel = (props: ISortPanelProps) => {
+  const [sortBy, setSortBy] = useState(SortBy.Date);
 
-const [sortBy, setSortBy] = useState(SortBy.Date)
+  useEffect(() => {
+    const querySrch = parse(props.location.search) as { sortBy: string };
+    checkSetSortby(querySrch.sortBy);
+  }, []);
 
-useEffect(() => {
-  const querySrch = parse(props.location.search) as { sortBy: string };
-  const { sortBy } = querySrch;
-  if (sortBy) {
-    if (sortBy === SortBy.Date) {
-      setSortBy(SortBy.Date)
-    } else {
-      setSortBy(SortBy.Rating)
-    }
-  } else {
-    setSortBy(SortBy.Date)
-  }
-}, [])
+  useEffect(() => {
+    const querySrch = parse(props.location.search) as { sortBy: string };
+    checkSetSortby(querySrch.sortBy);
+  }, [props.location]);
 
-useEffect(() => {
-  const querySrch = parse(props.location.search) as { sortBy: string }
-  const { sortBy } = querySrch;
-  if (sortBy) {
-    if (sortBy === SortBy.Date) {
-      setSortBy(SortBy.Date)
-    } else {
-      setSortBy(SortBy.Rating)
-    }
-  } else {
-    setSortBy(SortBy.Date)
-  }
-}, [props.location])
+  const checkSetSortby = (sortByvalue: string) => {
+    setSortBy(sortByvalue === SortBy.Rating ? SortBy.Rating : SortBy.Date);
+  };
 
   const sortByDate = () => {
-    setSortBy(SortBy.Date)
+    setSortBy(SortBy.Date);
     props.handlerSortChange(SortBy.Date);
   };
   const sortByRate = () => {
-    setSortBy(SortBy.Rating)
+    setSortBy(SortBy.Rating);
     props.handlerSortChange(SortBy.Rating);
   };
 
   const { moviesLength } = props;
   return (
-      <div className="sort-panel">
-        <div className="amount">{moviesLength} movies found</div>
-        <div className="sort">
-          <p>Sort by</p>
-          <Button
-            content={"release date"}
-            styleClass={sortBy === SortBy.Date ? "on" : "off"}
-            handler={sortByDate}
-          />
-          <Button
-            content={"rating"}
-            styleClass={sortBy === SortBy.Rating ? "on" : "off"}
-            handler={sortByRate}
-          />
-        </div>
+    <div className="sort-panel">
+      <div className="amount">{moviesLength} movies found</div>
+      <div className="sort">
+        <p>Sort by</p>
+        <Button
+          content={"release date"}
+          styleClass={sortBy === SortBy.Date ? "on" : "off"}
+          handler={sortByDate}
+        />
+        <Button
+          content={"rating"}
+          styleClass={sortBy === SortBy.Rating ? "on" : "off"}
+          handler={sortByRate}
+        />
       </div>
-      )
-    
-}
+    </div>
+  );
+};
 
 export default SortPanel;
