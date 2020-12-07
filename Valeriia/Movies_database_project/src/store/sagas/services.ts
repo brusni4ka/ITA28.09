@@ -14,7 +14,7 @@ export const fetchListOfMovies = async(sortByType: string, searchBy?: string, se
         }
     }}
     ); 
-    return result.data.data;
+    return result.data;
 }
 
 export const fetchMovieById = async(id: string): Promise<IMovie> => {

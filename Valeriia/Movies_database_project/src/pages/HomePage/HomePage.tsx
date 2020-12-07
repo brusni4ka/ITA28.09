@@ -15,6 +15,7 @@ const HomePage = (props: RouteComponentProps) => {
   const movies = useSelector((state: IRootState) => state.movies.movies);
   const isLoading = useSelector((state: IRootState) => state.movies.isLoading);
   const isError = useSelector((state: IRootState) => state.movies.isError);
+  const total = useSelector((state: IRootState) => state.movies.total);
   const dispatch = useDispatch();
 
   const fetchData = (offset: number = 0, isLazyLoading: boolean = false) => {
@@ -24,7 +25,7 @@ const HomePage = (props: RouteComponentProps) => {
       sortBy: string;
     };
     const { searchTerm, filterBy, sortBy } = queryUrl;
-    const sortByType = sortBy ? sortBy : sortType;
+    const sortByType = sortBy ? sortBy : "release_date";
     dispatch({
       type: ON_REQUEST_MOVIES,
       payload: {
@@ -35,6 +36,7 @@ const HomePage = (props: RouteComponentProps) => {
         isLazyLoading,
       },
     });
+
     setSortType(sortByType);
   };
 
@@ -45,16 +47,14 @@ const HomePage = (props: RouteComponentProps) => {
       sortBy: string;
     };
     const { sortBy } = queryUrl;
-    const query = stringify({ ...queryUrl, searchTerm, filterBy });
     const sortByType = sortBy ? sortBy : sortType;
-    dispatch({
-      type: ON_REQUEST_MOVIES,
-      payload: {
-        sortByType,
-        searchBy: filterBy,
-        searchValue: searchTerm,
-      },
+    const query = stringify({
+      ...queryUrl,
+      sortBy: sortByType,
+      searchTerm,
+      filterBy,
     });
+
     props.history.push({
       pathname: "/search/Search",
       search: query,
@@ -66,26 +66,18 @@ const HomePage = (props: RouteComponentProps) => {
       filterBy: string;
       searchTerm: string;
     };
-    const { filterBy, searchTerm } = queryUrl;
+
     const query = stringify({ ...queryUrl, sortBy: sortByType });
     props.history.push({
       pathname: "/search/Search",
       search: query,
     });
     setSortType(sortByType);
-    dispatch({
-      type: ON_REQUEST_MOVIES,
-      payload: {
-        sortByType,
-        searchBy: filterBy,
-        searchValue: searchTerm,
-      },
-    });
   };
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [props.history.action, props.location.search]);
 
   return (
     <>
@@ -100,10 +92,10 @@ const HomePage = (props: RouteComponentProps) => {
       <InfiniteScroll
         dataLength={movies?.length}
         next={() => fetchData(movies?.length + 10, true)}
-        hasMore={movies.length >= 9 ? true : false}
+        hasMore={movies.length < total ? true : false}
         loader={<h4 style={{ textAlign: "center" }}>Loading...</h4>}
       >
-        <Movies movies={movies!!} isLoading={isLoading} isError={isError} />
+        <Movies movies={movies} isLoading={isLoading} isError={isError} />
       </InfiniteScroll>
     </>
   );

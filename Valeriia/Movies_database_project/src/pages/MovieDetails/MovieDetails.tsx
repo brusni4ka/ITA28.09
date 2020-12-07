@@ -8,7 +8,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { IMovie } from "../../types";
 import { ON_REQUEST_MOVIES } from "../../store/actions/moviesAction";
 import { useDispatch, useSelector } from "react-redux";
-import { IRootMovieState } from "../..";
+import { IRootMovieState, IRootState } from "../..";
 import { ON_REQUEST_MOVIE } from "../../store/actions/movieActions";
 
 interface IRouteInfo {
@@ -18,6 +18,7 @@ interface IRouteInfo {
 const MovieDetails = (props: RouteComponentProps<IRouteInfo>) => {
   const movie = useSelector((state: IRootMovieState) => state.movie.movie);
   const movies = useSelector((state: IRootMovieState) => state.movies.movies);
+  const total = useSelector((state: IRootState) => state.movies.total);
 
   const isMoviesLoading = useSelector(
     (state: IRootMovieState) => state.movies.isLoading
@@ -68,7 +69,7 @@ const MovieDetails = (props: RouteComponentProps<IRouteInfo>) => {
       <InfiniteScroll
         dataLength={movies.length}
         next={() => fetchData(movies.length + 10, true, movie!)}
-        hasMore={movies.length >= 9 ? true : false}
+        hasMore={movies.length < total ? true : false}
         loader={<h4>Loading...</h4>}
       >
         <Movies movies={movies} isLoading={isMoviesLoading} isError={isError} />

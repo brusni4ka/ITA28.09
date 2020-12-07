@@ -21,12 +21,8 @@ const SearchForm = (props: ISearchFormProps) => {
     };
     const { filterBy, searchTerm } = query;
     setFilterBy(filterBy || "title");
-    setSearchTerm(searchTerm);
-  }, [props.location.search]);
-
-  const onChangeHadler = (searchTerm: string) => {
-    setSearchTerm(searchTerm);
-  };
+    setSearchTerm(searchTerm || "");
+  }, [props.history.action, props.location.search]);
 
   const onKeyPressHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter") {
@@ -53,7 +49,7 @@ const SearchForm = (props: ISearchFormProps) => {
       <h1>FIND YOUR MOVIE</h1>
       <Input
         value={searchTerm}
-        onChange={onChangeHadler}
+        onChange={(searchTerm) => setSearchTerm(searchTerm)}
         onKeyPress={onKeyPressHandler}
       />
       <div className="searchForm__pannel">
