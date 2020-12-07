@@ -15,14 +15,12 @@ enum IsortBy {
 const SortPanel = (props:ISortPanelProps) => {
 
   const [sortBy,setSortBy] = useState(IsortBy.date);
-  let location = useLocation();
+  const location = useLocation();
   
   useEffect(()=>{
-    const query = parse(location.search) as { sortBy: string };
-    let { sortBy } = query;
-    if(sortBy){
-      setSortBy(sortBy === IsortBy.date ? IsortBy.date : IsortBy.rating)
-    }
+      const query = parse(location.search) as { sortBy: string };
+      let { sortBy } = query;
+      setSortBy(sortBy === IsortBy.rating ? IsortBy.rating : IsortBy.date)
   },[location.search]);
 
 

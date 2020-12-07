@@ -22,21 +22,17 @@ const SearchPanel =(props:ISearchPanelProps) => {
 
   const [value,setValue] = useState('');
   const [searchBy, setSearchBy] = useState(IsearchBy.title);
-  let location = useLocation();
+  const location = useLocation();
 
 
   useEffect(()=>{
-    const query = parse(location.search) as {
-      searchBy: string;
-      search: string;
-    };
-    let { searchBy, search } = query;
-    if (searchBy) {
-      setSearchBy(searchBy === IsearchBy.title ? IsearchBy.title : IsearchBy.genre);
-    }
-    if(search){
+      const query = parse(location.search) as {
+        searchBy: string;
+        search: string;
+      };
+      let { searchBy, search } = query;
+      setSearchBy(searchBy === IsearchBy.genre ? IsearchBy.genre : IsearchBy.title);
       setValue(search);
-    }
   },[location.search])
 
 

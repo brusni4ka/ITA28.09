@@ -18,31 +18,31 @@ type MovieDetailsMainProps = IMovies &
   PropsFromRedux;
 
 const MovieDetailsMain = (props: MovieDetailsMainProps) => {
-  useEffect(() => {
-    props.selectedMovieRequested({ id: props.match.params.id });
-  }, []);
+  
 
   useEffect(() => {
     props.selectedMovieRequested({ id: props.match.params.id });
   }, [props.match.params.id]);
 
   useEffect(() => {
-    const search = movie ? props.movie.genres[0] : "";
-    props.moviesRequested({
-      sortBy: "release_date",
-      offset: 0,
-      searchBy: "genre",
-      search,
-    });
+    if(movie){
+      const search = movie.genres[0];
+      props.moviesRequested({
+        sortBy: "release_date",
+        offset: 0,
+        searchBy: "genre",
+        search,
+      });
+    }
   }, [props.movie]);
 
   const increaseOffset = () => {
     const search = props.movie.genres[0];
-    props.loadData({
-      offset: props.offset + 10,
-      sortBy: "release_date",
-      searchBy: "genre",
-      search,
+      props.loadData({
+        offset: props.offset + 10,
+        sortBy: "release_date",
+        searchBy: "genre",
+        search,
     });
   };
 
@@ -62,7 +62,7 @@ const MovieDetailsMain = (props: MovieDetailsMainProps) => {
       <div className="load">
         <button className="load_more" onClick={increaseOffset}>
           Load More
-        </button>
+        </button> 
       </div>
       <Footer />
     </>
