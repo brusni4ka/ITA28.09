@@ -1,0 +1,14 @@
+{
+  "name": "vangoux-landing-page",
+  "version": "1.0.0",
+  "description": "Landing Page for VanGoux",
+  "main": "index.js",
+  "scripts": {
+    "compile:sass": "node-sass scss/main.scss css/style.css -w"
+  },
+  "author": "Valeriia-Rieznik",
+  "license": "ISC",
+  "devDependencies": {
+    "node-sass": "^4.14.1"
+  }
+}

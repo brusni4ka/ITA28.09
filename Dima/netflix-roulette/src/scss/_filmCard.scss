@@ -1,0 +1,27 @@
+.film__card{
+  background: $black;
+  height: 650px;
+  color: $white;
+  margin: 20px;
+  cursor: pointer;
+  img{
+    height: 500px;
+    width: 350px;
+    margin-bottom: 20px;
+  }
+  // img:before {
+  //   content: ' ';
+  //   display: block;
+  //   height: 500px;
+  //   width: 350px;
+  //   background-image: url(../assets/default.jpg);
+  //   background-repeat: no-repeat;
+  //   background-size: 100%;
+  // }
+  &__information{
+    padding: 20px;
+  }
+  &__genre{
+    margin-right: 1rem;
+  }
+}

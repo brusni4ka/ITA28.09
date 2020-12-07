@@ -33,13 +33,16 @@ function* requestMoviesSaga(action:ReturnType<typeof moviesRequested >) {
       action.payload.searchBy,
       action.payload.search
     ); 
+
     yield put(moviesRecieved(movies));
   } catch {
     yield put(moviesFailed());
   }
 }
 export const fetchMoviesSub = () => {
+
   return takeLatest(moviesRequested,requestMoviesSaga);
+
 };
 
 function* requestSelectedMovieSaga(action:ReturnType<typeof selectedMovieRequested >) {
@@ -53,20 +56,19 @@ function* requestSelectedMovieSaga(action:ReturnType<typeof selectedMovieRequest
 export const fetchSelectedMovieSub = () => {
   return takeLatest(
     selectedMovieRequested,
+
     requestSelectedMovieSaga
   );
 };
 
 function* requestMoviesMoreSaga(action:ReturnType<typeof loadData >) {
   try {
-    
     const movies = yield call(
       fetchMoviesApi,
       action.payload.offset,
       action.payload.sortBy,
       action.payload.searchBy,
       action.payload.search,
-      
     );
     yield put(mergeData(movies));
   } catch {

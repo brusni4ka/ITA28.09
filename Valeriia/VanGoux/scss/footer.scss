@@ -1,0 +1,86 @@
+.footer {
+  background-color: $footerColor;
+  position: relative;
+  & .container {
+    position: relative;
+  }
+
+  &__wrapper {
+    padding: 4rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    @media (min-width: 1025px) {
+      width: 80%;
+    }
+
+    & .logo {
+      width: 50%;
+      @media (min-width: 1025px) {
+        width: auto;
+      }
+    }
+  }
+
+  &__logo {
+    margin-right: 0;
+    width: 50px;
+    height: 50px;
+  }
+
+  &__logoText {
+    color: $secondary;
+    font-family: $font-tertiary;
+    background-color: $lightBlue;
+
+    p {
+      padding: 1.6rem;
+    }
+  }
+
+  &__link {
+    line-height: 20px;
+    color: $black;
+    font-family: $font-secondary;
+  }
+
+  &__nav {
+    display: flex;
+    width: 85%;
+    justify-content: space-around;
+    padding-top: 4rem;
+    @media (min-width: 1025px) {
+      width: 40%;
+      padding-top: 0;
+    }
+  }
+
+  &__socials {
+    @media (min-width: 1025px) {
+      order: 3;
+    }
+  }
+
+  &__icon {
+    margin-right: 3.5rem;
+  }
+
+  &__illustration {
+    width: 55px;
+    height: 60px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    @media (min-width: 1025px) {
+      width: 90px;
+      height: 100px;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      transform: scaleX(1.4);
+    }
+  }
+}

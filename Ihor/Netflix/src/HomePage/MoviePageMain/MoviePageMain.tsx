@@ -1,6 +1,8 @@
+
 import React, { useEffect } from "react";
 import Header from "../header";
 import { RouteComponentProps, useHistory, useLocation } from "react-router-dom";
+
 import Movies from "../../Shared/movie";
 import SortPanel from "../sortPanel/sortPanel";
 import Footer from "../../Shared/footer";
@@ -17,6 +19,7 @@ interface IMoviePageProps {
 type MovieDetailsMainProps = IMoviePageProps &
   RouteComponentProps &
   PropsFromRedux;
+
 
 const MoviePageMain = (props: MovieDetailsMainProps) => {
   const history = useHistory();
@@ -45,25 +48,31 @@ const MoviePageMain = (props: MovieDetailsMainProps) => {
     search: string;
     searchBy: string;
   }) => {
+
     const queryUrl = parse(location.search) as {
+
       sortBy: string;
       search: string;
       searchBy: string;
     };
     const query = stringify({ ...queryUrl, search, searchBy })
     history.push({
+
       pathname: "/search",
       search: query,
     });
   };
 
+
   const handleSortChange = (sortBy: string) => {
     const queryUrl = parse(location.search) as {
+
       searchBy: string;
       search: string;
     };
     const query = stringify({ ...queryUrl, sortBy });
     history.push({
+
       pathname: "/search",
       search: query,
     });
@@ -113,5 +122,6 @@ const MoviePageMain = (props: MovieDetailsMainProps) => {
     </div>
   );
 };
+
 
 export default MoviePageMain;

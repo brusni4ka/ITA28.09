@@ -1,5 +1,7 @@
 import MovieDetailsMain from './MovieDetailsMain';
+
 import { selectedMovieRequested,moviesRequested,loadData} from "../../redux/Reducers/FetchReducer";
+
 import { connect, ConnectedProps } from "react-redux";
 import IRootState from '../../Interfaces/IRootState';
 

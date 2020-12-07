@@ -1,0 +1,102 @@
+.button {
+  border: solid 2px $primary;
+  border-radius: 8px;
+  padding: 0.5rem 0.7rem;
+  outline: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: inherit;
+  transition: all 0.3s ease-in-out;
+  @media (min-width: 768px) {
+    padding: 1rem 1.9rem;
+  }
+  @media (min-width: 1024px) {
+    padding: 1.5rem 3.5rem;
+  }
+  @media (min-width: 1440px) {
+    font-size: 1.6rem;
+    font-weight: 500;
+  }
+
+  &-sm {
+    padding: 1rem 2rem;
+    margin-top: 2rem;
+  }
+
+  &-white {
+    background-color: $white;
+    border: 2px solid $white;
+    color: $primary;
+    &:hover,
+    &:active {
+      background-color: $blue;
+      color: $white;
+    }
+  }
+
+  &-primary {
+    background-color: $primary;
+    color: $white;
+    &:hover,
+    &:active {
+      background-color: $white;
+      color: $primary;
+    }
+  }
+
+  &-blue {
+    background-color: $blue;
+    color: $white;
+    border: $blue;
+    &:hover,
+    &:active {
+      background-color: $white;
+      color: $blue;
+      border: 2px solid $blue;
+    }
+  }
+
+  &-outline,
+  &-rounded {
+    border-radius: 23px;
+    padding: 1rem 2rem;
+    font-weight: 400;
+    @media (min-width: 1440px) {
+      padding: 1.5rem 5rem;
+      box-shadow: 0 2px 35px 0 rgba(0, 0, 0, 0.03);
+    }
+
+    &-white {
+      border: 2px solid $white;
+      background-color: $blue;
+      color: $white;
+      &:hover,
+      &:active {
+        background-color: $white;
+        color: $primary;
+      }
+    }
+
+    &-blue {
+      background-color: $white;
+      color: $blue;
+      border: 2px solid $blue;
+      &:hover,
+      &:active {
+        background-color: $blue;
+        color: $white;
+      }
+    }
+
+    &-primary {
+      background-color: $white;
+      color: $primary;
+
+      &:hover,
+      &:active {
+        background-color: $primary;
+        color: $white;
+      }
+    }
+  }
+}

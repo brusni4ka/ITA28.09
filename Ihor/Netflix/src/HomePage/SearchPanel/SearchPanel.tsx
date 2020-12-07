@@ -1,7 +1,9 @@
+
 import React,{useState,useEffect} from "react";
 import "./SearchPanel.css";
 import { parse } from "query-string";
 import {useLocation} from 'react-router-dom';
+
 
 interface ISearchPanelProps {
   handleSearchChange({
@@ -12,6 +14,7 @@ interface ISearchPanelProps {
     searchBy: string;
   }): void;
 }
+
 
 enum IsearchBy {
   title = "title",
@@ -68,15 +71,18 @@ const SearchPanel =(props:ISearchPanelProps) => {
           className="search-input"
           placeholder="type to search"
           onChange={handleChangeInput}
+
         ></input>
         <div className="filter">
           <div className="filter_btns">
             <p className="search">SEARCH BY</p>
             <button
+
               onClick={() => handleSearchParams(IsearchBy.title)}
               name="btntitle"
               className={
                 searchBy === IsearchBy.title
+
                   ? "title_btn_active"
                   : "title_btn"
               }
@@ -84,10 +90,12 @@ const SearchPanel =(props:ISearchPanelProps) => {
               TITLE
             </button>
             <button
+
               onClick={() => handleSearchParams(IsearchBy.genre)}
               name="btngenre"
               className={
                 searchBy === IsearchBy.genre
+
                   ? "genre_btn_active"
                   : "genre_btn"
               }
@@ -95,13 +103,17 @@ const SearchPanel =(props:ISearchPanelProps) => {
               GENRE
             </button>
           </div>
+
           <button className="search_btn" onClick={handleSubmit}>
+
             SEARCH
           </button>
         </div>
       </>
+
   );
 }
 
 
 export default SearchPanel;
+

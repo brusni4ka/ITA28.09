@@ -1,0 +1,45 @@
+.featureCard {
+  box-shadow: 0 20px 60px rgba(49, 69, 244, 0.1);
+  @media (min-width: 1025px) {
+    width: calc(100% / 3 - 20px);
+  }
+  @media (min-width: 1440px) {
+    width: calc(100% / 3 - 50px);
+  }
+
+  &__picture {
+    max-width: 80px;
+    line-height: 30px;
+    background-color: $secondary;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    @media (min-width: 1025px) {
+      min-width: 100px;
+      padding: 0;
+    }
+    @media (min-width: 1440px) {
+      min-width: 120px;
+    }
+  }
+
+  &__heading {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__name {
+    display: flex;
+    align-items: stretch;
+  }
+
+  &__description {
+    background-color: $white;
+    line-height: 30px;
+    font-size: 1.6rem;
+    padding: 3rem 4rem;
+  }
+}
