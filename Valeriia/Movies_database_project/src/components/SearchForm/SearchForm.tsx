@@ -15,13 +15,15 @@ const SearchForm = (props: ISearchFormProps) => {
   const [filterBy, setFilterBy] = useState("title");
 
   useEffect(() => {
-    const query = parse(props.location.search) as {
-      filterBy: string;
-      searchTerm: string;
-    };
-    const { filterBy, searchTerm } = query;
-    setFilterBy(filterBy || "title");
-    setSearchTerm(searchTerm || "");
+    if (props.history.action !== "PUSH") {
+      const query = parse(props.location.search) as {
+        filterBy: string;
+        searchTerm: string;
+      };
+      const { filterBy, searchTerm } = query;
+      setFilterBy(filterBy || "title");
+      setSearchTerm(searchTerm || "");
+    }
   }, [props.history.action, props.location.search]);
 
   const onKeyPressHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -49,7 +51,7 @@ const SearchForm = (props: ISearchFormProps) => {
       <h1>FIND YOUR MOVIE</h1>
       <Input
         value={searchTerm}
-        onChange={(searchTerm) => setSearchTerm(searchTerm)}
+        onChange={setSearchTerm}
         onKeyPress={onKeyPressHandler}
       />
       <div className="searchForm__pannel">

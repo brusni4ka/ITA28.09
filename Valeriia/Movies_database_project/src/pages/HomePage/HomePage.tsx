@@ -77,7 +77,7 @@ const HomePage = (props: RouteComponentProps) => {
 
   useEffect(() => {
     fetchData();
-  }, [props.history.action, props.location.search]);
+  }, [props.location.search]);
 
   return (
     <>
