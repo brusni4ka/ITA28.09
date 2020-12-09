@@ -1,6 +1,5 @@
 import React from "react";
 import placeholder from "../../assets/images/placeholder.jpg";
-import { IMovie } from "../../types";
 
 interface IImageProps {
   poster_path: string;

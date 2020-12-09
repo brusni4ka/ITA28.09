@@ -1,21 +1,25 @@
 import React from "react";
 import Logo from "../Logo";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import "./Header.scss";
+import Button from "../Button";
 
 interface IHeaderProps {
   isLinkToShow: boolean;
 }
 
 const Header = ({ isLinkToShow }: IHeaderProps) => {
+  const history = useHistory();
   return (
     <div className="header">
       <div className="header__wrapper">
         <Logo />
         {isLinkToShow && (
-          <Link to="/" className="header__link">
-            SEARCH
-          </Link>
+          <Button
+            buttonName="SEARCH"
+            onClick={() => history.push("/")}
+            className="header__link"
+          />
         )}
       </div>
     </div>

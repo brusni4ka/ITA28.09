@@ -1,7 +1,6 @@
 import React from "react";
 import "./MovieItem.scss";
 import Image from "../../components/Image";
-import { IMovie } from "../../types";
 
 interface IMovieItemProps {
   poster_path: string;

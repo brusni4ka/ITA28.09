@@ -15,9 +15,9 @@ interface IMoviesProps {
 const Movies = ({ movies, isLoading, isError }: IMoviesProps) => {
   if (!isLoading && isError) {
     return <NotFound message="Please try again, something went wrong..." />;
-  } else if (!isLoading && !movies.length) {
+  } else if (!isLoading && !movies?.length) {
     return <NotFound message="No films found" />;
-  } else if (!movies.length && isLoading) {
+  } else if (!movies?.length && isLoading) {
     return <Loader isLoading={isLoading} />;
   } else {
     return (

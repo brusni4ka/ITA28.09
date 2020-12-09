@@ -1,26 +1,27 @@
-import {MoviesActionTypes} from '../actions/actionTypes';
 import {all, call, put, takeLatest} from 'redux-saga/effects';
 import {
-    IRequestMoviesAction,
-    onRequestErrorMovies, onRequestSuccessMovies, onRequestMoviesWithLazyLoading
-} from '../actions/moviesAction';
+    IRequestMoviesAction, onRequestMovies} from '../reducers/MoviesReducer';
 import {fetchListOfMovies} from './services';
+import {onRequestSuccessMovies,onRequestMoviesWithLazyLoading,onRequestErrorMovies } from '../reducers/MoviesReducer';
+import {ON_REQUEST_MOVIES} from '../actions/moviesAction';
+
 
 function* requestMoviesSaga(action: IRequestMoviesAction){
     try{
-        const movies = yield call(fetchListOfMovies, action.sortByType, action.searchBy, action.searchValue, action.offset );
-        if(!action.isLazyLoading){
-            yield put(onRequestSuccessMovies(movies));
+        yield put(onRequestMovies());
+        const movies = yield call(fetchListOfMovies, action.payload.sortByType, action.payload.searchBy, action.payload.searchValue, action.payload.offset );
+        if(!action.payload.isLazyLoading){
+            yield put(onRequestSuccessMovies({movies}));
         } else{
-            yield put(onRequestMoviesWithLazyLoading(movies));
+            yield put(onRequestMoviesWithLazyLoading({movies}));
         }
     } catch (error){
-        yield put(onRequestErrorMovies(error));
+        yield put(onRequestErrorMovies({error}));
     }
 }
 
 export function* watchFetchMovies () {
-    yield takeLatest(MoviesActionTypes.ON_REQUEST_MOVIES, requestMoviesSaga)
+    yield takeLatest(ON_REQUEST_MOVIES, requestMoviesSaga);
 }
 
 export function* moviesSagas(){
