@@ -18,7 +18,7 @@ interface ISearchPanelProps {
 
 enum IsearchBy {
   title = "title",
-  genre = "genre",
+  genre = "genres",
 }
 
 const SearchPanel =(props:ISearchPanelProps) => {
@@ -35,7 +35,7 @@ const SearchPanel =(props:ISearchPanelProps) => {
       };
       let { searchBy, search } = query;
       setSearchBy(searchBy === IsearchBy.genre ? IsearchBy.genre : IsearchBy.title);
-      setValue(search);
+      setValue(search || '');
   },[location.search])
 
 

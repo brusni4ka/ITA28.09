@@ -1,45 +1,46 @@
-
 import React, { useEffect } from "react";
 import Header from "../header";
-import { RouteComponentProps, useHistory, useLocation } from "react-router-dom";
-
+import { useHistory, useLocation } from "react-router-dom";
 import Movies from "../../Shared/movie";
 import SortPanel from "../sortPanel/sortPanel";
 import Footer from "../../Shared/footer";
 import SearchPanel from "../SearchPanel";
 import "../../index.css";
-import IMovie from "../../Interfaces/IMovie";
 import { parse, stringify } from "query-string";
-import { PropsFromRedux } from "./index";
-
-interface IMoviePageProps {
-  movies: IMovie[];
-}
-
-type MovieDetailsMainProps = IMoviePageProps &
-  RouteComponentProps &
-  PropsFromRedux;
+import { useSelector,useDispatch } from 'react-redux';
+import IRootState from '../../Interfaces/IRootState';
 
 
-const MoviePageMain = (props: MovieDetailsMainProps) => {
+
+const MoviePageMain = () => {
   const history = useHistory();
   const location = useLocation();
-  
-  const fetchMovies =(sortBy:string,searchBy:string,search:string)=> props.moviesRequested({ offset: props.offset,sortBy: sortBy,searchBy: searchBy,search: search});
+  const dispatch = useDispatch();
 
- 
+
+  const movies = useSelector((state: IRootState) => state.movies.movies);
+  const offset = useSelector((state: IRootState) => state.movies.offset);
+  const loading = useSelector((state: IRootState) => state.movies.loading);
+  const error = useSelector((state: IRootState) => state.movies.error);
+  const total = useSelector((state: IRootState) => state.movies.total);
 
   useEffect(() => {
-      const queryUrl = parse(location.search) as {
-        searchBy: string;
-        search: string;
-        sortBy: string;
-      };
-      const { sortBy, searchBy, search } = queryUrl;
-      fetchMovies(sortBy,searchBy,search);
-    }, [location.search,history.action]);
-
-
+    const queryUrl = parse(location.search) as {
+      searchBy: string;
+      search: string;
+      sortBy: string;
+    };
+    const { sortBy, searchBy, search } = queryUrl;
+    dispatch({
+      type:"movies/moviesRequested",
+      payload: {
+        offset: offset,
+        sortBy: sortBy,
+        searchBy: searchBy,
+        search: search,
+      }
+    })
+  }, [location.search]);
 
   const handleSearchChange = ({
     search,
@@ -48,36 +49,30 @@ const MoviePageMain = (props: MovieDetailsMainProps) => {
     search: string;
     searchBy: string;
   }) => {
-
     const queryUrl = parse(location.search) as {
-
       sortBy: string;
       search: string;
       searchBy: string;
     };
-    const query = stringify({ ...queryUrl, search, searchBy })
+    const query = stringify({ ...queryUrl, search, searchBy });
     history.push({
-
       pathname: "/search",
       search: query,
     });
   };
 
-
   const handleSortChange = (sortBy: string) => {
     const queryUrl = parse(location.search) as {
-
       searchBy: string;
       search: string;
     };
     const query = stringify({ ...queryUrl, sortBy });
     history.push({
-
       pathname: "/search",
       search: query,
     });
   };
-  
+
   const increaseOffset = () => {
     const queryUrl = parse(location.search) as {
       searchBy: string;
@@ -85,20 +80,23 @@ const MoviePageMain = (props: MovieDetailsMainProps) => {
       sortBy: string;
     };
     const { sortBy, searchBy, search } = queryUrl;
-    if(props.offset < 3000){
-      props.loadData({
-        offset: props.offset + 10,
+    if (movies.length < total) {
+
+      dispatch({
+        type:"movies/loadData",
+        payload: {
+        offset: offset + 10,
         sortBy: sortBy,
         searchBy: searchBy,
         search: search,
+        }
       });
     }
   };
 
-  const { movies, loading, error } = props;
   const moviesCount = movies.length;
+
   return (
-    
     <div className="movieapp">
       <div className="heading">
         <Header />
@@ -112,9 +110,13 @@ const MoviePageMain = (props: MovieDetailsMainProps) => {
         <Movies movies={movies} loading={loading} error={error} />
       </div>
       <div className="load">
-      {props.offset < 3000 ? <button className="load_more" onClick={increaseOffset}>
-          Load More
-        </button> : <div>NO MORE FILMS</div>}
+        {moviesCount < total ? (
+          <button className="load_more" onClick={increaseOffset}>
+            Load More
+          </button>
+        ) : (
+          <div>NO MORE FILMS</div>
+        )}
       </div>
       <div className="footer">
         <Footer />
@@ -122,6 +124,5 @@ const MoviePageMain = (props: MovieDetailsMainProps) => {
     </div>
   );
 };
-
 
 export default MoviePageMain;

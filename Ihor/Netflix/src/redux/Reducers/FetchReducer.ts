@@ -33,6 +33,18 @@ export interface ILoadedData {
   movies: IMovie[];
 
 }
+export interface IMergeMovies {
+  movies: {
+    data: IMovie[] | [];
+    total: number;
+  }
+}
+
+export interface IMoviesRecieved {
+  movies :{
+    data: IMovie[] | [];
+  }
+}
 
 interface IinitialState {
   loading: boolean;
@@ -42,6 +54,7 @@ interface IinitialState {
   id: string;
   sortBy: string;
   offset: number;
+  total: number;
 }
 const initialState: IinitialState = {
   loading: false,
@@ -51,6 +64,7 @@ const initialState: IinitialState = {
   id: "",
   sortBy: "release_date",
   offset: 0,
+  total: 10
 };
 
 
@@ -66,9 +80,9 @@ const moviesSlice = createSlice({
       state.sortBy = action.payload.sortBy;
       state.offset = action.payload.offset;
     },
-    moviesRecieved(state: IinitialState, action: PayloadAction<[IMovie]>) {
+    moviesRecieved(state: IinitialState, action: PayloadAction<IMoviesRecieved>) {
       state.loading = false;
-      state.movies = [...action.payload];
+      state.movies = [...action.payload.movies.data];
     },
     moviesFailed(state: IinitialState) {
       state.loading = false;
@@ -90,9 +104,10 @@ const moviesSlice = createSlice({
     loadData(state: IinitialState, action: PayloadAction<ILoadData>) {
       state.offset = action.payload.offset;
     },
-    mergeData(state: IinitialState, action: PayloadAction<[IMovie]>) {
+    mergeData(state: IinitialState, action: PayloadAction<IMergeMovies>) {
       state.loading = false;
-      state.movies = [...state.movies, ...action.payload];
+      state.movies = [...state.movies, ...action.payload.movies.data];
+      state.total = action.payload.movies.total;
     },
   },
 });

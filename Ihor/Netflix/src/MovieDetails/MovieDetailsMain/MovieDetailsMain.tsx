@@ -1,6 +1,4 @@
-
 import React, { useEffect } from "react";
-
 import { RouteComponentProps } from "react-router-dom";
 import MovieHeader from "../MovieHeader";
 import MovieInfo from "../MovieInfo";
@@ -9,48 +7,62 @@ import Footer from "../../Shared/footer";
 import "./MovieDetailsMain.css";
 import IMovie from "../../Interfaces/IMovie";
 import Movie from "../../Shared/movie";
-import { PropsFromRedux } from "./index";
+import { useSelector,useDispatch } from 'react-redux';
+import IRootState from '../../Interfaces/IRootState';
 
 interface IMovies {
   movies: IMovie[];
 }
 
 type MovieDetailsMainProps = IMovies &
-  RouteComponentProps<{ id: string }> &
-  PropsFromRedux;
-
+  RouteComponentProps<{ id: string }>;
 
 const MovieDetailsMain = (props: MovieDetailsMainProps) => {
-  
+
+  const dispatch = useDispatch();
+
+  const movies = useSelector((state: IRootState) => state.movies.movies);
+  const offset = useSelector((state: IRootState) => state.movies.offset);
+  const loading = useSelector((state: IRootState) => state.movies.loading);
+  const error = useSelector((state: IRootState) => state.movies.error);
+  const movie = useSelector((state: IRootState) => state.movies.movie);
 
   useEffect(() => {
-    props.selectedMovieRequested({ id: props.match.params.id });
-  }, [props.match.params.id]);
+    dispatch({
+      type: "movies/selectedMovieRequested",
+      payload:{id: props.match.params.id}
+    });
+  }, [props.match.params.id,dispatch]);
 
   useEffect(() => {
     if(movie){
       const search = movie.genres[0];
-      props.moviesRequested({
-        sortBy: "release_date",
-        offset: 0,
-        searchBy: "genre",
-        search,
+      dispatch({
+        type: "movies/moviesRequested",
+        payload:{
+          sortBy: "release_date",
+          offset: 0,
+          searchBy: "genres",
+          search,
+        }
       });
     }
-  }, [props.movie]);
+  }, [movie,dispatch]);
 
   const increaseOffset = () => {
-    const search = props.movie.genres[0];
-      props.loadData({
-        offset: props.offset + 10,
-        sortBy: "release_date",
-        searchBy: "genre",
-        search,
-    });
+    if(movie){
+      const search = movie.genres[0];
+      dispatch({
+        type: "movies/loadData",
+        payload:{
+          offset: offset + 10,
+          sortBy: "release_date",
+          searchBy: "genres",
+          search,
+        }
+      });
+    }
   };
-
-  const { movie, movies, loading, error } = props;
-  const genre = movie && movie.genres[0];
 
   return (
     <>
@@ -58,7 +70,7 @@ const MovieDetailsMain = (props: MovieDetailsMainProps) => {
         <MovieHeader />
         {movie ? <MovieInfo movie={movie} /> : <div>null</div>}
       </div>
-      <SameGenrePanel genre={genre} />
+      <SameGenrePanel genre={movie ? movie.genres[0] : ""} />
       <div className="movies">
         <Movie movies={movies} loading={loading} error={error} />
       </div>

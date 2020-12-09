@@ -1,20 +1,20 @@
 import  { moviesRequested,moviesRecieved,moviesFailed,selectedMovieRequested,selectedMovieRecieved,selectedMovieFailed,loadData,mergeData } from '../Reducers/FetchReducer'
 import { takeLatest, call, put, all } from "redux-saga/effects";
 import IMovie from "../../Interfaces/IMovie";
+import { stringify } from "query-string";
 
-export const fetchMoviesApi = async (
-  offset: number,
-  sortBy?: string,
-  searchBy?: string,
-  search?: string
-): Promise<IMovie[]> => {
-  let queryUrl =
-    searchBy && search ? `https://reactjs-cdp.herokuapp.com/movies/?${searchBy === "title" ? `search=${search}` 
-    : `filter=${search}`}&searchBy=${searchBy}&sortBy=${sortBy}&sortOrder=desc&offset=${offset}&limit=9`
-    : `https://reactjs-cdp.herokuapp.com/movies?sortBy=${sortBy}&sortOrder=desc&offset=${offset}&limit=9`;
+
+export const fetchMoviesApi = async (offset: number,sortBy?: string,searchBy?: string,search?: string): Promise<IMovie[]> => {
+  let params = {
+    sortBy,
+    searchBy,
+    search,
+    offset
+  }
+  let queryUrl = `https://reactjs-cdp.herokuapp.com/movies?${stringify(params)}&sortOrder=desc&limit=9`;
   const getMovies = await fetch(queryUrl);
   const movies = await getMovies.json();
-  return movies.data;
+  return movies;
 };
 
 export const fetchSelectedMovie = async (id: string): Promise<IMovie> => {
@@ -34,7 +34,7 @@ function* requestMoviesSaga(action:ReturnType<typeof moviesRequested >) {
       action.payload.search
     ); 
 
-    yield put(moviesRecieved(movies));
+    yield put(moviesRecieved({movies}));
   } catch {
     yield put(moviesFailed());
   }
@@ -70,7 +70,7 @@ function* requestMoviesMoreSaga(action:ReturnType<typeof loadData >) {
       action.payload.searchBy,
       action.payload.search,
     );
-    yield put(mergeData(movies));
+    yield put(mergeData({movies}));
   } catch {
     yield put(moviesFailed());
   }
