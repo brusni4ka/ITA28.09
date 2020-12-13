@@ -49,6 +49,9 @@ const moviesSlice = createSlice({
     dataOffsetDecrement(state: IState) {
       state.offset = state.offset < 9 ? state.offset : state.offset - 9;
     },
+    dataOffsetToNull(state: IState) {
+      state.offset = 0;
+    }
   },
 });
 export const {
@@ -57,5 +60,6 @@ export const {
   error,
   dataOffsetIncrement,
   dataOffsetDecrement,
+  dataOffsetToNull
 } = moviesSlice.actions;
 export const reducerMovies = moviesSlice.reducer;

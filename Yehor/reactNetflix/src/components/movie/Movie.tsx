@@ -7,7 +7,7 @@ interface IMovieProps {
   movie: IMovie;
 }
 
-function Movie({ movie }: IMovieProps) {
+function Movie({movie}: IMovieProps) {
   return (
     <div className="movie">
       <ImageFallBack

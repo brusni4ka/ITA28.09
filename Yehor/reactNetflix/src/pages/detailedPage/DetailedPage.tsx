@@ -14,57 +14,40 @@ import {
   dataOffsetIncrement,
   dataOffsetDecrement,
 } from "../../redux/reducers/reducerMovies";
-
-import { connect, ConnectedProps } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import IReduxState from "../../interfaces/IReduxState";
 
-const mapStateToProps = (state: IReduxState) => {
-  return {
-    movie: state.movie.movie,
-    id: state.movie.id,
-    movies: state.movies.movies,
-    offset: state.movies.offset,
-  };
-};
+const DetailedPage = (props: RouteComponentProps<{ id: string }>) => {
+  
+  const movie = useSelector((state: IReduxState) => state.movie.movie)
+  const id = useSelector((state: IReduxState) => state.movie.id)
+  const movies = useSelector((state: IReduxState) => state.movies.movies)
+  const offset = useSelector((state: IReduxState) => state.movies.offset)
+  const dispatch = useDispatch()
 
-const mapDispatchToProps = {
-  loadData,
-  dataOffsetIncrement,
-  dataOffsetDecrement,
-  currentMovieLoad,
-  currentMovieReceived,
-};
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-type DetailedPageProps = PropsFromRedux & RouteComponentProps<{ id: string }>;
-
-const DetailedPage = (props: DetailedPageProps) => {
   useEffect(() => {
-    props.currentMovieLoad({
+    dispatch(currentMovieLoad({
       status: "movie is loading",
       id: props.match.params.id,
-    });
+    }));
     return () => {
-      props.currentMovieReceived({ status: "creaned", movie: null });
+      dispatch(currentMovieReceived({ status: "creaned", movie: null }));
     };
   }, [props.match.params.id]);
 
   useEffect(() => {
-    if (props.movie) {
+    if (movie) {
       const searchBy = "genres";
-      const search = props.movie.genres[0];
-      props.loadData({
+      const search = movie.genres[0];
+      dispatch(loadData({
         sortBy: "release_date",
         searchBy: searchBy,
         search: search,
-        offset: props.offset,
-      });
+        offset: offset,
+      }));
     }
-  }, [props.movie, props.offset]);
+  }, [movie, offset]);
 
-  const { movie, movies } = props;
   return (
     <div className="allpageWrapper">
       <div className="wrapper">
@@ -89,11 +72,11 @@ const DetailedPage = (props: DetailedPageProps) => {
       <div className="main-container">
         <MoviesList movies={movies} />
         <div className="pagination">
-          <button onClick={props.dataOffsetDecrement}>Back</button>
+          <button onClick={() => dispatch(dataOffsetDecrement())}>Back</button>
           <span className="pages">
-            {props.offset ? props.offset / 9 + 1 : 1}
+            {offset ? offset / 9 + 1 : 1}
           </span>
-          <button onClick={props.dataOffsetIncrement}>Next</button>
+          <button onClick={() => dispatch(dataOffsetIncrement())}>Next</button>
         </div>
       </div>
       <div className="wrapper-footer">
@@ -105,4 +88,4 @@ const DetailedPage = (props: DetailedPageProps) => {
   );
 };
 
-export default connector(DetailedPage);
+export default DetailedPage;

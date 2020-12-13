@@ -11,28 +11,17 @@ import { stringify, parse } from "query-string";
 import {
   loadData,
   dataOffsetIncrement,
-  dataOffsetDecrement,
+  dataOffsetDecrement
 } from "../../redux/reducers/reducerMovies";
-import { connect, ConnectedProps } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import IReduxState from "../../interfaces/IReduxState";
 
-const mapStateToProps = (state: IReduxState) => {
-  return {
-    movies: state.movies.movies,
-    offset: state.movies.offset,
-  };
-};
+const HomePage = (props: RouteComponentProps) => {
 
-const mapDispatchToProps = {
-  loadData,
-  dataOffsetIncrement,
-  dataOffsetDecrement,
-};
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-type PropsFromRedux = ConnectedProps<typeof connector> & RouteComponentProps;
-
-const HomePage = (props: PropsFromRedux) => {
+  const movies = useSelector((state: IReduxState) => state.movies.movies)
+  const offset = useSelector((state: IReduxState) => state.movies.offset)
+  const dispatch = useDispatch()
+  
   useEffect(() => {
     const queryUrl = parse(props.location.search) as {
       searchBy: string;
@@ -40,13 +29,15 @@ const HomePage = (props: PropsFromRedux) => {
       sortBy: string;
     };
     const { sortBy, searchBy, search } = queryUrl;
-    props.loadData({
+    console.log(queryUrl);
+    
+    dispatch(loadData({
       sortBy: sortBy,
       searchBy: searchBy,
       search: search,
-      offset: props.offset,
-    });
-  }, [props.location, props.offset]);
+      offset: offset,
+    }))
+  }, [props.location, offset]);
 
   const handleSearchChange = ({
 
@@ -92,23 +83,23 @@ const HomePage = (props: PropsFromRedux) => {
         <div className="top-container">
           <SortPanel
             location={props.location}
-            moviesLength={props.movies.length}
+            moviesLength={movies.length}
             handlerSortChange={handleSortChange}
           />
         </div>
       </div>
       <div className="main-container">
-        {props.movies.length === 0 ? (
+        {movies.length === 0 ? (
           <ErrorBlock />
         ) : (
           <>
-            <MoviesList movies={props.movies} />
+            <MoviesList movies={movies} />
             <div className="pagination">
-              <button onClick={props.dataOffsetDecrement}>Back</button>
+              {offset === 0 ? null: <button onClick={() => dispatch(dataOffsetDecrement())}>Back</button>}
               <span className="pages">
-                {props.offset ? props.offset / 9 + 1 : 1}
+                {offset ? offset / 9 + 1 : 1}
               </span>
-              <button onClick={props.dataOffsetIncrement}>Next</button>
+              {movies.length < 9 ? null: <button onClick={() => dispatch(dataOffsetIncrement())}>Next</button>}
             </div>
           </>
         )}
@@ -121,4 +112,4 @@ const HomePage = (props: PropsFromRedux) => {
     </>
   );
 };
-export default connector(HomePage);
+export default HomePage;

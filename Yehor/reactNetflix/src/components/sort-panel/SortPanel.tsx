@@ -23,11 +23,6 @@ const SortPanel = (props: ISortPanelProps) => {
   useEffect(() => {
     const querySrch = parse(props.location.search) as { sortBy: string };
     checkSetSortby(querySrch.sortBy);
-  }, []);
-
-  useEffect(() => {
-    const querySrch = parse(props.location.search) as { sortBy: string };
-    checkSetSortby(querySrch.sortBy);
   }, [props.location]);
 
   const checkSetSortby = (sortByvalue: string) => {

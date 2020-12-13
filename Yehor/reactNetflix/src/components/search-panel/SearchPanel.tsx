@@ -29,19 +29,10 @@ const SearchPanel = (props: IhandleSearchChangeProps) => {
       search: string;
     };
     const { searchBy, search } = querySrch;
-    checkSetSearchSearchBy(searchBy, search);
-  }, []);
-
-  useEffect(() => {
-    const querySrch = parse(props.location.search) as {
-      searchBy: string;
-      search: string;
-    };
-    const { searchBy, search } = querySrch;
-    checkSetSearchSearchBy(searchBy, search);
+    setSearchSearchBy(searchBy, search);
   }, [props.location]);
 
-  const checkSetSearchSearchBy = (
+  const setSearchSearchBy = (
     searchByValue: string,
     searchValue: string
   ) => {
