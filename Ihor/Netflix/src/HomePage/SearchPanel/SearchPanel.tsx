@@ -1,7 +1,9 @@
-import React from "react";
+
+import React,{useState,useEffect} from "react";
 import "./SearchPanel.css";
 import { parse } from "query-string";
-import * as H from "history";
+import {useLocation} from 'react-router-dom';
+
 
 interface ISearchPanelProps {
   handleSearchChange({
@@ -11,102 +13,76 @@ interface ISearchPanelProps {
     search: string;
     searchBy: string;
   }): void;
-  location: H.Location;
-  history: H.History;
 }
 
-interface ISearchPanelState {
-  value: string;
-  searchBy: IsearchBy;
-}
+
 enum IsearchBy {
   title = "title",
-  genre = "genre",
+  genre = "genres",
 }
 
-class SearchPanel extends React.Component<
-  ISearchPanelProps,
-  ISearchPanelState
-> {
-  state: ISearchPanelState = {
-    value: "",
-    searchBy: IsearchBy.title,
-  };
+const SearchPanel =(props:ISearchPanelProps) => {
 
-  componentDidMount() {
-    const query = parse(this.props.location.search) as {
-      searchBy: string;
-      search: string;
-    };
-    let { searchBy, search } = query;
-    if(searchBy){
-      this.setState({
-        searchBy: searchBy === IsearchBy.title ? 
-           IsearchBy.title : IsearchBy.genre,
-        value: search
-      });
-    }
-  }
-  componentDidUpdate(prevProps:ISearchPanelProps){
-    if(this.props.location !== prevProps.location && this.props.history.action !== "PUSH"){
-      const query = parse(this.props.location.search) as {
+  const [value,setValue] = useState('');
+  const [searchBy, setSearchBy] = useState(IsearchBy.title);
+  const location = useLocation();
+
+
+  useEffect(()=>{
+      const query = parse(location.search) as {
         searchBy: string;
         search: string;
       };
       let { searchBy, search } = query;
-      if(searchBy){
-        this.setState({
-          searchBy: searchBy === IsearchBy.title ? 
-             IsearchBy.title : IsearchBy.genre,
-          value: search
-        });
-      }
-    }
-  }
+      setSearchBy(searchBy === IsearchBy.genre ? IsearchBy.genre : IsearchBy.title);
+      setValue(search || '');
+  },[location.search])
 
-  handleSearchParams = (value: IsearchBy) => {
-    this.setState({ searchBy: value ,value: ''});
+
+  const handleSearchParams = (value: IsearchBy) => {
+    setSearchBy( value );
+    setValue('');
   };
 
-  handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      value: e.target.value,
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+  };
+
+  const handleSubmit = () => {
+    props.handleSearchChange({
+      search: value,
+      searchBy: searchBy,
     });
   };
 
-  handleSubmit = () => {
-    this.props.handleSearchChange({
-      search: this.state.value,
-      searchBy: this.state.searchBy,
-    });
-  };
-
-  keyPressOn = (e: React.KeyboardEvent) => {
+  const keyPressOn = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
-      this.handleSubmit();
+      handleSubmit();
     }
   };
 
-  render() {
-    return (
+  return (
       <>
         <p className="findmovie">FIND YOUR MOVIE</p>
         <input
-          onKeyDown={this.keyPressOn}
-          value={this.state.value}
+          onKeyDown={keyPressOn}
+          value={value}
           type="text"
           className="search-input"
           placeholder="type to search"
-          onChange={this.handleChangeInput}
+          onChange={handleChangeInput}
+
         ></input>
         <div className="filter">
           <div className="filter_btns">
             <p className="search">SEARCH BY</p>
             <button
-              onClick={() => this.handleSearchParams(IsearchBy.title)}
+
+              onClick={() => handleSearchParams(IsearchBy.title)}
               name="btntitle"
               className={
-                this.state.searchBy === IsearchBy.title
+                searchBy === IsearchBy.title
+
                   ? "title_btn_active"
                   : "title_btn"
               }
@@ -114,10 +90,12 @@ class SearchPanel extends React.Component<
               TITLE
             </button>
             <button
-              onClick={() => this.handleSearchParams(IsearchBy.genre)}
+
+              onClick={() => handleSearchParams(IsearchBy.genre)}
               name="btngenre"
               className={
-                this.state.searchBy === IsearchBy.genre
+                searchBy === IsearchBy.genre
+
                   ? "genre_btn_active"
                   : "genre_btn"
               }
@@ -125,13 +103,17 @@ class SearchPanel extends React.Component<
               GENRE
             </button>
           </div>
-          <button className="search_btn" onClick={this.handleSubmit}>
+
+          <button className="search_btn" onClick={handleSubmit}>
+
             SEARCH
           </button>
         </div>
       </>
-    );
-  }
+
+  );
 }
 
+
 export default SearchPanel;
+

@@ -1,32 +1,20 @@
-import { FetchActionsTypes } from "../Reducers/FetchReducer";
+import  { moviesRequested,moviesRecieved,moviesFailed,selectedMovieRequested,selectedMovieRecieved,selectedMovieFailed,loadData,mergeData } from '../Reducers/FetchReducer'
 import { takeLatest, call, put, all } from "redux-saga/effects";
-import {
-  IMoviesRequested,
-  moviesFailed,
-  moviesRecieved,
-  ISelectedMovieRequested,
-  selectedMovieRecieved,
-  selectedMovieFailed,
-  ILoadData,
-  mergeData,
-} from "../Actions/FetchActions";
 import IMovie from "../../Interfaces/IMovie";
+import { stringify } from "query-string";
 
-export const fetchMoviesApi = async (
-  offset: number,
-  sortBy?: string,
-  searchBy?: string,
-  search?: string
-): Promise<IMovie[]> => {
-  let queryUrl =
-    searchBy && search
-      ? `https://reactjs-cdp.herokuapp.com/movies/?${
-          searchBy === "title" ? `search=${search}` : `filter=${search}`
-        }&searchBy=${searchBy}&sortBy=${sortBy}&sortOrder=desc&offset=${offset}`
-      : `https://reactjs-cdp.herokuapp.com/movies?sortBy=${sortBy}&sortOrder=desc&offset=${offset}`;
+
+export const fetchMoviesApi = async (offset: number,sortBy?: string,searchBy?: string,search?: string): Promise<IMovie[]> => {
+  let params = {
+    sortBy,
+    searchBy,
+    search,
+    offset
+  }
+  let queryUrl = `https://reactjs-cdp.herokuapp.com/movies?${stringify(params)}&sortOrder=desc&limit=9`;
   const getMovies = await fetch(queryUrl);
   const movies = await getMovies.json();
-  return movies.data;
+  return movies;
 };
 
 export const fetchSelectedMovie = async (id: string): Promise<IMovie> => {
@@ -35,27 +23,31 @@ export const fetchSelectedMovie = async (id: string): Promise<IMovie> => {
   return movie;
 };
 
-function* requestMoviesSaga(action: IMoviesRequested) {
+
+function* requestMoviesSaga(action:ReturnType<typeof moviesRequested >) {
   try {
     const movies = yield call(
       fetchMoviesApi,
-      action.offset,
-      action.sortBy,
-      action.searchBy,
-      action.search
-    );
-    yield put(moviesRecieved(movies));
+      action.payload.offset,
+      action.payload.sortBy,
+      action.payload.searchBy,
+      action.payload.search
+    ); 
+
+    yield put(moviesRecieved({movies}));
   } catch {
     yield put(moviesFailed());
   }
 }
 export const fetchMoviesSub = () => {
-  return takeLatest(FetchActionsTypes.MOVIES_REQUESTED, requestMoviesSaga);
+
+  return takeLatest(moviesRequested,requestMoviesSaga);
+
 };
 
-function* requestSelectedMovieSaga(action: ISelectedMovieRequested) {
+function* requestSelectedMovieSaga(action:ReturnType<typeof selectedMovieRequested >) {
   try {
-    const movie = yield call(fetchSelectedMovie, action.payload);
+    const movie = yield call(fetchSelectedMovie, action.payload.id);
     yield put(selectedMovieRecieved(movie));
   } catch {
     yield put(selectedMovieFailed());
@@ -63,27 +55,28 @@ function* requestSelectedMovieSaga(action: ISelectedMovieRequested) {
 }
 export const fetchSelectedMovieSub = () => {
   return takeLatest(
-    FetchActionsTypes.SELECTED_MOVIE_REQUESTED,
+    selectedMovieRequested,
+
     requestSelectedMovieSaga
   );
 };
 
-function* requestMoviesMoreSaga(action: ILoadData) {
+function* requestMoviesMoreSaga(action:ReturnType<typeof loadData >) {
   try {
     const movies = yield call(
       fetchMoviesApi,
-      action.offset,
-      action.sortBy,
-      action.searchBy,
-      action.search
+      action.payload.offset,
+      action.payload.sortBy,
+      action.payload.searchBy,
+      action.payload.search,
     );
-    yield put(mergeData(movies));
+    yield put(mergeData({movies}));
   } catch {
     yield put(moviesFailed());
   }
 }
 export const fetchMoviesMoreSub = () => {
-  return takeLatest(FetchActionsTypes.LOAD_DATA, requestMoviesMoreSaga);
+  return takeLatest(loadData, requestMoviesMoreSaga);
 };
 
 export function* fetchSagas() {

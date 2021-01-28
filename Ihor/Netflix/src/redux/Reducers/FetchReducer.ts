@@ -1,15 +1,49 @@
-import IMovie from "../../Interfaces/IMovie";
-import { FetchActions } from "../Actions/FetchActions";
 
-export enum FetchActionsTypes {
-  MOVIES_REQUESTED = "MOVIES_REQUESTED",
-  MOVIES_RECIEVED = "MOVIES_RECIEVED",
-  MOVIES_FAILED = "MOVIES_FAILED",
-  SELECTED_MOVIE_REQUESTED = "SELECTED_MOVIE_REQUESTED",
-  SELECTED_MOVIE_RECIEVED = "SELECTED_MOVIE_RECIEVED",
-  SELECTED_MOVIE_FAILED = "SELECTED_MOVIE_FAILED",
-  LOAD_DATA = "LOAD_DATA",
-  MERGE_DATA = "MERGE_DATA",
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import IMovie from "../../Interfaces/IMovie";
+
+export interface IMoviesRequested {
+  sortBy: string;
+  offset: number;
+  searchBy?: string;
+  search?: string;
+}
+
+export interface IMoviesRecieved {}
+
+export interface ISelectedMovieRequested {
+  id: string;
+}
+
+export interface ISelectedMovieRecieved {
+  movie: IMovie;
+}
+export interface ISelectedMovieFailed {
+  error: string;
+}
+
+export interface ILoadData {
+  offset: number;
+  sortBy: string;
+  searchBy: string;
+  search: string;
+}
+
+export interface ILoadedData {
+  movies: IMovie[];
+
+}
+export interface IMergeMovies {
+  movies: {
+    data: IMovie[] | [];
+    total: number;
+  }
+}
+
+export interface IMoviesRecieved {
+  movies :{
+    data: IMovie[] | [];
+  }
 }
 
 interface IinitialState {
@@ -20,6 +54,7 @@ interface IinitialState {
   id: string;
   sortBy: string;
   offset: number;
+  total: number;
 }
 const initialState: IinitialState = {
   loading: false,
@@ -29,64 +64,63 @@ const initialState: IinitialState = {
   id: "",
   sortBy: "release_date",
   offset: 0,
+  total: 10
 };
 
-const fetchReducer = (
-  state: IinitialState = initialState,
-  action: FetchActions
-) => {
-  switch (action.type) {
-    case "MOVIES_REQUESTED":
-      return {
-        ...state,
-        loading: true,
-        sortBy: action.sortBy,
-        offset: action.offset,
-      };
-    case "MOVIES_RECIEVED":
-      return {
-        ...state,
-        loading: false,
-        movies: action.payload,
-      };
-    case "MOVIES_FAILED":
-      return {
-        ...state,
-        loading: false,
-        error: "Something goes wrong...",
-      };
-    case "SELECTED_MOVIE_REQUESTED":
-      return {
-        ...state,
-        loading: true,
-        id: action.payload,
-      };
-    case "SELECTED_MOVIE_RECIEVED":
-      return {
-        ...state,
-        movie: action.payload,
-        loading: false,
-      };
-    case "SELECTED_MOVIE_FAILED":
-      return {
-        ...state,
-        loading: false,
-        error: "Something goes wrong...",
-      };
-    case "LOAD_DATA":
-      return {
-        ...state,
-        offset: action.offset,
-      };
-    case "MERGE_DATA":
-      return {
-        ...state,
-        loading: false,
-        movies: [...state.movies, ...action.payload],
-      };
-    default:
-      return state;
-  }
-};
 
-export default fetchReducer;
+const moviesSlice = createSlice({
+  name: "movies",
+  initialState,
+  reducers: {
+    moviesRequested(
+      state: IinitialState,
+      action: PayloadAction<IMoviesRequested>
+    ) {
+      state.loading = true;
+      state.sortBy = action.payload.sortBy;
+      state.offset = action.payload.offset;
+    },
+    moviesRecieved(state: IinitialState, action: PayloadAction<IMoviesRecieved>) {
+      state.loading = false;
+      state.movies = [...action.payload.movies.data];
+    },
+    moviesFailed(state: IinitialState) {
+      state.loading = false;
+    },
+    selectedMovieRequested(
+      state: IinitialState,
+      action: PayloadAction<ISelectedMovieRequested>
+    ) {
+      state.loading = true;
+      state.id = action.payload.id;
+    },
+    selectedMovieRecieved(state: IinitialState, action: PayloadAction<IMovie>) {
+      state.loading = false;
+      state.movie = action.payload;
+    },
+    selectedMovieFailed(state: IinitialState) {
+      state.loading = false;
+    },
+    loadData(state: IinitialState, action: PayloadAction<ILoadData>) {
+      state.offset = action.payload.offset;
+    },
+    mergeData(state: IinitialState, action: PayloadAction<IMergeMovies>) {
+      state.loading = false;
+      state.movies = [...state.movies, ...action.payload.movies.data];
+      state.total = action.payload.movies.total;
+    },
+  },
+});
+
+export const {
+  moviesRequested,
+  moviesRecieved,
+  moviesFailed,
+  selectedMovieRequested,
+  selectedMovieRecieved,
+  selectedMovieFailed,
+  loadData,
+  mergeData,
+} = moviesSlice.actions;
+export const { reducer } = moviesSlice;
+

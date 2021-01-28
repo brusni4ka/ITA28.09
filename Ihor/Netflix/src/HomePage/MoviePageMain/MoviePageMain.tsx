@@ -1,120 +1,128 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../header";
-import { RouteComponentProps } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import Movies from "../../Shared/movie";
 import SortPanel from "../sortPanel/sortPanel";
 import Footer from "../../Shared/footer";
 import SearchPanel from "../SearchPanel";
 import "../../index.css";
-import IMovie from "../../Interfaces/IMovie";
 import { parse, stringify } from "query-string";
-import { PropsFromRedux } from "./index";
+import { useSelector,useDispatch } from 'react-redux';
+import IRootState from '../../Interfaces/IRootState';
 
-interface IMoviePageProps {
-  movies: IMovie[];
-}
 
-type MovieDetailsMainProps = IMoviePageProps &
-  RouteComponentProps &
-  PropsFromRedux;
-class MoviePageMain extends React.Component<MovieDetailsMainProps> {
-  handleSearchChange = ({
+
+const MoviePageMain = () => {
+  const history = useHistory();
+  const location = useLocation();
+  const dispatch = useDispatch();
+
+
+  const movies = useSelector((state: IRootState) => state.movies.movies);
+  const offset = useSelector((state: IRootState) => state.movies.offset);
+  const loading = useSelector((state: IRootState) => state.movies.loading);
+  const error = useSelector((state: IRootState) => state.movies.error);
+  const total = useSelector((state: IRootState) => state.movies.total);
+
+  useEffect(() => {
+    const queryUrl = parse(location.search) as {
+      searchBy: string;
+      search: string;
+      sortBy: string;
+    };
+    const { sortBy, searchBy, search } = queryUrl;
+    dispatch({
+      type:"movies/moviesRequested",
+      payload: {
+        offset: offset,
+        sortBy: sortBy,
+        searchBy: searchBy,
+        search: search,
+      }
+    })
+  }, [location.search]);
+
+  const handleSearchChange = ({
     search,
     searchBy,
   }: {
     search: string;
     searchBy: string;
   }) => {
-    const queryUrl = parse(this.props.location.search) as {
+    const queryUrl = parse(location.search) as {
       sortBy: string;
       search: string;
       searchBy: string;
     };
-    const { sortBy } = queryUrl;
     const query = stringify({ ...queryUrl, search, searchBy });
-    this.props.moviesRequested(sortBy, this.props.offset, searchBy, search);
-    this.props.history.push({
+    history.push({
       pathname: "/search",
       search: query,
     });
   };
 
-  handleSortChange = (sortBy: string) => {
-    const queryUrl = parse(this.props.location.search) as {
+  const handleSortChange = (sortBy: string) => {
+    const queryUrl = parse(location.search) as {
       searchBy: string;
       search: string;
     };
-    const { searchBy, search } = queryUrl;
     const query = stringify({ ...queryUrl, sortBy });
-    this.props.moviesRequested(sortBy, this.props.offset, searchBy, search);
-    this.props.history.push({
+    history.push({
       pathname: "/search",
       search: query,
     });
   };
 
-  componentDidMount() {
-    const queryUrl = parse(this.props.location.search) as {
+  const increaseOffset = () => {
+    const queryUrl = parse(location.search) as {
       searchBy: string;
       search: string;
       sortBy: string;
     };
     const { sortBy, searchBy, search } = queryUrl;
-    this.props.moviesRequested(sortBy, this.props.offset, searchBy, search);
-  }
+    if (movies.length < total) {
 
-  componentDidUpdate = (prevProps: MovieDetailsMainProps) => {
-    if (
-      this.props.location !== prevProps.location &&
-      this.props.history.action !== "PUSH"
-    ) {
-      const queryUrl = parse(this.props.location.search) as {
-        searchBy: string;
-        search: string;
-        sortBy: string;
-      };
-      const { sortBy, searchBy, search } = queryUrl;
-      this.props.moviesRequested(sortBy, this.props.offset, searchBy, search);
+      dispatch({
+        type:"movies/loadData",
+        payload: {
+        offset: offset + 10,
+        sortBy: sortBy,
+        searchBy: searchBy,
+        search: search,
+        }
+      });
     }
   };
 
-  increaseOffset = () => { 
-    this.props.loadData(this.props.offset + 10,this.props.sortBy);
-  };
+  const moviesCount = movies.length;
 
-  render() {
-    const { movies, loading, error } = this.props;
-    const moviesCount = movies.length;
-    return (
-      <div className="movieapp">
-        <div className="heading">
-          <Header />
-          <SearchPanel
-            location={this.props.location}
-            history={this.props.history}
-            handleSearchChange={this.handleSearchChange}
-          />
-        </div>
-        <SortPanel
-          location={this.props.location}
-          history={this.props.history}
-          moviesCount={moviesCount}
-          handleSortChange={this.handleSortChange}
-        />
-        <div className="movies">
-          <Movies movies={movies} loading={loading} error={error} />
-        </div>
-        <div className="load">
-          <button className="load_more" onClick={this.increaseOffset}>
+  return (
+    <div className="movieapp">
+      <div className="heading">
+        <Header />
+        <SearchPanel handleSearchChange={handleSearchChange} />
+      </div>
+      <SortPanel
+        moviesCount={moviesCount}
+        handleSortChange={handleSortChange}
+      />
+      <div className="movies">
+        <Movies movies={movies} loading={loading} error={error} />
+      </div>
+      <div className="load">
+        {moviesCount < total ? (
+          <button className="load_more" onClick={increaseOffset}>
             Load More
           </button>
-        </div>
-        <div className="footer">
-          <Footer />
-        </div>
+        ) : (
+          <div>NO MORE FILMS</div>
+        )}
       </div>
-    );
-  }
-}
+      <div className="footer">
+        <Footer />
+      </div>
+    </div>
+  );
+};
 
 export default MoviePageMain;

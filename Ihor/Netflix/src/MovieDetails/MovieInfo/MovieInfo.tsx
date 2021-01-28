@@ -1,21 +1,16 @@
 import React from "react";
 import IMovie from "../../Interfaces/IMovie";
 import "./MovieInfo.css";
-import notfound from "../../img/notfound.png";
-
+import Image from '../../Shared/ImageComponent';
 interface IMovieProps {
   movie: IMovie;
 }
 
 const MovieInfo = ({ movie }: IMovieProps) => {
 
-  const handleImageError = (event: React.SyntheticEvent<HTMLImageElement>) => {
-    const target = event.target as HTMLImageElement;
-    target.src = notfound;
-  };
   return (
     <div className="film_info">
-      <img src={movie.poster_path} alt={movie.title} className="m_img" onError={(event) => handleImageError(event)}/>
+      <Image film = {movie} className="m_img"/>
       <div className="m_info">
         <div className="main_info">
           <h2 className="m_name">{movie.title}</h2>

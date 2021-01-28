@@ -7,6 +7,7 @@ interface IRootState {
       error: string;
       loading: boolean;
       offset: number;
+      total:number
     };
     id?: string;
     
