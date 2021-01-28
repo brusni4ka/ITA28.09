@@ -1,58 +1,65 @@
-import { MoviesTypes, IMoviesAction } from "../actions/moviesActions";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import IMovie from "../../interfaces/IMovie";
 
 interface IState {
   status: string;
   movies: IMovie[];
-  offset: number
+  offset: number;
 }
+const moviesDefaultState: IState = {
 
-const moviestDefaultState: IState = {
   status: "",
   movies: [],
   offset: 0,
 };
 
-const reducerMovies = (state = moviestDefaultState, action: IMoviesAction) => {
-  switch (action.type) {
-    case MoviesTypes.LoadData: {
-      return {
-        ...state,
-        status: action.status,
-        offset: action.offset
-      };
-    }
-    case MoviesTypes.ReceivedData: {
-      return {
-        ...state,
-        status: action.status,
-        movies: action.movies
-      };
-    }
-    case MoviesTypes.Error: {
-      return {
-        ...state,
-        status: action.status,
-      };
-    }
-    case MoviesTypes.DataOffsetIncrement: {
-      return {
-        ...state,
-        status: action.status,
-        offset: state.movies.length < 9 ? state.offset: state.offset + 9
-      };
-    }
-    case MoviesTypes.DataOffsetDecrement: {
-      return {
-        ...state,
-        status: action.status,
-        offset: state.offset < 9 ? state.offset: state.offset - 9
-      };
-    }
-    
-    default:
-      return state;
-  }
-};
+export interface ILoadData {
+  sortBy?: string;
+  searchBy?: string;
+  search?: string;
+  offset?: number;
+}
 
-export default reducerMovies;
+export interface IReceivedData {
+  status: string;
+  movies: IMovie[];
+}
+export interface IError {
+  status: string;
+}
+
+const moviesSlice = createSlice({
+  name: "movies",
+  initialState: moviesDefaultState,
+  reducers: {
+    loadData(state: IState, action: PayloadAction<ILoadData>) {},
+    moviesReceived(state: IState, action: PayloadAction<IReceivedData>) {
+      state.status = action.payload.status;
+      state.movies = action.payload.movies;
+    },
+    error(state: IState, action: PayloadAction<IError>) {
+      state.status = action.payload.status;
+    },
+    dataOffsetIncrement(state: IState) {
+      state.offset =
+        state.movies && state.movies.length < 9
+          ? state.offset
+          : state.offset + 9;
+    },
+    dataOffsetDecrement(state: IState) {
+      state.offset = state.offset < 9 ? state.offset : state.offset - 9;
+    },
+    dataOffsetToNull(state: IState) {
+      state.offset = 0;
+    }
+  },
+});
+export const {
+  loadData,
+  moviesReceived,
+  error,
+  dataOffsetIncrement,
+  dataOffsetDecrement,
+  dataOffsetToNull
+} = moviesSlice.actions;
+export const reducerMovies = moviesSlice.reducer;

@@ -1,41 +1,58 @@
-import { MovieTypes, IMovieAction } from "../actions/movieActions";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import IMovie from "../../interfaces/IMovie";
 
 interface IState {
   status: string;
   movie: IMovie | null;
+  id: string;
 }
 
-const moviestDefaultState: IState = {
+const movieDefaultState: IState = {
   status: "",
   movie: null,
+  id: "",
 };
 
-const reducerMovies = (state = moviestDefaultState, action: IMovieAction) => {
-  switch (action.type) {
-    case MovieTypes.CurrentMovieLoad: {
-      return {
-        ...state,
-        status: action.status,
-        id: action.id,
-      };
-    }
-    case MovieTypes.CurrentMovieReceived: {
-      return {
-        ...state,
-        status: action.status,
-        movie: action.movie,
-      };
-    }
-    case MovieTypes.CurrentMovieError: {
-      return {
-        ...state,
-        status: action.status,
-      };
-    }
-    default:
-      return state;
-  }
-};
+interface IcurrentMovieLoad {
+  status: string;
+  id: string;
+}
 
-export default reducerMovies;
+interface IcurrentMovieReceived {
+  status: string;
+  movie: IMovie | null;
+}
+interface IcurrentMovieError {
+  status: string;
+}
+
+const movieSlice = createSlice({
+  name: "movie",
+  initialState: movieDefaultState,
+  reducers: {
+    currentMovieLoad(state: IState, action: PayloadAction<IcurrentMovieLoad>) {
+      state.status = action.payload.status;
+      state.id = action.payload.id;
+    },
+    currentMovieReceived(
+      state: IState,
+      action: PayloadAction<IcurrentMovieReceived>
+    ) {
+      state.status = action.payload.status;
+      state.movie = action.payload.movie;
+    },
+    currentMovieError(
+      state: IState,
+      action: PayloadAction<IcurrentMovieError>
+    ) {
+      state.status = action.payload.status;
+    },
+  },
+});
+export const {
+  currentMovieLoad,
+  currentMovieReceived,
+  currentMovieError,
+} = movieSlice.actions;
+
+export const { reducer } = movieSlice;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./SortPanel.css";
 import Button from "../button";
 import { parse } from "query-string";
@@ -17,75 +17,46 @@ enum SortBy {
   Rating = "vote_average",
 }
 
-class SortPanel extends React.Component<ISortPanelProps, ISortPanelState> {
-  state = {
-    sortBy: SortBy.Date,
+const SortPanel = (props: ISortPanelProps) => {
+  const [sortBy, setSortBy] = useState(SortBy.Date);
+
+  useEffect(() => {
+    const querySrch = parse(props.location.search) as { sortBy: string };
+    checkSetSortby(querySrch.sortBy);
+  }, [props.location]);
+
+  const checkSetSortby = (sortByvalue: string) => {
+    setSortBy(sortByvalue === SortBy.Rating ? SortBy.Rating : SortBy.Date);
   };
 
-  sortByDate = () => {
-    this.setState({
-      sortBy: SortBy.Date,
-    });
-    this.props.handlerSortChange(SortBy.Date);
+  const sortByDate = () => {
+    setSortBy(SortBy.Date);
+    props.handlerSortChange(SortBy.Date);
   };
-  sortByRate = () => {
-    this.setState({
-      sortBy: SortBy.Rating,
-    });
-    this.props.handlerSortChange(SortBy.Rating);
+  const sortByRate = () => {
+    setSortBy(SortBy.Rating);
+    props.handlerSortChange(SortBy.Rating);
   };
-  componentDidMount() {
-    const querySrch = parse(this.props.location.search) as { sortBy: string };
 
-    const { sortBy } = querySrch;
-    if (sortBy) {
-      if (sortBy === SortBy.Date) {
-        this.setState({ sortBy: SortBy.Date });
-      } else {
-        this.setState({ sortBy: SortBy.Rating });
-      }
-    } else {
-      this.setState({ sortBy: SortBy.Date });
-    }
-  }
-  componentDidUpdate(prevProps: ISortPanelProps) {
-    if (this.props.location !== prevProps.location) {
-      const querySrch = parse(this.props.location.search) as { sortBy: string };
-
-    const { sortBy } = querySrch;
-    if (sortBy) {
-      if (sortBy === SortBy.Date) {
-        this.setState({ sortBy: SortBy.Date });
-      } else {
-        this.setState({ sortBy: SortBy.Rating });
-      }
-    } else {
-      this.setState({ sortBy: SortBy.Date });
-    }
-      }
-    }
-
-  render() {
-    const { moviesLength } = this.props;
-    return (
-      <div className="sort-panel">
-        <div className="amount">{moviesLength} movies found</div>
-        <div className="sort">
-          <p>Sort by</p>
-          <Button
-            content={"release date"}
-            styleClass={this.state.sortBy === SortBy.Date ? "on" : "off"}
-            handler={this.sortByDate}
-          />
-          <Button
-            content={"rating"}
-            styleClass={this.state.sortBy === SortBy.Rating ? "on" : "off"}
-            handler={this.sortByRate}
-          />
-        </div>
+  const { moviesLength } = props;
+  return (
+    <div className="sort-panel">
+      <div className="amount">{moviesLength} movies found</div>
+      <div className="sort">
+        <p>Sort by</p>
+        <Button
+          content={"release date"}
+          styleClass={sortBy === SortBy.Date ? "on" : "off"}
+          handler={sortByDate}
+        />
+        <Button
+          content={"rating"}
+          styleClass={sortBy === SortBy.Rating ? "on" : "off"}
+          handler={sortByRate}
+        />
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default SortPanel;

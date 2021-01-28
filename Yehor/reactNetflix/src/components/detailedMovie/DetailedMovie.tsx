@@ -1,21 +1,21 @@
 import React from "react";
 import "./DetailedMovie.css";
 import IMovie from "../../interfaces/IMovie";
+import ImageFallBack from "../imageFallBack";
 
 interface IMovieProps {
   movie: IMovie;
 }
 
 function DetailedMovie({ movie }: IMovieProps) {
-
-  const defimg = (e: React.SyntheticEvent<HTMLImageElement>) => {
-    const target = e.target as HTMLImageElement;
-    target.src = "https://media.comicbook.com/files/img/default-movie.png";
-  }
-
   return (
     <div className="dmovie">
-      <img src={movie.poster_path} alt={movie.title} onError={defimg} className="dmovie_img"/>
+      <ImageFallBack
+        posterPic={movie.poster_path}
+        alt={movie.title}
+        style="dmovie_img"
+        defaultPic="https://media.comicbook.com/files/img/default-movie.png"
+      />
       <div className="dmovie_movieInfo">
         <div className="dmovie_title-rating">
           <h1 className="dmovie_title">{movie.title}</h1>

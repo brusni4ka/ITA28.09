@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
 import DetailedMovie from "../../components/detailedMovie";
@@ -6,85 +6,86 @@ import MoviesList from "../../components/moviesList";
 import SortByGenrePanel from "../../components/sortBygenre-panel";
 import { RouteComponentProps } from "react-router-dom";
 import {
-  loadData,
-} from "../../redux/actions/moviesActions";
+  currentMovieLoad,
+  currentMovieReceived,
+} from "../../redux/reducers/reducerMovie";
 import {
-  currentMovieLoad,
-} from "../../redux/actions/movieActions";
-import { connect, ConnectedProps } from "react-redux";
-import IReduxState from "../../interfaces/IReduxState"
+  loadData,
+  dataOffsetIncrement,
+  dataOffsetDecrement,
+} from "../../redux/reducers/reducerMovies";
+import { useDispatch, useSelector } from "react-redux";
+import IReduxState from "../../interfaces/IReduxState";
 
-const mapStateToProps = (state: IReduxState) => {
-  return {
-    movie: state.movie.movie,
-    id: state.movie.id,
-    movies: state.movies.movies,
-    offset: state.movies.offset
-  };
-};
+const DetailedPage = (props: RouteComponentProps<{ id: string }>) => {
+  
+  const movie = useSelector((state: IReduxState) => state.movie.movie)
+  const id = useSelector((state: IReduxState) => state.movie.id)
+  const movies = useSelector((state: IReduxState) => state.movies.movies)
+  const offset = useSelector((state: IReduxState) => state.movies.offset)
+  const dispatch = useDispatch()
 
-const mapDispatchToProps = {
-  currentMovieLoad,
-  loadData
-};
+  useEffect(() => {
+    dispatch(currentMovieLoad({
+      status: "movie is loading",
+      id: props.match.params.id,
+    }));
+    return () => {
+      dispatch(currentMovieReceived({ status: "creaned", movie: null }));
+    };
+  }, [props.match.params.id]);
 
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-type DetailedPageProps = PropsFromRedux & RouteComponentProps<{ id: string }>;
-
-class DetailedPage extends React.Component<DetailedPageProps, {}> {
-  componentDidMount() {
-    const filmId = this.props.match.params.id;
-    console.log(filmId);
-    this.props.currentMovieLoad("movie is loading", filmId);
-    
-  }
-
-  componentDidUpdate(prevProps: DetailedPageProps) {
-    if (this.props.match.params.id !== prevProps.match.params.id) {
-      this.props.currentMovieLoad("movie is loading", this.props.match.params.id);
+  useEffect(() => {
+    if (movie) {
+      const searchBy = "genres";
+      const search = movie.genres[0];
+      dispatch(loadData({
+        sortBy: "release_date",
+        searchBy: searchBy,
+        search: search,
+        offset: offset,
+      }));
     }
-    if(this.props.movie !== prevProps.movie) {
-      const searchBy = "genres"
-      const search = this.props.movie.genres[0]
-      this.props.loadData("movies by genre is loading", "release_date", searchBy, search, this.props.offset)
-    }
-  }
- 
+  }, [movie, offset]);
 
-  render() {
-    const { movie, movies } = this.props;
-    console.log(movie);
-
-    return (
-      <div className="allpageWrapper">
-        <div className="wrapper">
-          <div className="blur">
-            <div className="top-container">
-              <Header />
-              {movie ? (
-                <DetailedMovie movie={movie} />
-              ) : (
-                <div>There is no movie</div>
-              )}
-            </div>
+  return (
+    <div className="allpageWrapper">
+      <div className="wrapper">
+        <div className="blur">
+          <div className="top-container">
+            <Header />
+            {movie ? (
+              <DetailedMovie movie={movie} />
+            ) : (
+              <div>There is no movie</div>
+            )}
           </div>
         </div>
-        <div className="main-container">
-          {movie ? <SortByGenrePanel genre={movie.genres[0]}/>: <SortByGenrePanel genre={"genre"}/>}
-        </div>
-        <div className="main-container">
+      </div>
+      <div className="main-container">
+        {movie ? (
+          <SortByGenrePanel genre={movie.genres[0]} />
+        ) : (
+          <SortByGenrePanel genre={"genre"} />
+        )}
+      </div>
+      <div className="main-container">
         <MoviesList movies={movies} />
-      </div>
-        <div className="wrapper-footer">
-          <div className="main-container">
-            <Footer />
-          </div>
+        <div className="pagination">
+          <button onClick={() => dispatch(dataOffsetDecrement())}>Back</button>
+          <span className="pages">
+            {offset ? offset / 9 + 1 : 1}
+          </span>
+          <button onClick={() => dispatch(dataOffsetIncrement())}>Next</button>
         </div>
       </div>
-    );
-  }
-}
+      <div className="wrapper-footer">
+        <div className="main-container">
+          <Footer />
+        </div>
+      </div>
+    </div>
+  );
+};
 
-export default connector(DetailedPage);
+export default DetailedPage;
